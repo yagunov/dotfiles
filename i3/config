@@ -1,0 +1,214 @@
+# ==============================================================================
+# Variables:
+
+# Set modifiers
+set $mod    Mod4
+set $altmod Mod1+Mod4
+
+# Colors:
+set $base00 #101218
+set $base01 #1f222d
+set $base02 #252936
+set $base03 #7780a1
+set $base04 #C0C5CE
+set $base05 #d1d4e0
+set $base06 #C9CCDB
+set $base07 #ffffff
+set $base08 #ee829f
+set $base09 #f99170
+set $base0A #ffefcc
+set $base0B #a5ffe1
+set $base0C #97e0ff
+set $base0D #97bbf7
+set $base0E #c0b7f9
+set $base0F #fcc09e
+
+# Displays:
+set $DSP1 "DP-2"
+set $DSP2 "DP-0.8"
+
+# Main workspaces
+set $WS_TERM   "q: "
+set $WS_WEB    "w: "
+set $WS_DEV    "e: "
+set $WS_UTILS  "a: "
+set $WS_REMOTE "s: "
+set $WS_DOCS   "d: "
+set $WS_IM     "z: "
+# Workspaces for miscellaneous tasks
+set $WS1  "1: "
+set $WS2  "2: "
+set $WS3  "3: "
+set $WS4  "4: "
+set $WS5  "5: "
+set $WS6  "6: "
+# Workspaces for fun and recreation 
+set $WS_MEDIA   "7: "
+set $WS_FUN     "8: "
+set $WS_DLOAD   "9: "
+set $WS_PRIVATE "10: "
+
+
+# ===============================================================================
+# Keybindings:
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# Run external commands
+bindsym $mod+Return exec i3-sensible-terminal
+bindsym $altmod+Return exec nautilus --no-desktop 
+
+# Change window focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+bindsym $mod+u focus mode_toggle
+
+# Move focused window
+bindsym $altmod+h move left
+bindsym $altmod+j move down
+bindsym $altmod+k move up
+bindsym $altmod+l move right
+
+# Resize window
+bindsym $mod+Control+l resize shrink width 10 px or 10 ppt
+bindsym $mod+Control+k resize grow height 10 px or 10 ppt
+bindsym $mod+Control+j resize shrink height 10 px or 10 ppt
+bindsym $mod+Control+h resize grow width 10 px or 10 ppt
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+# toggle tiling / floating
+bindsym $altmod+f floating toggle
+
+# switch between workspaces
+bindsym $mod+q exec --no-startup-id ~/.i3/bin/ws-switch $WS_TERM
+bindsym $mod+w exec --no-startup-id ~/.i3/bin/ws-switch $WS_WEB
+bindsym $mod+e exec --no-startup-id ~/.i3/bin/ws-switch $WS_DEV
+bindsym $mod+a exec --no-startup-id ~/.i3/bin/ws-switch $WS_UTILS
+bindsym $mod+s exec --no-startup-id ~/.i3/bin/ws-switch $WS_REMOTE
+bindsym $mod+d exec --no-startup-id ~/.i3/bin/ws-switch $WS_DOCS
+bindsym $mod+z exec --no-startup-id ~/.i3/bin/ws-switch $WS_IM
+bindsym $mod+1 exec --no-startup-id ~/.i3/bin/ws-switch $WS1
+bindsym $mod+2 exec --no-startup-id ~/.i3/bin/ws-switch $WS2
+bindsym $mod+3 exec --no-startup-id ~/.i3/bin/ws-switch $WS3
+bindsym $mod+4 exec --no-startup-id ~/.i3/bin/ws-switch $WS4
+bindsym $mod+5 exec --no-startup-id ~/.i3/bin/ws-switch $WS5
+bindsym $mod+6 exec --no-startup-id ~/.i3/bin/ws-switch $WS6
+bindsym $mod+7 exec --no-startup-id ~/.i3/bin/ws-switch $WS_MEDIA
+bindsym $mod+8 exec --no-startup-id ~/.i3/bin/ws-switch $WS_FUN
+bindsym $mod+9 exec --no-startup-id ~/.i3/bin/ws-switch $WS_DLOAD
+bindsym $mod+0 exec --no-startup-id ~/.i3/bin/ws-switch $WS_PRIVATE
+
+# move container between workspaces
+bindsym $altmod+q move container to workspace $WS_TERM
+bindsym $altmod+w move container to workspace $WS_WEB
+bindsym $altmod+e move container to workspace $WS_DEV
+bindsym $altmod+a move container to workspace $WS_UTILS
+bindsym $altmod+s move container to workspace $WS_REMOTE
+bindsym $altmod+d move container to workspace $WS_DOCS
+bindsym $altmod+z move container to workspace $WS_IM
+bindsym $altmod+1 move container to workspace $WS1
+bindsym $altmod+2 move container to workspace $WS2
+bindsym $altmod+3 move container to workspace $WS3
+bindsym $altmod+4 move container to workspace $WS4
+bindsym $altmod+5 move container to workspace $WS5
+bindsym $altmod+6 move container to workspace $WS6
+bindsym $altmod+7 move container to workspace $WS_MEDIA
+bindsym $altmod+8 move container to workspace $WS_FUN
+bindsym $altmod+9 move container to workspace $WS_DLOAD
+bindsym $altmod+0 move container to workspace $WS_PRIVATE
+
+# i3 management
+mode i3 {
+     # container split:
+     bindsym s split v; mode default
+     bindsym $mod+s split v; mode default
+     bindsym v split h; mode default
+     bindsym $mod+v split h; mode default
+
+     bindsym $mod+c kill; mode default
+     # bindsym l exec gnome-screensaver-command -l; mode default
+     bindsym l exec i3lock -d -I 15 -c 000000 -f; mode default
+
+     # layouts:
+     bindsym a layout stacking; mode default
+     bindsym $mod+a layout stacking; mode default
+     bindsym w layout tabbed; mode default
+     bindsym $mod+w layout tabbed; mode default
+     bindsym d layout toggle split; mode default
+     bindsym $mod+d layout toggle split; mode default
+
+     # i3 actions:
+     bindsym r restart
+     bindsym q exit
+
+     # exit this mode without any actions 
+     bindsym Escape mode default
+     bindsym Return mode default
+}
+bindsym $mod+x mode i3
+
+
+# ===============================================================================
+# Windows:
+
+
+# bind applications to particular workspaces 
+assign [class="Emacs"] $WS_DEV
+assign [class="Firefox" instance="Navigator"] $WS_WEB
+assign [class="Skype"] $WS_IM
+assign [class="Transmission-gtk"] $WS_DLOAD
+
+# window specific configuration:
+for_window [class="vlc"] floating enable; move to workspace $WS_MEDIA
+for_window [class="Nautilus"] floating enable
+for_window [class="Pavucontrol"] floating enable
+for_window [class="Firefox" title=".*Private Browsing.*"] move to workspace $WS_PRIVATE
+for_window [class="Emacs"] border none
+
+
+# ===============================================================================
+# Appearance:
+
+# Font for window titles. Will also be used by the bar unless a different font
+# is used in the bar {} block below.
+font pango:Ubuntu Mono 10
+
+# Widow Colours
+#                       border  background text    indicator
+client.focused          $base01 #AA0000    $base07 $base0F
+client.focused_inactive $base02 $base02    $base03 $base0F
+client.unfocused        $base02 $base02    $base03 $base0F
+client.urgent           $base02 #FF0000    $base00 $base0F
+
+# display workspace buttons plus a statusline generated by i3status
+bar {
+    status_command i3blocks
+    tray_output $DSP2
+    colors {
+      separator $base03
+      background $base01
+      statusline $base05
+#                        border  background text
+      focused_workspace  $base01 $base01    $base07
+      active_workspace   $base01 $base02    $base03
+      inactive_workspace $base01 $base01    $base03
+      urgent_workspace   $base01 $base01    $base08
+    }
+}
+
+# ===============================================================================
+# Autostart:
+exec --no-startup-id xrandr --output $DSP1 --left-of $DSP2 
+exec --no-startup-id compton
+exec --no-startup-id nm-applet 
+exec --no-startup-id unclutter -idle 2
+exec --no-startup-id setxkbmap -layout 'us(us-dev),ru(ru-dev)' -option compose:menu,grp:shifts_toggle
+exec --no-startup-id xcape -e 'Control_L=space;Super_L=Escape'
+exec --no-startup-id rofi -key-run mod4+space -key-window mod4+Tab
+exec --no-startup-id nitrogen --restore
+exec --no-startup-id gnome-settings-daemon
+exec --no-startup-id gnome-keyring-daemon

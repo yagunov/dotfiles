@@ -1,0 +1,34 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from json import loads
+from os import popen
+from sys import argv
+
+def ipc_query(req="command", msg=""):
+    ans = popen("i3-msg -t " + req + " " +  msg.encode('utf8')).readlines()[0]
+    return loads(ans)
+
+if __name__ == "__main__":
+    # Usage & checking args
+    if len(argv) != 2:
+        print "Usage: switch-workspace.py name-of-workspace"
+        exit(-1)
+
+    new_ws = unicode(argv[1], 'utf8')
+
+    # Retrieving active display
+    display = None
+    visible = False
+    for ws in ipc_query(req="get_workspaces"):
+        if ws['name'] == new_ws:
+            if ws['visible']:
+                visible = True
+        if ws['focused']:
+            display = ws['output']
+
+
+    if visible:
+        print(ipc_query(msg="workspace " + new_ws))
+    else:
+        print(ipc_query(msg="'workspace " + new_ws + "; move workspace to output " + display + "; workspace " + new_ws + "'"))

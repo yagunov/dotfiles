@@ -1,0 +1,16 @@
+#! /bin/sh
+
+VPN_UP=""
+VPN_DOWN=""
+
+CONNECTIONS=`nmcli -t -f type,name con show --active | awk -F: '/vpn/ { print substr($0, length($1)+2) }'`
+if [ -z "$CONNECTIONS" ]; then
+    echo "$VPN_DOWN"
+else
+    COUNT=`echo $CONNECTIONS | wc -l`
+    if [ $COUNT -eq 1 ]; then
+        echo "$VPN_UP: $CONNECTIONS"
+    else
+        echo "$VPN_UP: `echo $CONNECTIONS | paste -s -d,`"
+    fi
+fi

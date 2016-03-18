@@ -1,0 +1,14 @@
+partial alphanumeric_keys modifier_keys
+xkb_symbols "ru-dev" {
+
+    include "ru(winkeys)"
+    name[Group1]= "Russian (for development)";
+
+    // include "shift(both_capslock)"
+
+    // intended for use with xcape -e 'Control_L=space;Control_R=Escape'
+    key <LCTL> { [ Escape    ] };
+    key <RCTL> { [ space     ] };
+    key <CAPS> { [ Super_L   ] };
+    key <SPCE> { [ Control_L ] };
+};

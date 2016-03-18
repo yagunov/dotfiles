@@ -1,0 +1,12 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: fdoc
+# key: fdoc
+# --
+/**
+ * @brief ${1:short description}
+ *
+ * ${2:@param[in] }
+ *
+ * @return ${3:result description}
+ * @retval $0
+ */

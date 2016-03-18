@@ -1,0 +1,31 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: CMocka tests
+# key: cmocka
+# --
+/**
+ * @file      tests/unit/xpi/correlators/test_xdr_sip.c
+ * @copyright (C) 2014 by RivaSense
+ * @author    Andrey Yagunov <yagunov86@gmail.com>
+ * @date      2014-10-20 16:24:11 UTC
+ * @brief     SIP protocol correlation test
+ */
+
+#include <stdarg.h>
+#include <stddef.h>
+#include <setjmp.h>
+#include <cmocka.h>
+
+static void
+test_sample(void **state)
+{
+} /* end of test_sample */
+
+
+int
+main(void)
+{
+    const UnitTest tests[] = {
+        unit_test(test_sample),
+    };
+    return run_tests(tests);
+} /* end of main */

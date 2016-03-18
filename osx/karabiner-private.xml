@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<root>
+  <inputsourcedef>
+    <name>ABC_LAYOUT</name>
+    <inputsourceid_prefix>com.apple.keylayout.ABC</inputsourceid_prefix>
+  </inputsourcedef>
+
+  <item>
+    <name>My bracket hack (only for English-layout)</name>
+    <identifier>private.my_bracket_hack</identifier>
+    <inputsource_only>ABC_LAYOUT</inputsource_only>
+    <!-- [] -> () -->
+    <autogen>__KeyToKey__ KeyCode::BRACKET_LEFT, ModifierFlag::NONE,
+    KeyCode::KEY_9, ModifierFlag::SHIFT_L
+    </autogen>
+    <autogen>__KeyToKey__ KeyCode::BRACKET_RIGHT, ModifierFlag::NONE,
+    KeyCode::KEY_0, ModifierFlag::SHIFT_L
+    </autogen>
+    <!-- () -> {} -->
+    <autogen>__KeyToKey__ KeyCode::KEY_9, ModifierFlag::SHIFT_L,
+    KeyCode::BRACKET_LEFT, ModifierFlag::SHIFT_L
+    </autogen>
+    <autogen>__KeyToKey__ KeyCode::KEY_0, ModifierFlag::SHIFT_L,
+    KeyCode::BRACKET_RIGHT, ModifierFlag::SHIFT_L
+    </autogen>
+    <!-- {} -> [] -->
+    <autogen>__KeyToKey__ KeyCode::BRACKET_LEFT, ModifierFlag::SHIFT_L,
+    KeyCode::BRACKET_LEFT, ModifierFlag::NONE
+    </autogen>
+    <autogen>__KeyToKey__ KeyCode::BRACKET_RIGHT, ModifierFlag::SHIFT_L,
+    KeyCode::BRACKET_RIGHT, ModifierFlag::NONE
+    </autogen>
+  </item>
+
+  <item>
+    <name>Swap Fn and Escape</name>
+    <identifier>private.swap_fn_escape</identifier>
+    <autogen>__KeyToKey__ KeyCode::ESCAPE, KeyCode::FN</autogen>
+    <autogen>__KeyToKey__ KeyCode::FN, KeyCode::ESCAPE</autogen>
+  </item>
+</root>

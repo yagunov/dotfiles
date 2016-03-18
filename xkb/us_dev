@@ -1,0 +1,24 @@
+// Advanced configuration (use with xcape)
+partial alphanumeric_keys modifier_keys
+xkb_symbols "us-dev" {
+
+    include "us(basic)"
+    name[Group1]= "English (US, for development)";
+
+    // include "shift(both_capslock)"
+
+    // intended for use with xcape -e 'Control_L=space;Control_R=Escape'
+    key <LCTL> { [ Escape    ] };
+    key <RCTL> { [ space     ] };
+    key <CAPS> { [ Super_L   ] };
+    key <SPCE> { [ Control_L ] };
+
+    // Swap ; and : keys
+    key <AC10> { [ colon, semicolon ] };
+
+    // Custom layout for brackets:
+    key <AD11> { [  parenleft, bracketleft  ] };
+    key <AD12> { [ parenright, bracketright ] };
+    key <AE09> { [          9, braceleft    ] };
+    key <AE10> { [          0, braceright   ] };
+};

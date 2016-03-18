@@ -1,0 +1,48 @@
+# install homebrew
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+# add additional formulas to homebrew
+brew tap caskroom/cask
+brew tap caskroom/versions
+
+# install iterm2-beta
+brew cask install iterm2-beta
+
+# install keyboard remapping tool
+brew cask install karabiner
+
+# CLI utils
+brew install tmux htop tree ag multitail wget httpie pwgen youtube-dl pgcli mycli \
+     visionmedia-watch pipebench watchman nmap ansible
+
+# install emacs with spacemacs icon
+brew tap railwaycat/homebrew-emacsmacport
+brew install emacs-mac --with-spacemacs-icon
+brew linkapps emacs-mac
+brew install aspell
+
+# multimedia
+brew cask install vlc
+
+# virtualization
+brew cask install virtualbox
+brew cask install vagrant vagrant-manager
+brew install docker docker-compose docker-machine docker-swarm
+
+# browsers
+brew cask install firefox google-ehrome
+
+# install python development environment
+brew install pyenv pyenv-virtualenv
+
+# wireshark
+brew install wireshark --with-qt5 --with-lua
+
+# status bar indicators for El Capitan
+brew cask install yujitach-menumeters
+
+# install Syncthing for file synchronization
+brew install syncthing syncthing-inotify
+
+# sshfs
+brew cask install osxfuse sshfs

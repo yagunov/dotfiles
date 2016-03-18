@@ -1,0 +1,22 @@
+XXkb.mainwindow.type: tray
+XXkb.mainwindow.label.enable: yes
+XXkb.mainwindow.enable: yes
+XXkb.mainwindow.appicon: yes
+XXkb.mainwindow.geometry: 34x14+0+0
+
+XXkb.mainwindow.label.background: black
+XXkb.mainwindow.label.foreground: white
+XXkb.mainwindow.label.font: xft:Ubuntu Mono-8
+XXkb*label.text.1: EN
+XXkb*label.text.2: RU
+
+XXkb.button.enable: no
+
+XXkb.controls.focusout: no
+XXkb.controls.two_state: no
+XXkb.controls.add_when_start: yes
+XXkb.controls.add_when_create: yes
+XXkb.controls.add_when_change: no
+
+XXkb.app_list.wm_class_class.ignore: *emacs* *Emacs*
+XXkb.app_list.wm_class_class.alt_group1: *emacs* *Emacs*

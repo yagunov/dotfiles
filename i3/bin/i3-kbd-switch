@@ -1,0 +1,8 @@
+#! /bin/sh
+
+
+IS_EMACS=`xdotool getactivewindow getwindowname | grep emacs`
+
+if [ -z $IS_EMACS ]; then
+    xdotool key ISO_Next_Group
+fi

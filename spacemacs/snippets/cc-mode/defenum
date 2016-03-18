@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: defenum
+# key: defenum
+# --
+typedef enum ${1:name} {
+     $0
+} $1_t;
