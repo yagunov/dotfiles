@@ -168,3 +168,41 @@ to secondary selection, if called twice run `yagunov/mark-whole-word'."
   (if (region-active-p)
       (call-interactively 'write-region)
     (call-interactively 'write-file)))
+
+
+;; Support my custom keyboard layout:
+(defvar yagunov//buffer-smartparen-state nil
+  "Stores initial state of smartparen-mode in the buffer")
+(make-variable-buffer-local 'yagunov//buffer-smartparen-state)
+
+(defun yagunov/toggle-input-method ()
+  (interactive)
+  ;; store initial state of smartparen-mode
+  (unless yagunov//buffer-smartparen-state
+    (setq yagunov//buffer-smartparen-state
+          (cond (smartparens-strict-mode 'smartparens-strict-mode)
+                (smartparens-mode 'smartparens-mode))))
+  (toggle-input-method)
+  (cond ((equal evil-input-method "russian-computer")
+         (when yagunov//buffer-smartparen-state
+           (smartparens-mode 0))
+         (define-key evil-insert-state-map (kbd "(") (lambda () (interactive) (insert "х")))
+         (define-key evil-insert-state-map (kbd ")") (lambda () (interactive) (insert "ъ")))
+         (define-key evil-insert-state-map (kbd "Х") (lambda () (interactive) (insert "(")))
+         (define-key evil-insert-state-map (kbd "Ъ") (lambda () (interactive) (insert ")")))
+         (define-key evil-insert-state-map (kbd "х") (lambda () (interactive) (insert "Х")))
+         (define-key evil-insert-state-map (kbd "ъ") (lambda () (interactive) (insert "Ъ")))
+         (define-key evil-insert-state-map (kbd "Ж") (lambda () (interactive) (insert "ж")))
+         (define-key evil-insert-state-map (kbd "ж") (lambda () (interactive) (insert "Ж"))))
+        ((null evil-input-method)
+         (unless (null yagunov//buffer-smartparen-state)
+           (funcall yagunov//buffer-smartparen-state t))
+         (message "Switching back to english")
+         (define-key evil-insert-state-map (kbd "(") 'self-insert-command)
+         (define-key evil-insert-state-map (kbd ")") 'self-insert-command)
+         (define-key evil-insert-state-map (kbd "[") 'self-insert-command)
+         (define-key evil-insert-state-map (kbd "]") 'self-insert-command)
+         (define-key evil-insert-state-map (kbd "{") 'self-insert-command)
+         (define-key evil-insert-state-map (kbd "}") 'self-insert-command)
+         (define-key evil-insert-state-map (kbd ":") 'self-insert-command)
+         (define-key evil-insert-state-map (kbd ";") 'self-insert-command))))

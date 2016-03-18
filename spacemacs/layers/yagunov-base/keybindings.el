@@ -15,8 +15,8 @@
 (global-set-key (kbd "C-a") 'yagunov/beginning-of-line)
 (global-set-key (kbd "C-e") 'yagunov/end-of-line)
 
-(bind-key* "C-;" 'split-window-horizontally)
-(bind-key* "C-'" 'split-window-vertically)
+;; (bind-key* "C-;" 'split-window-horizontally)
+;; (bind-key* "C-'" 'split-window-vertically)
 (global-set-key (kbd "C-x 1") 'yagunov/delete-other-windows-vertically-or-all)
 
 ;; More visual goto-line
@@ -37,12 +37,14 @@
 (global-set-key (kbd "C-S-n") 'move-text-down)
 
 ;; Prevent from accidental typing of multiple spaces
-;; (global-set-key (kbd "SPC") 'just-one-space)
-;; (global-set-key (kbd "M-SPC") '(lambda () (interactive) (insert " ")))
+(global-set-key (kbd "SPC") 'just-one-space)
+(global-set-key (kbd "M-SPC") '(lambda () (interactive) (insert " ")))
 
 (bind-key* "C-." 'helm-flyspell-correct)
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 
+;; Fix problems with my custom keyboard layout:
+(global-set-key [remap toggle-input-method] 'yagunov/toggle-input-method)
 
 ;; Faster window navigation
 (require 'dired)
