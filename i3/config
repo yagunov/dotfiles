@@ -212,3 +212,5 @@ exec --no-startup-id rofi -key-run mod4+space -key-window mod4+Tab
 exec --no-startup-id nitrogen --restore
 exec --no-startup-id gnome-settings-daemon
 exec --no-startup-id gnome-keyring-daemon
+exec --no-startup-id pasystray
+exec --no-startup-id parcellite
