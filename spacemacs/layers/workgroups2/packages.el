@@ -67,9 +67,9 @@ enabled."
         ("R"       wg-revert-workgroup               :exit t)
         ("C-r"     wg-revert-all-workgroups          :exit t)
         ("C-R"     wg-revert-all-workgroups          :exit t)
-        ("k"       wg-kill-workgroup                 :exit t)
-        ("K"       wg-delete-other-workgroups        :exit t)
-        ("C-k"     wg-kill-workgroup-and-buffers     :exit t)
+        ("x"       wg-kill-workgroup                 :exit t)
+        ("X"       wg-delete-other-workgroups        :exit t)
+        ("C-x"     wg-kill-workgroup-and-buffers     :exit t)
 
         ;; WConfig:
         ("M-w"     wg-kill-ring-save-working-wconfig :exit t)
