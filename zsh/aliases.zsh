@@ -78,7 +78,12 @@ fi
 
 # Linux specific:
 if [[ `uname` == "Linux" ]]; then
-    alias o=xdg-open
+    function o () { 
+        xdg-open $@ &> /dev/null &
+        disown
+    }
     alias dmesg='dmesg -T'
     alias m='dmesg -Hx'
+    [ -e $HOME/.pyenv/versions/mycli ] && alias mycli="$HOME/.pyenv/versions/mycli/bin/mycli"
+    [ -e $HOME/.pyenv/versions/pgcli ] && alias pgcli="$HOME/.pyenv/versions/pgcli/bin/pgcli"
 fi
