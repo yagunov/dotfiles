@@ -13,7 +13,7 @@ brew cask install karabiner
 
 # CLI utils
 brew install tmux htop tree ag multitail wget httpie pwgen youtube-dl pgcli mycli \
-     visionmedia-watch pipebench watchman nmap ansible
+     visionmedia-watch pipebench watchman nmap ansible mtr
 
 # install emacs with spacemacs icon
 brew tap railwaycat/homebrew-emacsmacport
@@ -46,3 +46,6 @@ brew install syncthing syncthing-inotify
 
 # sshfs
 brew cask install osxfuse sshfs
+
+# OpenSSH (GUI)
+brew cask install tunnelblick
