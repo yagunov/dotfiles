@@ -43,7 +43,7 @@ values."
      ;; TODO: Use theming layer
 
      ;; Editing:
-     ;; evil-snipe
+     evil-snipe
 
      ;; Window and buffer management:
      ibuffer
@@ -54,7 +54,7 @@ values."
      ;; Languages:
      semantic
      emacs-lisp
-     c-c++
+     (c-c++ :variables c-c++-enable-clang-support t)
      python
      ruby
      go
@@ -75,7 +75,7 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages then consider to create a layer, you can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '()
+   dotspacemacs-additional-packages '(rainbow-mode)
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '()
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -96,7 +96,7 @@ values."
    ;; variable is `emacs' then the `holy-mode' is enabled at startup. `hybrid'
    ;; uses emacs key bindings for vim's insert mode, but otherwise leaves evil
    ;; unchanged. (default 'vim)
-   dotspacemacs-editing-style 'hybrid
+   dotspacemacs-editing-style 'vim
    ;; If non nil output loading progress in `*Messages*' buffer. (default nil)
    dotspacemacs-verbose-loading nil
    ;; Specify the startup banner. Default value is `official', it displays
@@ -123,9 +123,9 @@ values."
    ;; Default font+. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
    dotspacemacs-default-font (cond ((equal system-name "luminous.local")
-                                    '("Inconsolata" :size 14 :weight normal :width normal :powerline-scale 1.0))
+                                    '("Source Code Pro" :size 12 :weight light :width normal :powerline-scale 1.0))
                                    (t
-                                    '("Ubuntu Mono" :size 12 :weight normal :width normal :powerline-scale 1.0)))
+                                    '("Consolas" :size 11 :weight normal :width normal :powerline-scale 1.0)))
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The leader key accessible in `emacs state' and `insert state'
@@ -199,7 +199,7 @@ values."
    ;; If non nil smooth scrolling (native-scrolling) is enabled. Smooth
    ;; scrolling overrides the default behavior of Emacs which recenters the
    ;; point when it reaches the top or bottom of the screen. (default t)
-   dotspacemacs-smooth-scrolling t
+   dotspacemacs-smooth-scrolling nil
    ;; If non-nil smartparens-strict-mode will be enabled in programming modes.
    ;; (default nil)
    dotspacemacs-smartparens-strict-mode nil
@@ -271,6 +271,8 @@ layers configuration. You are free to put any user code."
         diff-hl-side 'left)
   (when (equal system-name "luminous")
     (set-fringe-mode '(15 . 10)))
+  (setq-default helm-make-build-dir "build_debug"
+                helm-make-command "make -j12 %s")
   ;; Activate helm-swoop from i-search
   (require 'helm-swoop))
 
@@ -296,7 +298,7 @@ layers configuration. You are free to put any user code."
  '(magit-pull-arguments nil)
  '(package-selected-packages
    (quote
-    (busybee-theme sublime-themes monokai-theme color-theme-sanityinc-tomorrow rainbow-mode evil-snipe alert log4e gntp parent-mode pkg-info epl request fringe-helper flx iedit ctable pos-tip rust-mode spinner magit-popup go-mode ghc haskell-mode inf-ruby yasnippet pythonic auto-complete packed julia-mode highlight anzu with-editor helm-core async projectile avy hydra f anaphora ::material-theme rake vagrant-tramp vagrant yaml-mode jinja2-mode ansible-doc ansible uuidgen live-py-mode link-hint rustfmt helm-hoogle evil-ediff bracketed-paste xterm-color eshell-z ess-smart-equals ess-R-object-popup ess-R-data-view ess ws-butler persp-mode lorem-ipsum hl-todo help-fns+ evil-magit evil-indent-plus ace-jump-helm-line bind-map smartparens ranger highlight-symbol enh-ruby-mode accelerate orgit toml-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv racer company-racer chruby bundler engine-mode git-gutter-fringe+ git-gutter-fringe git-gutter+ git-gutter restart-emacs powerline evil-org diff-hl macrostep second-sel anchored-transpose workgroups2 airline-themes material-theme eyebrowse stickyfunc-enhance srefactor helm-flx auto-compile shm ibuffer-projectile hindent haskell-snippets go-eldoc erlang company-go company-ghc company-cabal cmm-mode toc-org smeargle shell-pop pyvenv pytest pyenv-mode pip-requirements org-repo-todo org-present org-pomodoro org-plus-contrib org-bullets multi-term mmm-mode markdown-toc markdown-mode magit-gitflow magit hy-mode htmlize helm-pydoc helm-gitignore helm-flyspell helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-commit gh-md eshell-prompt-extras esh-help disaster cython-mode company-statistics company-quickhelp company-c-headers company-anaconda company cmake-mode clang-format auto-yasnippet anaconda-mode ac-ispell window-numbering volatile-highlights vi-tilde-fringe spray spaceline smooth-scrolling rainbow-delimiters popwin popup pcre2el paradox page-break-lines open-junk-file neotree move-text linum-relative leuven-theme info+ indent-guide ido-vertical-mode hungry-delete highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-descbinds helm-ag helm google-translate golden-ratio flx-ido fill-column-indicator fancy-battery expand-region exec-path-from-shell evil-visualstar evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-jumper evil-indent-textobject evil-iedit-state evil-exchange evil-escape evil-args evil-anzu eval-sexp-fu elisp-slime-nav define-word clean-aindent-mode buffer-move auto-highlight-symbol auto-dictionary aggressive-indent adaptive-wrap ace-window ace-link evil-leader evil which-key quelpa package-build use-package bind-key s dash spacemacs-theme)))
+    (nlinum column-enforce-mode deferred busybee-theme sublime-themes monokai-theme color-theme-sanityinc-tomorrow rainbow-mode evil-snipe alert log4e gntp parent-mode pkg-info epl request fringe-helper flx iedit ctable pos-tip rust-mode spinner magit-popup go-mode ghc haskell-mode inf-ruby yasnippet pythonic auto-complete packed julia-mode highlight anzu with-editor helm-core async projectile avy hydra f anaphora ::material-theme rake vagrant-tramp vagrant yaml-mode jinja2-mode ansible-doc ansible uuidgen live-py-mode link-hint rustfmt helm-hoogle evil-ediff bracketed-paste xterm-color eshell-z ess-smart-equals ess-R-object-popup ess-R-data-view ess ws-butler persp-mode lorem-ipsum hl-todo help-fns+ evil-magit evil-indent-plus ace-jump-helm-line bind-map smartparens ranger highlight-symbol enh-ruby-mode accelerate orgit toml-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv racer company-racer chruby bundler engine-mode git-gutter-fringe+ git-gutter-fringe git-gutter+ git-gutter restart-emacs powerline evil-org diff-hl macrostep second-sel anchored-transpose workgroups2 airline-themes material-theme eyebrowse stickyfunc-enhance srefactor helm-flx auto-compile shm ibuffer-projectile hindent haskell-snippets go-eldoc erlang company-go company-ghc company-cabal cmm-mode toc-org smeargle shell-pop pyvenv pytest pyenv-mode pip-requirements org-repo-todo org-present org-pomodoro org-plus-contrib org-bullets multi-term mmm-mode markdown-toc markdown-mode magit-gitflow magit hy-mode htmlize helm-pydoc helm-gitignore helm-flyspell helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-commit gh-md eshell-prompt-extras esh-help disaster cython-mode company-statistics company-quickhelp company-c-headers company-anaconda company cmake-mode clang-format auto-yasnippet anaconda-mode ac-ispell window-numbering volatile-highlights vi-tilde-fringe spray spaceline smooth-scrolling rainbow-delimiters popwin popup pcre2el paradox page-break-lines open-junk-file neotree move-text linum-relative leuven-theme info+ indent-guide ido-vertical-mode hungry-delete highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-descbinds helm-ag helm google-translate golden-ratio flx-ido fill-column-indicator fancy-battery expand-region exec-path-from-shell evil-visualstar evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-jumper evil-indent-textobject evil-iedit-state evil-exchange evil-escape evil-args evil-anzu eval-sexp-fu elisp-slime-nav define-word clean-aindent-mode buffer-move auto-highlight-symbol auto-dictionary aggressive-indent adaptive-wrap ace-window ace-link evil-leader evil which-key quelpa package-build use-package bind-key s dash spacemacs-theme)))
  '(paradox-github-token t)
  '(safe-local-variable-values
    (quote
