@@ -151,6 +151,8 @@ mode i3 {
 }
 bindsym $mod+x mode i3
 
+# Change keyboard layout
+bindsym --release $mod+backslash exec --no-startup-id ~/.i3/bin/i3-kbd-switch
 
 # ===============================================================================
 # Windows:
@@ -163,7 +165,10 @@ assign [class="Skype"] $WS_IM
 assign [class="Transmission-gtk"] $WS_DLOAD
 
 # window specific configuration:
-for_window [class="vlc"] floating enable; move to workspace $WS_MEDIA
+for_window [class="mpv"] move to workspace $WS_MEDIA
+for_window [class="mpv"] floating enable
+for_window [class="vlc"] move to workspace $WS_MEDIA
+for_window [class="vlc"] floating enable
 for_window [class="Nautilus"] floating enable
 for_window [class="Pavucontrol"] floating enable
 for_window [class="Firefox" title=".*Private Browsing.*"] move to workspace $WS_PRIVATE
@@ -208,7 +213,8 @@ exec --no-startup-id nm-applet
 exec --no-startup-id unclutter -idle 2
 exec --no-startup-id setxkbmap -layout 'us(us-dev),ru(ru-dev)' -option compose:menu,grp:shifts_toggle
 exec --no-startup-id xcape -e 'Control_L=space;Super_L=Escape'
-exec --no-startup-id rofi -key-run mod4+space -key-window mod4+Tab
+exec --no-startup-id xset r rate 200 50
+exec --no-startup-id rofi -key-run mod4+space -key-window mod4+Tab -key-ssh mod4+mod1+space
 exec --no-startup-id nitrogen --restore
 exec --no-startup-id gnome-settings-daemon
 exec --no-startup-id gnome-keyring-daemon

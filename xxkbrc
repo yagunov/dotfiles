@@ -18,5 +18,5 @@ XXkb.controls.add_when_start: yes
 XXkb.controls.add_when_create: yes
 XXkb.controls.add_when_change: no
 
-XXkb.app_list.wm_class_class.ignore: *emacs* *Emacs*
-XXkb.app_list.wm_class_class.alt_group1: *emacs* *Emacs*
+# XXkb.app_list.wm_class_class.ignore: *emacs* *Emacs*
+# XXkb.app_list.wm_class_class.alt_group1: *emacs* *Emacs*

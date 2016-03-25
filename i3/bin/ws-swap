@@ -1,34 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from json import loads
-from os import popen
-from sys import argv
+import i3
+outputs = [o for o in i3.get_outputs() if o['active'] == True]
 
-def ipc_query(req="command", msg=""):
-    ans = popen("i3-msg -t " + req + " " +  msg.encode('utf8')).readlines()[0]
-    return loads(ans)
+# set current workspace to output 0
+i3.workspace(outputs[0]['current_workspace'])
 
-if __name__ == "__main__":
-    # Usage & checking args
-    if len(argv) != 2:
-        print "Usage: switch-workspace.py name-of-workspace"
-        exit(-1)
+# ..and move it to the other output.
+# outputs wrap, so the right of the right is left ;)
+i3.command('move', 'workspace to output right')
 
-    new_ws = unicode(argv[1], 'utf8')
-
-    # Retrieving active display
-    display = None
-    visible = False
-    for ws in ipc_query(req="get_workspaces"):
-        if ws['name'] == new_ws:
-            if ws['visible']:
-                visible = True
-        if ws['focused']:
-            display = ws['output']
-
-
-    if visible:
-        print(ipc_query(msg="workspace " + new_ws))
-    else:
-        print(ipc_query(msg="'workspace " + new_ws + "; move workspace to output " + display + "; workspace " + new_ws + "'"))
+# rinse and repeat
+i3.workspace(outputs[1]['current_workspace'])
+i3.command('move', 'workspace to output right')

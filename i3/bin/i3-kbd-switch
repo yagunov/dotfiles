@@ -1,8 +1,10 @@
 #! /bin/sh
 
 
-IS_EMACS=`xdotool getactivewindow getwindowname | grep emacs`
+IS_EMACS=`xdotool getactivewindow getwindowname | grep emacs@`
 
-if [ -z $IS_EMACS ]; then
-    xdotool key ISO_Next_Group
-fi
+# if [ -z "$IS_EMACS" ]; then
+    xdotool key --delay 250 ISO_Next_Group
+# else
+#     xdotool key --delay 250 ctrl+backslash
+# fi
