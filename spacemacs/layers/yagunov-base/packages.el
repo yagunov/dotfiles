@@ -11,10 +11,10 @@
 
 (setq yagunov-base-packages
       '(
-        (accelerate :location (recipe :fetcher github :repo "yagunov/accelerate.el"))
+        ;; (accelerate :location (recipe :fetcher github :repo "yagunov/accelerate.el"))
 
-        anchored-transpose
-        second-sel
+        ;; anchored-transpose
+        ;; second-sel
 
         google-translate
 
