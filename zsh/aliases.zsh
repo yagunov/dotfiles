@@ -74,6 +74,7 @@ if [[ `uname` == "Darwin" ]]; then
     alias tailf="tail -f"
     alias o=open
     alias dmesg="sudo dmesg"
+    alias cal='ncal'
 fi
 
 # Linux specific:
@@ -84,6 +85,7 @@ if [[ `uname` == "Linux" ]]; then
     }
     alias dmesg='dmesg -T'
     alias m='dmesg -Hx'
+    alias cal='ncal -M'
     [ -e $HOME/.pyenv/versions/mycli ] && alias mycli="$HOME/.pyenv/versions/mycli/bin/mycli"
     [ -e $HOME/.pyenv/versions/pgcli ] && alias pgcli="$HOME/.pyenv/versions/pgcli/bin/pgcli"
 fi
