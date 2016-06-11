@@ -206,3 +206,9 @@ to secondary selection, if called twice run `yagunov/mark-whole-word'."
          (define-key evil-insert-state-map (kbd "}") 'self-insert-command)
          (define-key evil-insert-state-map (kbd ":") 'self-insert-command)
          (define-key evil-insert-state-map (kbd ";") 'self-insert-command))))
+
+
+(defun yagunov/eval-print-last-sexp ()
+  (interactive)
+  (end-of-line)
+  (eval-print-last-sexp))

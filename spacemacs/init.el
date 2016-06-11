@@ -25,7 +25,11 @@ values."
      ;; ----------------------------------------------------------------
 
      ;; Generic layers:
-     auto-completion
+     (auto-completion
+      :variables
+      auto-completion-return-key-behavior 'complete
+      auto-completion-private-snippets-directory "~/.spacemacs.d/snippets"
+      auto-completion-enable-snippets-in-popup t)
      spell-checking
      ;; syntax-checking
      (shell :variables
@@ -36,6 +40,7 @@ values."
                       version-control-global-margin t
                       version-control-diff-tool 'diff-hl)
      git
+     github
      (ranger :variables
              ranger-show-preview t)
 
@@ -55,13 +60,20 @@ values."
      semantic
      emacs-lisp
      (c-c++ :variables c-c++-enable-clang-support t)
-     python
+     csharp
+     fsharp
+     (python :variables python-test-runner '(nose pytest))
      ruby
      go
      rust
      haskell
      erlang
      ess
+     vimscript
+     php
+     html
+     csv
+     sql
 
      ;; Administration:
      ansible
@@ -76,7 +88,7 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages then consider to create a layer, you can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(rainbow-mode)
+   dotspacemacs-additional-packages '(rainbow-mode helm-flyspell)
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '()
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -98,6 +110,7 @@ values."
    ;; uses emacs key bindings for vim's insert mode, but otherwise leaves evil
    ;; unchanged. (default 'vim)
    dotspacemacs-editing-style 'vim
+   dotspacemacs-distinguish-gui-tab t
    ;; If non nil output loading progress in `*Messages*' buffer. (default nil)
    dotspacemacs-verbose-loading nil
    ;; Specify the startup banner. Default value is `official', it displays
@@ -114,7 +127,9 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(material
+   dotspacemacs-themes `(,(cond ((equal system-name "luminous.local")
+                                 'material-light)
+                                (t 'material))
                          brin
                          busybee
                          monokai
@@ -124,7 +139,7 @@ values."
    ;; Default font+. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
    dotspacemacs-default-font (cond ((equal system-name "luminous.local")
-                                    '("Source Code Pro" :size 12 :weight light :width normal :powerline-scale 1.0))
+                                    '("Source Code Pro" :size 12 :weight normal :width normal :powerline-scale 1.0))
                                    (t
                                     '("Consolas" :size 11 :weight normal :width normal :powerline-scale 1.0)))
    ;; The leader key
@@ -219,6 +234,9 @@ values."
    ;; specified with an installed package.
    ;; Not used for now. (default nil)
    dotspacemacs-default-package-repository nil
+   ;; If non nil then the last auto saved layouts are resume automatically upon
+   ;; start.
+   dotspacemacs-auto-resume-layouts t
    ))
 
 (defun dotspacemacs/user-init ()
@@ -253,7 +271,8 @@ layers configuration. You are free to put any user code."
     "="  'yagunov/dwim-diff
     "fw" 'yagunov/writer-buffer-or-region)
   (global-set-key (kbd "C-M-\\") 'spacemacs/indent-region-or-buffer)
-  (global-set-key (kbd "C-h") 'delete-backward-char)
+  (global-set-key (kbd "C-h") 'evil-delete-backward-char)
+  (global-set-key (kbd "M-h") 'evil-delete-backward-word)
   (global-set-key (kbd "M-:") 'comment-dwim)
   (global-set-key (kbd "M-;") 'eval-expression)
 
@@ -288,10 +307,8 @@ layers configuration. You are free to put any user code."
    [default bold shadow italic underline bold bold-italic bold])
  '(ansi-color-names-vector
    (vector "#ffffff" "#f36c60" "#8bc34a" "#fff59d" "#4dd0e1" "#b39ddb" "#81d4fa" "#263238"))
- '(custom-safe-themes
-   (quote
-    ("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "d9a0d14596e3d0bdb81f052fa9b99741dcd239af402d42e35f80822e05557cb2" "86a731bda96ed5ed69980b4cbafe45614ec3c288da3b773e4585101e7ece40d2" "133222702a3c75d16ea9c50743f66b987a7209fb8b964f2c0938a816a83379a0" "e8586a76a96fd322ccb644ca0c3a1e4f4ca071ccfdb0f19bef90c4040d5d3841" "b869a1353d39ab81b19eb79de40ff3e7bb6eaad705e61f7e4dbdcb183f08c5a6" "532769a638787d1196bc22c885e9b85269c3fc650fdecfc45135bb618127034c" "0788bfa0a0d0471984de6d367bb2358c49b25e393344d2a531e779b6cec260c5" "51277c9add74612c7624a276e1ee3c7d89b2f38b1609eed6759965f9d4254369" "cadc97db0173a0d0bfc40473cab4da462af0ba8d60befd0a4879b582bcbc092d" "a0bbe4dc3513cbd049eb95f79c467b6f19dc42979fec27a0481bb6980bd8d405" "fbcdb6b7890d0ec1708fa21ab08eb0cc16a8b7611bb6517b722eba3891dfc9dd" "beeb5ac6b65fcccfe434071d4624ff0308b5968bf2f0c01b567d212bcaf66054" default)))
  '(evil-disable-insert-state-bindings t)
+ '(evil-want-Y-yank-to-eol t)
  '(fci-rule-color "#37474f" t)
  '(frame-brackground-mode (quote dark))
  '(hl-sexp-background-color "#1c1f26")
@@ -299,7 +316,7 @@ layers configuration. You are free to put any user code."
  '(magit-pull-arguments nil)
  '(package-selected-packages
    (quote
-    (dockerfile-mode nlinum column-enforce-mode deferred busybee-theme sublime-themes monokai-theme color-theme-sanityinc-tomorrow rainbow-mode evil-snipe alert log4e gntp parent-mode pkg-info epl request fringe-helper flx iedit ctable pos-tip rust-mode spinner magit-popup go-mode ghc haskell-mode inf-ruby yasnippet pythonic auto-complete packed julia-mode highlight anzu with-editor helm-core async projectile avy hydra f anaphora ::material-theme rake vagrant-tramp vagrant yaml-mode jinja2-mode ansible-doc ansible uuidgen live-py-mode link-hint rustfmt helm-hoogle evil-ediff bracketed-paste xterm-color eshell-z ess-smart-equals ess-R-object-popup ess-R-data-view ess ws-butler persp-mode lorem-ipsum hl-todo help-fns+ evil-magit evil-indent-plus ace-jump-helm-line bind-map smartparens ranger highlight-symbol enh-ruby-mode accelerate orgit toml-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv racer company-racer chruby bundler engine-mode git-gutter-fringe+ git-gutter-fringe git-gutter+ git-gutter restart-emacs powerline evil-org diff-hl macrostep second-sel anchored-transpose workgroups2 airline-themes material-theme eyebrowse stickyfunc-enhance srefactor helm-flx auto-compile shm ibuffer-projectile hindent haskell-snippets go-eldoc erlang company-go company-ghc company-cabal cmm-mode toc-org smeargle shell-pop pyvenv pytest pyenv-mode pip-requirements org-repo-todo org-present org-pomodoro org-plus-contrib org-bullets multi-term mmm-mode markdown-toc markdown-mode magit-gitflow magit hy-mode htmlize helm-pydoc helm-gitignore helm-flyspell helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-commit gh-md eshell-prompt-extras esh-help disaster cython-mode company-statistics company-quickhelp company-c-headers company-anaconda company cmake-mode clang-format auto-yasnippet anaconda-mode ac-ispell window-numbering volatile-highlights vi-tilde-fringe spray spaceline smooth-scrolling rainbow-delimiters popwin popup pcre2el paradox page-break-lines open-junk-file neotree move-text linum-relative leuven-theme info+ indent-guide ido-vertical-mode hungry-delete highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-descbinds helm-ag helm google-translate golden-ratio flx-ido fill-column-indicator fancy-battery expand-region exec-path-from-shell evil-visualstar evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-jumper evil-indent-textobject evil-iedit-state evil-exchange evil-escape evil-args evil-anzu eval-sexp-fu elisp-slime-nav define-word clean-aindent-mode buffer-move auto-highlight-symbol auto-dictionary aggressive-indent adaptive-wrap ace-window ace-link evil-leader evil which-key quelpa package-build use-package bind-key s dash spacemacs-theme)))
+    (hlint-refactor flyspell-correct-helm vimrc-mode dactyl-mode magit-gh-pulls github-clone github-browse-file git-link gist gh logito pcache myrth-theme goto-chg undo-tree diminish flyspell-correct omnisharp csharp-mode flycheck fsharp-mode phpunit phpcbf php-extras php-auto-yasnippets drupal-mode php-mode org-download py-yapf evil-visual-mark-mode ox-reveal web-mode tagedit slim-mode scss-mode sass-mode less-css-mode jade-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data csv-mode sql-indent hide-region dockerfile-mode nlinum column-enforce-mode deferred busybee-theme sublime-themes monokai-theme color-theme-sanityinc-tomorrow rainbow-mode evil-snipe alert log4e gntp parent-mode pkg-info epl request fringe-helper flx iedit ctable pos-tip rust-mode spinner magit-popup go-mode ghc haskell-mode inf-ruby yasnippet pythonic auto-complete packed julia-mode highlight anzu with-editor helm-core async projectile avy hydra f anaphora ::material-theme rake vagrant-tramp vagrant yaml-mode jinja2-mode ansible-doc ansible uuidgen live-py-mode link-hint rustfmt helm-hoogle evil-ediff bracketed-paste xterm-color eshell-z ess-smart-equals ess-R-object-popup ess-R-data-view ess ws-butler persp-mode lorem-ipsum hl-todo help-fns+ evil-magit evil-indent-plus ace-jump-helm-line bind-map smartparens ranger highlight-symbol enh-ruby-mode accelerate orgit toml-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv racer company-racer chruby bundler engine-mode git-gutter-fringe+ git-gutter-fringe git-gutter+ git-gutter restart-emacs powerline evil-org diff-hl macrostep second-sel anchored-transpose workgroups2 airline-themes material-theme eyebrowse stickyfunc-enhance srefactor helm-flx auto-compile shm ibuffer-projectile hindent haskell-snippets go-eldoc erlang company-go company-ghc company-cabal cmm-mode toc-org smeargle shell-pop pyvenv pytest pyenv-mode pip-requirements org-repo-todo org-present org-pomodoro org-plus-contrib org-bullets multi-term mmm-mode markdown-toc markdown-mode magit-gitflow magit hy-mode htmlize helm-pydoc helm-gitignore helm-flyspell helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-commit gh-md eshell-prompt-extras esh-help disaster cython-mode company-statistics company-quickhelp company-c-headers company-anaconda company cmake-mode clang-format auto-yasnippet anaconda-mode ac-ispell window-numbering volatile-highlights vi-tilde-fringe spray spaceline smooth-scrolling rainbow-delimiters popwin popup pcre2el paradox page-break-lines open-junk-file neotree move-text linum-relative leuven-theme info+ indent-guide ido-vertical-mode hungry-delete highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-descbinds helm-ag helm google-translate golden-ratio flx-ido fill-column-indicator fancy-battery expand-region exec-path-from-shell evil-visualstar evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-jumper evil-indent-textobject evil-iedit-state evil-exchange evil-escape evil-args evil-anzu eval-sexp-fu elisp-slime-nav define-word clean-aindent-mode buffer-move auto-highlight-symbol auto-dictionary aggressive-indent adaptive-wrap ace-window ace-link evil-leader evil which-key quelpa package-build use-package bind-key s dash spacemacs-theme)))
  '(paradox-github-token t)
  '(safe-local-variable-values
    (quote

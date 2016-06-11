@@ -52,11 +52,9 @@
 (global-set-key (kbd "C-o") 'other-window)
 (global-set-key (kbd "C-M-o") 'yagunov/other-window-back)
 
-(define-key emacs-lisp-mode-map (kbd "C-j") 'eval-print-last-sexp)
-
-(eval-after-load 'yasnippet
-  '(add-to-list 'yas-snippet-dirs "~/.spacemacs.d/snippets"))
-
+(dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
+  (spacemacs/set-leader-keys-for-major-mode mode
+    "ep" 'eval-print-last-sexp))
 
 (require 'time-stamp)
 (require 'copyright)

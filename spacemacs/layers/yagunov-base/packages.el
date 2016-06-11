@@ -13,8 +13,8 @@
       '(
         ;; (accelerate :location (recipe :fetcher github :repo "yagunov/accelerate.el"))
 
-        ;; anchored-transpose
-        ;; second-sel
+        anchored-transpose
+        second-sel
 
         google-translate
 
@@ -23,6 +23,8 @@
         highlight-symbol
 
         magit-gitflow
+
+        (ox-reveal :location (recipe :fetcher github :repo "yjwen/org-reveal"))
         ))
 
 
@@ -46,14 +48,14 @@
 
 (defun yagunov-base/init-anchored-transpose ()
   (use-package anchored-transpose
-    :config (global-set-key (kbd "C-t") 'yagunov/smart-transpose)))
+    :config (define-key evil-visual-state-map (kbd "C-t") 'yagunov/smart-transpose)))
 
 (defun yagunov-base/init-second-sel ()
   (use-package second-sel
     :config
-    (progn
-      (global-set-key (kbd "C-SPC") 'yagunov/set-mark-command)
-      (global-set-key (kbd "C-M-y") 'secondary-dwim))))
+    (spacemacs/set-leader-keys
+      "SPC" 'yagunov/set-mark-command
+      "y"   'secondary-dwim)))
 
 (defun yagunov-base/init-google-translate ()
   (use-package google-translate
@@ -94,3 +96,7 @@
     :init (add-hook 'magit-mode-hook 'turn-on-magit-gitflow)))
 ;; Use default branch on 'PP'.
 (setq magit-push-always-verify nil)     ;TODO: Find better place for this
+
+
+(defun yagunov-base/init-ox-reveal ()
+  (load-library "ox-reveal"))
