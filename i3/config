@@ -145,6 +145,10 @@ mode i3 {
      bindsym r restart
      bindsym q exit
 
+     # screenshots
+     bindsym p exec scrot -u 'window-%Y-%m-%dT%H-%M-%S.png' -e 'mv $f ~/Pictures/screenshots'; mode default
+     bindsym $mod+P exec scrot 'screen-%Y-%m-%dT%H-%M-%S.png' -e 'mv $f ~/Pictures/screenshots'; mode default
+
      # exit this mode without any actions 
      bindsym Escape mode default
      bindsym Return mode default
