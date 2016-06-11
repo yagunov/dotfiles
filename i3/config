@@ -173,6 +173,8 @@ for_window [class="Nautilus"] floating enable
 for_window [class="Pavucontrol"] floating enable
 for_window [class="Firefox" title=".*Private Browsing.*"] move to workspace $WS_PRIVATE
 for_window [class="Emacs"] border none
+for_window [class="Linphone"] floating enable
+for_window [class="Linphone"] move to workspace $WS_IM
 
 
 # ===============================================================================
