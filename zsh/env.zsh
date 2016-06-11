@@ -4,3 +4,7 @@ export PATH=$PATH:$HOME/.dotfiles/bin:$HOME/.local/bin
 if [[ `uname` == "Darwin" ]]; then
     export HOMEBREW_GITHUB_API_TOKEN="dcd2e50dea706d5d41e9b890b18c08226c173c1f"
 fi
+
+if [ -d $HOME/.npm-packages/bin ]; then
+    export PATH=$HOME/.npm-packages/bin:$PATH
+fi
