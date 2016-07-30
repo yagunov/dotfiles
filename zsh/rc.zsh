@@ -47,7 +47,7 @@ fi
 
 # Set default editor:
 if [ $+SSH_CONNECTION -eq 0 ]; then
-    EDITOR="emacsclient --alternate-editor=$ed"
+    EDITOR="emacsclient --alternate-editor=$vim"
     ALTEDITOR="$EDITOR --no-wait"
 else
     EDITOR=vim

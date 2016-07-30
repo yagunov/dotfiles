@@ -38,7 +38,23 @@ alias today='date +"%Y-%m-%d"'
 alias now='date +"%Y-%m-%dT%H-%M-%S"'
 
 # Search:
-alias g=ag
+if (( $+commands[tag] )); then
+    # Tag is a wrapper around ag: https://github.com/aykamko/tag
+    function tag() {
+        if [ $+SSH_CONNECTION -eq 0 ]; then
+            export TAG_CMD_FMT_STRING="emacsclient --alternate-editor=vim --no-wait +{{.LineNumber}} {{.Filename}}"
+        else
+            export TAG_CMD_FMT_STRING="vim {{.Filename}} +{{.LineNumber}}"
+        fi
+        command tag "$@"
+        source ${TAG_ALIAS_FILE:-/tmp/tag_aliases} 2>/dev/null
+    }
+    alias g=tag
+elif (( $+commands[ag] )); then
+    alias g=ag
+else
+    alias g=grep
+fi
 alias gg=grep
 alias mtail=multitail
 alias f=find-by-name
