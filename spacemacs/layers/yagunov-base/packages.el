@@ -24,6 +24,8 @@
 
         magit-gitflow
 
+        cc-mode
+
         (ox-reveal :location (recipe :fetcher github :repo "yjwen/org-reveal"))
         ))
 
@@ -100,3 +102,25 @@
 
 (defun yagunov-base/init-ox-reveal ()
   (load-library "ox-reveal"))
+
+
+(defun yagunov-base/init-cc-mode ()
+  (defun yagunov//c-mode-common-hook ()
+    (setq c-basic-offset 4)
+    ;; Long function arguments indentation like in python-mode.
+    (c-set-offset 'arglist-intro '+)
+    (c-set-offset 'arglist-close 0)
+    ;; Do not indent lines inside 'extern "C"' constructs.
+    (c-set-offset 'inextern-lang 0))
+
+  (defun yagunov//c++-mode-hook ()
+    (c-set-offset 'inline-open '0)
+    (setq comment-start "/* ")
+    (setq comment-end " */"))
+
+  (add-hook 'c-mode-common-hook 'yagunov//c-mode-common-hook)
+  (add-hook 'c++-mode-hook 'yagunov//c++-mode-hook)
+
+  (setq c-default-style '((java  . "java")
+                          (awk   . "awk")
+                          (other . "k&r"))))
