@@ -1,0 +1,33 @@
+# -*- mode: snippet -*-
+# name: script (personal)
+# key: script
+# --
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+
+"""${1:TODO: Add CLI usage intro here.}"""
+
+
+__author__    = "`user-full-name` <`user-mail-address`>"
+__copyright__ = "Copyright (C) `(format-time-string "%Y")` by `user-full-name`"
+__license__   = "proprietary"
+
+
+def main(args):
+    return 0
+
+
+if __name__ == '__main__':
+    import argparse
+    import sys
+
+    # Define command line interface:
+    cli = argparse.ArgumentParser(
+            description=__doc__,
+            epilog="Report bugs to %s" % __author__
+    )
+    $0
+
+    args = cli.parse_args(sys.argv[1:])
+    sys.exit(main(args))
