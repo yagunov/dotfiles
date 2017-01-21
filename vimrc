@@ -1,10 +1,35 @@
+set nocompatible
+
+" Display relative line numbers
 set number
 set relativenumber
-set ruler
+"set ruler
+
+" Enable syntax highlightning:
 syntax on
+
 " Use 256 colors
 set t_Co=256
-colorscheme Kafka
+let base16colorspace=256
+colorscheme colorsbox-material
+
 " Use fd to switch from insert to normal mode
 inoremap fd <Esc>
 set timeoutlen=75
+
+" Incremental search
+set incsearch
+" Highlight all matches
+set hlsearch
+" Make search case-insensitive til you use upper case
+set ignorecase
+set smartcase
+
+" Enable fazzy file finding
+set path+=**
+" Display all matching files when we tab complete
+set wildmenu
+
+" Move selected text
+vnoremap <C-j> :m '>+1<CR>gv=gv
+vnoremap <C-k> :m '<-2<CR>gv=gv
