@@ -48,6 +48,8 @@ set $WS_FUN     "8: "
 set $WS_DLOAD   "9: "
 set $WS_PRIVATE "10: "
 
+# Do not switch focus with mouse
+focus_follows_mouse no
 
 # ===============================================================================
 # Keybindings:
@@ -56,7 +58,7 @@ set $WS_PRIVATE "10: "
 floating_modifier $mod
 
 # Run external commands
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec sakura
 bindsym $altmod+Return exec nautilus --no-desktop 
 
 # Change window focus
@@ -121,6 +123,15 @@ bindsym $altmod+8 move container to workspace $WS_FUN
 bindsym $altmod+9 move container to workspace $WS_DLOAD
 bindsym $altmod+0 move container to workspace $WS_PRIVATE
 
+# Sound control:
+bindsym $mod+equal exec --no-startup-id pactl set-sink-volume 1 +5%
+bindsym $altmod+equal exec --no-startup-id pactl set-sink-volume 1 +1%
+bindsym $mod+minus exec --no-startup-id pactl set-sink-volume 1 -5%
+bindsym $altmod+minus exec --no-startup-id pactl set-sink-volume 1 -1%
+bindsym $mod+m exec --no-startup-id pactl set-sink-mute 1 toggle
+bindsym $altmod+m exec --no-startup-id pavucontrol
+
+
 # i3 management
 mode i3 {
      # container split:
@@ -130,8 +141,7 @@ mode i3 {
      bindsym $mod+v split h; mode default
 
      bindsym $mod+c kill; mode default
-     # bindsym l exec gnome-screensaver-command -l; mode default
-     bindsym l exec i3lock -d -I 15 -c 000000 -f; mode default
+     bindsym l exec --no-startup-id ~/.i3/bin/i3-screen-lock; mode default
 
      # layouts:
      bindsym a layout stacking; mode default
@@ -146,8 +156,10 @@ mode i3 {
      bindsym q exit
 
      # screenshots
-     bindsym p exec scrot -u 'window-%Y-%m-%dT%H-%M-%S.png' -e 'mv $f ~/Pictures/screenshots'; mode default
-     bindsym $mod+P exec scrot 'screen-%Y-%m-%dT%H-%M-%S.png' -e 'mv $f ~/Pictures/screenshots'; mode default
+     bindsym p exec shutter -s; mode default
+     bindsym $mod+P exec shutter -a; mode default
+     # bindsym p exec scrot -u 'window-%Y-%m-%dT%H-%M-%S.png' -e 'mv $f ~/Pictures/screenshots'; mode default
+     # bindsym $mod+P exec scrot 'screen-%Y-%m-%dT%H-%M-%S.png' -e 'mv $f ~/Pictures/screenshots'; mode default
 
      # exit this mode without any actions 
      bindsym Escape mode default
@@ -155,8 +167,10 @@ mode i3 {
 }
 bindsym $mod+x mode i3
 
-# Change keyboard layout
-bindsym --release $mod+backslash exec --no-startup-id ~/.i3/bin/i3-kbd-switch
+# rofi:
+bindsym $mod+space exec --no-startup-id rofi -show run
+bindsym $altmod+space exec --no-startup-id rofi -show ssh
+bindsym $mod+Tab exec --no-startup-id rofi -show window
 
 # ===============================================================================
 # Windows:
@@ -215,15 +229,18 @@ bar {
 # ===============================================================================
 # Autostart:
 exec --no-startup-id xrandr --output $DSP1 --left-of $DSP2 
+exec --no-startup-id xset dpms 0 0 0
 exec --no-startup-id compton
 exec --no-startup-id nm-applet 
 exec --no-startup-id unclutter -idle 2
-exec --no-startup-id setxkbmap -layout 'us(us-dev),ru(ru-dev)' -option compose:menu,grp:shifts_toggle
+# exec --no-startup-id setxkbmap -layout 'us(us-dev),ru(ru-dev)' -option compose:menu,grp:shifts_toggle
+# exec --no-startup-id setxkbmap -layout 'us(us-dev)' -option compose:menu
+exec --no-startup-id fcitx
 exec --no-startup-id xcape -e 'Control_L=space;Super_L=Escape'
 exec --no-startup-id xset r rate 200 50
-exec --no-startup-id rofi -key-run mod4+space -key-window mod4+Tab -key-ssh mod4+mod1+space
 exec --no-startup-id nitrogen --restore
 exec --no-startup-id gnome-settings-daemon
 exec --no-startup-id gnome-keyring-daemon
 exec --no-startup-id pasystray
 exec --no-startup-id parcellite
+exec --no-startup-id shutter --min_at_startup
