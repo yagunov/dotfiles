@@ -48,6 +48,9 @@ values."
                       auto-completion-complete-with-key-sequence-delay 0.1
                       auto-completion-private-snippets-directory "~/.spacemacs.d/snippets"
                       auto-completion-enable-snippets-in-popup t)
+     (gtags :variables
+            ;; NOTE: ggtags-mode breaks evil-iedit (SPC s e) when active
+            gtags-enable-by-default nil)
      spell-checking
      ;; syntax-checking
      (shell :variables
@@ -64,6 +67,7 @@ values."
      search-engine                      ; add 'SPC a /' for web search
      speed-reading
      theming
+     typography
 
      ;; Input languages:
      (chinese :variables
@@ -123,7 +127,6 @@ values."
      rainbow-mode
      helm-flyspell
      strace-mode
-     ;; persistent-scratch
      ;; Additional themes:
      doom-themes
      darktooth-theme
@@ -204,25 +207,33 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes `,(cond ((equal system-name "luminous.local")
-                                '(flatui railscasts-reloaded darktooth dracula))
-                               (t '(railscasts-reloaded dracula darktooth)))
-   ;; Custom theme modifications
-   theming-modifications
-   '((dracula (aw-leading-char-face :foreground "red" :weight bold :height 5.0 :width normal)
-              (font-lock-type-face :foreground "grey")
-              (font-lock-comment-face :foreground "#8c9ade")
-              (font-lock-doc-face :foreground "#8c9ade"))
-     (railscasts-reloaded (aw-leading-char-face :foreground "red" :weight bold :height 5.0 :width normal)))
    ;; Other possible themes: doom-one, flatland, sanityinc-tomorrow-night, brin,
    ;; busybee, monokai, solarized-dark
-
+   dotspacemacs-themes
+   `,(cond ((equal system-name "luminous")
+            '(spacemacs-light dracula railscasts-reloaded sanityinc-tomorrow-bight darktooth))
+           (t '(doom-molokai mrailscasts-reloaded dracula darktooth)))
+   ;; Custom theme modifications
+   theming-modifications
+   '((dracula
+      (aw-leading-char-face :foreground "red" :weight bold :height 5.0 :width normal)
+      (font-lock-type-face :foreground "grey")
+      (font-lock-comment-face :foreground "#8c9ade")
+      (font-lock-doc-face :foreground "#8c9ade"))
+     (railscasts-reloaded
+      (aw-leading-char-face :foreground "red" :weight bold :height 5.0 :width normal))
+     (doom-molokai
+      (aw-leading-char-face :foreground "red" :weight bold :height 5.0 :width normal)
+      (font-lock-comment-face :foreground "#7e7e6e")
+      (evil-search-highlight-persist-highlight-face :foreground "black" :background "gray"))
+     (darktooth
+      (aw-leading-char-face :foreground "red" :weight bold :height 5.0 :width normal)))
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font+. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
-   dotspacemacs-default-font (cond ((equal system-name "luminous.local")
-                                    '("Source Code Pro" :size 12 :weight normal :width normal :powerline-scale 1.0))
+   dotspacemacs-default-font (cond ((equal system-name "luminous")
+                                    '("Consolas" :size 13 :weight normal :width normal :powerline-scale 1.0))
                                    (t
                                     '("Consolas" :size 11 :weight normal :width normal :powerline-scale 1.0)))
    ;; The leader key
@@ -346,14 +357,14 @@ values."
    dotspacemacs-line-numbers nil
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
-   dotspacemacs-folding-method 'evil
+   dotspacemacs-folding-method 'origami
    ;; If non-nil smartparens-strict-mode will be enabled in programming modes.
    ;; (default nil)
-   dotspacemacs-smartparens-strict-mode nil
+   dotspacemacs-smartparens-strict-mode t
    ;; If non-nil pressing the closing parenthesis `)' key in insert mode passes
    ;; over any automatically added closing parenthesis, bracket, quote, etc…
    ;; This can be temporary disabled by pressing `C-q' before `)'. (default nil)
-   dotspacemacs-smart-closing-parenthesis nil
+   dotspacemacs-smart-closing-parenthesis t
    ;; Select a scope to highlight delimiters. Possible values are `any',
    ;; `current', `all' or `nil'. Default is `all' (highlight any scope and
    ;; emphasis the current one). (default 'all)
@@ -384,49 +395,13 @@ values."
   "Initialization function for user code.
 It is called immediately after `dotspacemacs/init'.  You are free to put any
 user code."
-  (setq custom-file "~/.emacs.d/custom.el")
+  ;; Put emacs customization and auto-saved variables into separate file
+  (setq custom-file "~/.emacs.d/.cache/custom.el")
   (load-file custom-file)
-  (spacemacs|disable-company emacs-lisp-mode) ; it's too slow
 
-  (spacemacs|use-package-add-hook chinese
-    :post-init (setq-default pyim-title "pinyin"))
-
-  (setq prettify-symbols-unprettify-at-point t)
-  (global-prettify-symbols-mode)
-
-  (spacemacs|use-package-add-hook google-translate
-    :post-init
-    (progn
-      (setq google-translate-enable-ido-completion t
-            google-translate-default-source-language "auto"
-            google-translate-default-target-language "en")))
-
-  ;; Use default branch on 'PP'.
-  (spacemacs|use-package-add-hook magit
-    :post-init (setq magit-push-always-verify nil))
-
-  (spacemacs|use-package-add-hook cc-mode
-    :post-init
-    (progn
-      (defun yagunov//c-mode-common-hook ()
-        (setq c-basic-offset 4)
-        ;; Long function arguments indentation like in python-mode.
-        (c-set-offset 'arglist-intro '+)
-        (c-set-offset 'arglist-close 0)
-        ;; Do not indent lines inside 'extern "C"' constructs.
-        (c-set-offset 'inextern-lang 0))
-
-      (defun yagunov//c++-mode-hook ()
-        (c-set-offset 'inline-open '0)
-        (setq comment-start "/* ")
-        (setq comment-end " */"))
-
-      (add-hook 'c-mode-common-hook 'yagunov//c-mode-common-hook)
-      (add-hook 'c++-mode-hook 'yagunov//c++-mode-hook)
-
-      (setq c-default-style '((java  . "java")
-                              (awk   . "awk")
-                              (other . "k&r"))))))
+  ;; Default input method name looks
+  (spacemacs|use-package-add-hook chinese-pyim
+    :pre-init (setq-default pyim-title "pinyin")))
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.
@@ -463,7 +438,8 @@ layers configuration. You are free to put any user code."
     "w_" 'shrink-window-if-larger-than-buffer
     "="  'yagunov/dwim-diff
     "fw" 'yagunov/writer-buffer-or-region
-    "ot" 'yagunov/google-translate)
+    "ot" 'yagunov/google-translate
+    "jj" 'avy-goto-char-timer)
   (evil-global-set-key 'normal "z=" 'flyspell-correct-previous-word-generic)
   (global-set-key (kbd "C-M-\\") 'spacemacs/indent-region-or-buffer)
   (global-set-key (kbd "C-h") 'evil-delete-backward-char)
@@ -485,17 +461,82 @@ layers configuration. You are free to put any user code."
   (define-key evil-motion-state-map "[" 'evil-backward-sentence-begin)
   (define-key evil-motion-state-map "]" 'evil-forward-sentence-begin)
 
+  ;; Apply macro bind to 'q' to all line in region
+  (define-key evil-visual-state-map "." ":norm @q")
+
+  ;; Move-selected text
+  (define-key evil-visual-state-map (kbd "C-j") (concat ":m '>+1" (kbd "RET") "gv=gv"))
+  (define-key evil-visual-state-map (kbd "C-k") (concat ":m '<-2" (kbd "RET") "gv=gv"))
+  ;; (define-key evil-visual-state-map (kbd "C-j") 'move-text-region-down)
+  ;; (define-key evil-visual-state-map (kbd "C-k") 'move-text-region-up)
+
+  (spacemacs|use-package-add-hook helm-company
+    :post-config
+    (with-eval-after-load 'company
+      (define-key company-active-map (kbd "C-s") 'helm-company)))
+
   (setq-default clang-format-executable "clang-format-3.7")
 
   (setq org-directory "~/Documents/notes")
   (setq powerline-default-separator 'bar
         diff-hl-side 'left)
-  (set-fringe-mode (if (equal system-name "luminous.local")
-                       '(15 . 10)
-                     '(10 . 8)))
+  (set-fringe-mode '(10 . 8))
   (setq-default helm-make-build-dir "build_debug"
                 helm-make-command "make -j12 %s")
   ;; Activate helm-swoop from i-search
   (require 'helm-swoop)
 
-  (add-to-list 'auto-mode-alist '("\\.eye\\'" . ruby-mode)))
+  (add-to-list 'auto-mode-alist '("\\.eye\\'" . ruby-mode))
+  (spacemacs|disable-company emacs-lisp-mode) ; it's too slow
+
+  (setq prettify-symbols-unprettify-at-point t)
+  (global-prettify-symbols-mode)
+
+  (spacemacs|use-package-add-hook google-translate
+    :post-init
+    (progn
+      (setq google-translate-enable-ido-completion t
+            google-translate-default-source-language "auto"
+            google-translate-default-target-language "en")))
+
+  ;; Use default branch on 'PP'.
+  (spacemacs|use-package-add-hook magit
+    :post-init (setq magit-push-always-verify nil
+                     magit-diff-refine-hunk t))
+
+  (spacemacs|use-package-add-hook cc-mode
+    :post-config
+    (progn
+      (defun yagunov//c-mode-common-hook ()
+        (setq c-basic-offset 4)
+        ;; Long function arguments indentation like in python-mode.
+        (c-set-offset 'arglist-intro '+)
+        (c-set-offset 'arglist-close 0)
+        ;; Do not indent lines inside 'extern "C"' constructs.
+        (c-set-offset 'inextern-lang 0))
+
+      (defun yagunov//c++-mode-hook ()
+        (c-set-offset 'inline-open '0)
+        (setq comment-start "/* ")
+        (setq comment-end " */"))
+
+      (add-hook 'c-mode-common-hook 'yagunov//c-mode-common-hook)
+      (add-hook 'c++-mode-hook 'yagunov//c++-mode-hook)
+
+      (setq c-default-style '((java  . "java")
+                              (awk   . "awk")
+                              (other . "k&r")))))
+
+  ;; Use this colors in fringe instead of themed ones to display changes
+  (custom-set-faces
+   '(diff-hl-insert  ((t (:foreground "darkgreen"  :background "darkgreen"))))
+   '(diff-hl-change  ((t (:foreground "MediumBlue" :background "MediumBlue"))))
+   '(diff-hl-delete  ((t (:foreground "darkred"    :background "darkred"))))
+   '(diff-hl-unknown ((t (:foreground "purple3"    :background "purple3"))))))
+
+(defun dotspacemacs/emacs-custom-settings ()
+  "Emacs custom settings.
+This is an auto-generated function, do not modify its content directly, use
+Emacs customize menu instead.
+This function is called at the very end of Spacemacs initialization."
+)
