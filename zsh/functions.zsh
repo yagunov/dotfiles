@@ -30,6 +30,19 @@ function h () {
     fi
 }
 
+# Watch system log:
+function wlog () {
+    local log_file="/var/log/syslog$([[ `uname` == "Darwin" ]] && echo .log)"
+    local tail_cmd="multitail -f ${1:+-e $1} $log_file"
+
+    if [ -n "$TMUX" ]; then
+        tmux new-window -n "log${1:+:$1}" $tail_cmd
+        tmux split-window -v -p 10 dmesg -Tw
+        tmux select-pane -U
+    else
+        $tail_cmd
+    fi
+}
 
 #
 # Search:

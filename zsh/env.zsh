@@ -8,3 +8,7 @@ fi
 if [ -d $HOME/.npm-packages/bin ]; then
     export PATH=$HOME/.npm-packages/bin:$PATH
 fi
+
+if [ -e $HOME/.cargo/env ]; then
+    source $HOME/.cargo/env
+fi

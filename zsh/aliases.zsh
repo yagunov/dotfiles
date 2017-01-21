@@ -56,7 +56,7 @@ else
     alias g=grep
 fi
 alias gg=grep
-alias mtail=multitail
+alias mtail="multitail -f"
 alias f=find-by-name
 alias fe=find-by-extention
 alias ff=find-file
@@ -95,7 +95,7 @@ fi
 
 # Linux specific:
 if [[ `uname` == "Linux" ]]; then
-    function o () { 
+    function o () {
         xdg-open $@ &> /dev/null &
         disown
     }
