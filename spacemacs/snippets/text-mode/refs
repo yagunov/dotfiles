@@ -2,4 +2,4 @@
 # name: refs #issue @0h0m: Message
 # key: refs
 # --
-refs #${1:issue} @${2:0}h${3:0}m: $0
+refs #${1:4535} @${2:0}h${3:0}m: $0

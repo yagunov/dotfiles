@@ -1,7 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
 # key: script
 # name: script (Rivasense, LLC)
 # --
-#!/usr/bin/env python
+#! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
 
@@ -23,8 +24,8 @@ if __name__ == '__main__':
 
     # Define command line interface:
     cli = argparse.ArgumentParser(
-            description=__doc__,
-            epilog="Report bugs to %s" % __author__
+        description=__doc__,
+        epilog="Report bugs to %s" % __author__
     )
     $0
 
