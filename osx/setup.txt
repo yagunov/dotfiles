@@ -5,6 +5,9 @@
 brew tap caskroom/cask
 brew tap caskroom/versions
 
+# GNU coreutils (for greadlink, gdircolors etc)
+brew install coreutils
+
 # install iterm2-beta
 brew cask install iterm2-beta
 
@@ -12,25 +15,29 @@ brew cask install iterm2-beta
 brew cask install karabiner
 
 # CLI utils
-brew install tmux htop tree ag multitail wget httpie pwgen youtube-dl pgcli mycli \
-     visionmedia-watch pipebench watchman nmap ansible mtr
+brew install tmux htop tree ag multitail wget httpie pwgen youtube-dl \
+             pgcli mycli visionmedia-watch pipebench watchman nmap ansible mtr
+
+# Ag and editor integration:
+brew tap aykamko/tag-ag
+brew install tag-ag
 
 # install emacs with spacemacs icon
-brew tap railwaycat/homebrew-emacsmacport
-brew install emacs-mac --with-spacemacs-icon
-brew linkapps emacs-mac
-brew install aspell
+brew tap d12frosted/emacs-plus
+brew tap homebrew/emacs
+brew install emacs-plus global aspell global ggtags ctags
+# create application with automator (run shell command) and copy it to /Applications
 
 # multimedia
 brew cask install vlc
 
 # virtualization
 brew cask install virtualbox
-brew cask install vagrant vagrant-manager
+brew cask install vagrant
 brew install docker docker-compose docker-machine docker-swarm
 
 # browsers
-brew cask install firefox google-ehrome
+brew cask install firefox google-chrome
 
 # install python development environment
 brew install pyenv pyenv-virtualenv
@@ -47,5 +54,113 @@ brew install syncthing syncthing-inotify
 # sshfs
 brew cask install osxfuse sshfs
 
-# OpenSSH (GUI)
+# OpenVPN (GUI)
 brew cask install tunnelblick
+
+
+# brew packages:
+ansible
+aspell
+autoconf
+automake
+c-ares
+cairo
+cmake
+ctags
+d-bus
+dbus
+docker
+docker-compose
+docker-machine
+docker-swarm
+emacs-plus
+fontconfig
+freetype
+gdbm
+gdk-pixbuf
+geoip
+gettext
+ggtags
+git
+glib
+global
+gmp
+gnupg
+gnutls
+gobject-introspection
+harfbuzz
+htop
+httpie
+icu4c
+imagemagick
+jpeg
+libcroco
+libevent
+libffi
+libgcrypt
+libgpg-error
+libpng
+librsvg
+libssh2
+libtasn1
+libtiff
+libtool
+libyaml
+lua
+mtr
+multitail
+mycli
+nettle
+nmap
+node
+openssl
+pango
+pcre
+pgcli
+pipebench
+pixman
+pkg-config
+postgresql
+pwgen
+pyenv
+pyenv-virtualenv
+python3
+qt5
+readline
+reattach-to-user-namespace
+rust
+shared-mime-info
+sphinx-doc
+sqlite
+syncthing
+syncthing-inotify
+tag-ag
+the_silver_searcher
+tmux
+tree
+utf8proc
+visionmedia-watch
+watchman
+wget
+wireshark
+xz
+youtube-dl
+
+# brew cask packages:
+firefox
+ghc (!)
+google-chrome
+iterm2-beta
+karabiner
+libreoffice
+linphone
+logitech-gaming-software
+osxfuse
+skype
+sshfs
+tunnelblick
+vagrant
+vagrant-manager
+virtualbox
+vlc
+yujitach-menumeters
