@@ -13,8 +13,8 @@ set t_Co=256
 let base16colorspace=256
 colorscheme colorsbox-material
 
-" Use fd to switch from insert to normal mode
-inoremap fd <Esc>
+" Use jk to switch from insert to normal mode
+inoremap jk <Esc>
 set timeoutlen=75
 
 " Incremental search
