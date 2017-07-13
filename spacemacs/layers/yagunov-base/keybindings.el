@@ -1,6 +1,6 @@
 ;;; funcs.el --- My personal Layer key bindings File
 ;;
-;; Copyright (c) 2015, 2016 Andrey Yagunov
+;; Copyright (c) 2015, 2016, 2017 Andrey Yagunov
 ;;
 ;; Author: Andrey Yagunov <yagunov86@gmail.com>
 ;; URL: <TODO>
@@ -37,14 +37,14 @@
 (global-set-key (kbd "C-S-n") 'move-text-down)
 
 ;; Prevent from accidental typing of multiple spaces
-(global-set-key (kbd "SPC") 'just-one-space)
+(global-set-key (kbd "SPC") 'cycle-spacing)
 (global-set-key (kbd "M-SPC") '(lambda () (interactive) (insert " ")))
 
 (bind-key* "C-." 'helm-flyspell-correct)
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 
-;; Fix problems with my custom keyboard layout:
-(global-set-key [remap toggle-input-method] 'yagunov/toggle-input-method)
+;; ;; Fix problems with my custom keyboard layout:
+;; (global-set-key [remap toggle-input-method] 'yagunov/toggle-input-method)
 
 ;; Faster window navigation
 (require 'dired)

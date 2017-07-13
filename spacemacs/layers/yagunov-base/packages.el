@@ -1,6 +1,6 @@
 ;;; packages.el --- yagunov-base Layer packages file for Spacemacs
 ;;
-;; Copyright (c) 2015, 2016 Andrey Yagunov
+;; Copyright (c) 2015, 2016, 2017 Andrey Yagunov
 ;;
 ;; Author: Andrey Yagunov <yagunov86@gmail.com>
 ;; URL: <TODO>
@@ -30,12 +30,37 @@
         ;; (ox-reveal :location (recipe :fetcher github :repo "yjwen/org-reveal"))
 
         persistent-scratch
+        evil-lion
+        pomidor
+        switch-window
         ))
 
 (defun yagunov-base/init-persistent-scratch ()
   (use-package persistent-scratch
     :config
     (persistent-scratch-setup-default)))
+
+(defun yagunov-base/init-evil-lion ()
+  (use-package evil-lion
+    :ensure t
+    :config (evil-lion-mode)))
+
+(defun yagunov-base/init-pomidor ()
+  (use-package pomidor
+    :config (spacemacs/set-leader-keys
+              "o p" 'pomidor)))
+
+(defun yagunov-base/init-switch-window ()
+  (use-package switch-window
+    :ensure t
+    :init
+    (progn
+      (message "switch-window initialization")
+      (setq switch-window-shortcut-style 'qwerty
+            switch-window-minibuffer-shortcut nil
+            switch-window-qwerty-shortcuts
+            '("a" "s" "d" "f" "j" "k" "l" ":" "w" "e" "i" "o" "g" "h" "r" "q" "u" "v" "n")))))
+
 
 ;; TODO: Find better place for this!
 ;; (add-hook 'emacs-lisp-mode-hook '(lambda () (interactive) (semantic-mode -1)))
