@@ -1,0 +1,26 @@
+#! /bin/bash
+
+SINK=`pactl info | awk '/Default Sink: / { print $3 }'`
+
+case x"$1" in
+    x"" | x"help" | x"-h" | x"--help")
+        echo "TODO: Help message"
+        ;;
+    x"up" | x"UP")
+        pactl set-sink-volume $SINK +${2:-5}
+        notify-send -i audio-volume-high -u low "Volume" "$SINK: Increasing volume by ${2:-5}%"
+        ;;
+    x"down" | x"DOWN")
+        pactl set-sink-volume $SINK -${2:-5}
+        notify-send -i audio-volume-low -u low "Volume" "$SINK: Decreasing volume by ${2:-5}%"
+        ;;
+    x"toggle" | x"TOGGLE")
+        echo "(Un)muting volume of default sink"
+        pactl set-sink-mute `pactl info | awk '/Default Sink: / { print $3 }'` toggle
+        notify-send -i audio-volume-muted -u normal "Volume" "$SINK: Mute status toggled"
+        ;;
+    *)
+        pactl set-sink-volume $SINK ${1}%
+        notify-send -i gnome-volume-control -u low "Volume" "$SINK: Setting volume to $1%"
+        ;;
+esac
