@@ -3,7 +3,6 @@ function restart () {
     exec $SHELL $SHELL_ARGS "$@"
 }
 
-
 # Edit file/directory.
 function e () {
     if [[ $# == 0 ]]; then
@@ -21,6 +20,21 @@ function e () {
         echo -n "$@" | eval xargs -0 $ALTEDITOR
     fi
 }
+
+# Tag is a wrapper around ag/rg: https://github.com/aykamko/tag
+if (( $+commands[tag] )); then
+    export TAG_SEARCH_PROG=`(( $+commands[tag] )) && echo rg || echo ag`
+    if [ $+SSH_CONNECTION -eq 0 ]; then
+        export TAG_CMD_FMT_STRING="emacsclient --alternate-editor=vim --no-wait +{{.LineNumber}} {{.Filename}}"
+    else
+        export TAG_CMD_FMT_STRING="vim {{.Filename}} +{{.LineNumber}}"
+    fi
+
+    function tag() {
+        command tag "$@"
+        source ${TAG_ALIAS_FILE:-/tmp/tag_aliases} 2>/dev/null
+    }
+fi
 
 function h () {
     if [[ $# == 0 ]]; then
@@ -50,28 +64,46 @@ function wlog () {
 
 # find files/direcories by name
 function find-by-name () {
-    find . -iname "*$1*"
+    local pattern="*$1*"; [[ $# > 0 ]] && shift;
+    find . -iname "$pattern" $@
 }
 
 # find by extension
 function find-by-extention () {
-    ext="$1"; shift; find . -iname "*.$ext" -type f $@
+    local pattern="*.$1"; [[ $# > 0 ]] && shift;
+    find . -iname "$pattern" -type f $@
 }
 
 # find only files
 function find-file () {
-    find . -iname "*$1*" -type f
+    local pattern="*$1*"; [[ $# > 0 ]] && shift;
+    find . -iname "$pattern" -type f $@
 }
 
 # find only directories
 function find-directory () {
-    find . -iname "*$1*" -type d
+    local pattern="*$1*"; [[ $# > 0 ]] && shift;
+    find . -iname "$pattern" -type d $@
 }
 
 # find executable
 function find-executable () {
-    find . -iname "*$1*" -type f -perm /a=x
+    local pattern="*$1*"; [[ $# > 0 ]] && shift;
+    find . -iname "$pattern" -type f -perm /a=x $@
 }
+
+# # select file with fuzzy matching and apply specified action to it
+# function do-with () {
+#     local action="$1"; shift
+#     eval "$action `find-by-name $@ | sk`"
+# }
+
+# alias dw="find-and-do"
+# alias fe="find-and-do e"
+
+# function fuzzy-edit () {
+#     sk --ansi -c 'rg --color=always --line-number "${1}"'
+# }
 
 
 function tree () {
@@ -123,6 +155,19 @@ function ds() {
         diffstat
     fi
 }
+
+
+# Unix time
+function ut() {
+    if [[ $# == 0 ]]; then
+        # Get current time as Unix timestamp
+        date +%s
+    else
+        # Convert Unix timestamp to human readable date and time
+        date -d @$1
+    fi
+}
+
 
 # synchronize directories on different machines
 function syncdirs () {

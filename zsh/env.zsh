@@ -1,14 +1,14 @@
+# User's local binaries:
 export PATH=$PATH:$HOME/.dotfiles/bin:$HOME/.local/bin
 
-# OS X specific settings:
-if [[ `uname` == "Darwin" ]]; then
-    export HOMEBREW_GITHUB_API_TOKEN="dcd2e50dea706d5d41e9b890b18c08226c173c1f"
-fi
+# Machine specific environment:
+[ -x $HOME/.zshenv.local ] && source $HOME/.zshenv.local
 
-if [ -d $HOME/.npm-packages/bin ]; then
-    export PATH=$HOME/.npm-packages/bin:$PATH
-fi
+# Node.js:
+[[ -d $HOME/.npm-packages/bin ]] && export PATH=$HOME/.npm-packages/bin:$PATH
 
-if [ -e $HOME/.cargo/env ]; then
-    source $HOME/.cargo/env
-fi
+# Rust:
+[[ -e $HOME/.cargo/env ]] && source $HOME/.cargo/env
+
+# Go:
+[[ -s "/home/silver/.gvm/scripts/gvm" ]] && source "/home/silver/.gvm/scripts/gvm"

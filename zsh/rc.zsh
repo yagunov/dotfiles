@@ -26,8 +26,8 @@ fi
 
 # Activate oh-my-zsh:
 if [ -e $ZSH/oh-my-zsh.sh ]; then
-    plugins=(git git-flow-avh node python pip pyenv django rvm gem rails vagrant tmux
-             go colored-man web-search z rust cargo)
+    plugins=(git git-flow-avh node python pip pyenv django vagrant tmux
+             golang colored-man-pages web-search z rust cargo)
     if [[ `uname` == "Darwin" ]]; then
        plugins+=(brew)
     fi

@@ -30,7 +30,6 @@
         ;; (ox-reveal :location (recipe :fetcher github :repo "yjwen/org-reveal"))
 
         persistent-scratch
-        evil-lion
         pomidor
         switch-window
         ))
@@ -39,11 +38,6 @@
   (use-package persistent-scratch
     :config
     (persistent-scratch-setup-default)))
-
-(defun yagunov-base/init-evil-lion ()
-  (use-package evil-lion
-    :ensure t
-    :config (evil-lion-mode)))
 
 (defun yagunov-base/init-pomidor ()
   (use-package pomidor
@@ -55,7 +49,6 @@
     :ensure t
     :init
     (progn
-      (message "switch-window initialization")
       (setq switch-window-shortcut-style 'qwerty
             switch-window-minibuffer-shortcut nil
             switch-window-qwerty-shortcuts

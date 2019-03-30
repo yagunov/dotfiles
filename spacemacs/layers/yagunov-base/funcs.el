@@ -212,3 +212,19 @@ to secondary selection, if called twice run `yagunov/mark-whole-word'."
   (interactive)
   (end-of-line)
   (eval-print-last-sexp))
+
+(defun yagunov/kill-buffer ()
+  "Display an overlay in each window showing a unique key, then
+ask user which buffer to kill"
+  (interactive)
+  (save-selected-window
+    (switch-window--jump-to-window
+     (switch-window--prompt "Kill buffer:"))
+    (kill-this-buffer)))
+
+(defun yagunov/swap-buffer ()
+  "Display an overlay in each window showing a unique key, then
+ask user which buffer to swap with the current one"
+  (interactive)
+  (save-selected-window
+    (call-interactively 'switch-window-then-swap-buffer)))

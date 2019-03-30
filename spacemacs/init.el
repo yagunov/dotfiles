@@ -76,7 +76,7 @@ This function should only modify configuration layer settings."
               chinese-enable-youdao-dict t)
 
      ;; Editing:
-     evil-snipe
+     (evil-snipe :variables evil-snipe-enable-alternate-f-and-t-behaviors t)
      evil-cleverparens
 
      ;; Window and buffer management:
@@ -216,7 +216,7 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-themes
    `,(cond ((equal system-name "luminous")
             '(spacemacs-light dracula railscasts-reloaded sanityinc-tomorrow-bight darktooth))
-           (t '(gruvbox doom-molokai dracula kaolin railscasts-reloaded darktooth)))
+           (t '(gruvbox doom-molokai dracula railscasts-reloaded darktooth)))
    ;; Custom theme modifications
    theming-modifications
    '((dracula
@@ -242,7 +242,7 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands `M-x' (after pressing on the leader key).
    ;; (default "SPC")
-   dotspacemacs-emacs-command-key ":"
+   dotspacemacs-emacs-command-key "SPC"
    ;; The key used for Vim Ex commands (default ":")
    dotspacemacs-ex-command-key ":"
    ;; The leader key accessible in `emacs state' and `insert state'
@@ -295,13 +295,13 @@ It should only modify the values of Spacemacs settings."
    ;; Maximum number of rollback slots to keep in the cache. (default 5)
    dotspacemacs-max-rollback-slots 5
    ;; If non-nil, `helm' will try to minimize the space it uses. (default nil)
-   dotspacemacs-helm-resize nil
+   dotspacemacs-helm-resize t
    ;; if non-nil, the helm header is hidden when there is only one source.
    ;; (default nil)
    dotspacemacs-helm-no-header nil
    ;; define the position to display `helm', options are `bottom', `top',
    ;; `left', or `right'. (default 'bottom)
-   dotspacemacs-helm-position 'top
+   dotspacemacs-helm-position 'left
    ;; Controls fuzzy matching in helm. If set to `always', force fuzzy matching
    ;; in all non-asynchronous sources. If set to `source', preserve individual
    ;; source settings. Else, disable fuzzy matching in all sources.
@@ -514,13 +514,19 @@ layers configuration. You are free to put any user code."
     "w <SPC>" 'shrink-window-if-larger-than-buffer
     "ww" 'switch-window
     "wD" 'switch-window-then-delete
-    "wm" 'switch-window-then-swap-buffer
+    "wm" 'yagunov/swap-buffer
     "wM" 'switch-window-then-maximize
+    "bD" 'yagunov/kill-buffer
     "="  'yagunov/dwim-diff
     "fw" 'yagunov/writer-buffer-or-region
     "ot" 'yagunov/google-translate
-    "jj" 'avy-goto-char-timer)
+    "jj" 'avy-goto-char-timer
+    ":"  'ielm)
   (evil-global-set-key 'normal "z=" 'flyspell-correct-previous-word-generic)
+  (evil-global-set-key 'normal "gl" 'evil-lion-left)
+  (evil-global-set-key 'normal "gL" 'evil-lion-right)
+  (evil-global-set-key 'visual "gl" 'evil-lion-left)
+  (evil-global-set-key 'visual "gL" 'evil-lion-right)
   (global-set-key (kbd "C-M-\\") 'spacemacs/indent-region-or-buffer)
   (global-set-key (kbd "C-h") 'evil-delete-backward-char)
   (global-set-key (kbd "M-h") 'evil-delete-backward-word)
