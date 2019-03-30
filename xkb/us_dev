@@ -1,17 +1,43 @@
-// Advanced configuration (use with xcape)
+// Advanced configuration (use with xcape, for standard querty keyboard)
 partial alphanumeric_keys modifier_keys
 xkb_symbols "us-dev" {
 
     include "us(basic)"
     name[Group1]= "English (US, for development)";
 
-    // include "shift(both_capslock)"
+    include "shift(both_capslock)"
+    include "level3(ralt_switch)"
 
-    // intended for use with xcape -e 'Control_L=space;Control_R=Escape'
-    key <LCTL> { [ Escape    ] };
-    key <RCTL> { [ space     ] };
-    key <CAPS> { [ Super_L   ] };
-    key <SPCE> { [ Control_L ] };
+    // Enable function keys as level3 in numbers row
+    key <AE01> { [ 1,     exclam,      F1,  F1  ] };
+    key <AE02> { [ 2,     at,          F2,  F2  ] };
+    key <AE03> { [ 3,     numbersign,  F3,  F3  ] };
+    key <AE04> { [ 4,     dollar,      F4,  F4  ] };
+    key <AE05> { [ 5,     percent,     F5,  F5  ] };
+    key <AE06> { [ 6,     asciicircum, F6,  F6  ] };
+    key <AE07> { [ 7,     ampersand,   F7,  F7  ] };
+    key <AE08> { [ 8,     asterisk,    F8,  F8  ] };
+    key <AE09> { [ 9,     braceleft,   F9,  F9  ] };
+    key <AE10> { [ 0,     braceright,  F10, F10 ] };
+    key <AE11> { [ minus, underscore,  F11, F11 ] };
+    key <AE12> { [ equal, plus,        F12, F12 ] };
+
+    // Text navigation block
+    key <AD01> { [ q, Q, Home,   Prior        ] };
+    key <AD02> { [ w, W, Up,     Up           ] };
+    key <AD03> { [ e, E, End,    Next         ] };
+    key <AD08> { [ i, I, Tab,    ISO_Left_Tab ] };
+    key <AC01> { [ a, A, Left,   BackSpace    ] };
+    key <AC02> { [ s, S, Down,   Down         ] };
+    key <AC03> { [ d, D, Right,  Delete       ] };
+    key <AC06> { [ h, H, Left,   Home         ] };
+    key <AC07> { [ j, J, Down,   Down         ] };
+    key <AC08> { [ k, K, Up,     Up           ] };
+    key <AC09> { [ l, L, Right,  End          ] };
+    key <AB01> { [ z, Z, Prior,  Prior        ] };
+    key <AB02> { [ x, X, Delete, BackSpace    ] };
+    key <AB03> { [ c, C, Next,   Next         ] };
+    key <AB07> { [ m, M, Return, Return       ] };
 
     // Swap ; and : keys
     key <AC10> { [ colon, semicolon ] };
@@ -19,6 +45,30 @@ xkb_symbols "us-dev" {
     // Custom layout for brackets:
     key <AD11> { [  parenleft, bracketleft  ] };
     key <AD12> { [ parenright, bracketright ] };
-    key <AE09> { [          9, braceleft    ] };
-    key <AE10> { [          0, braceright   ] };
+
+
+    // Remap modifers (use with xcape -e 'Control_L=space;Super_L=Escape;Shift_L=BackSpace;Shift_R=Delete;Alt_L=Left;Alt_R=Right')
+    key <LCTL> { [ space     ] };
+    key <RCTL> { [ Escape    ] };
+    key <SPCE> { [ Control_L ] };
+    key <CAPS> { [ Super_L   ] };
+    key <LWIN> { [ Hyper_L   ] };
+
+    modifier_map Mod3   { Hyper_L, Hyper_R };
 };
+
+// My ErgoDox layout
+partial alphanumeric_keys modifier_keys
+xkb_symbols "us-ergodox" {
+
+    include "us(basic)"
+    name[Group1]= "English (US, ErgoDox)";
+
+    include "shift(both_capslock)"
+
+    modifier_map Mod3   { Hyper_L, Hyper_R };
+
+    // Swap ; and : keys
+    key <AC10> { [ colon, semicolon ] };
+};
+

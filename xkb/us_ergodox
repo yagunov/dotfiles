@@ -1,0 +1,14 @@
+// My ErgoDox layout
+partial alphanumeric_keys modifier_keys
+xkb_symbols "us-ergodox" {
+
+    include "us(basic)"
+    name[Group1]= "English (US, ErgoDox)";
+
+    include "shift(both_capslock)"
+
+    modifier_map Mod3   { Hyper_L, Hyper_R };
+
+    // Swap ; and : keys
+    key <AC10> { [ colon, semicolon ] };
+};

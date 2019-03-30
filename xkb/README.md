@@ -17,6 +17,12 @@ Installation
             <description>English (US, for development)</description>
           </configItem>
         </variant>
+        <variant>
+          <configItem>
+            <name>us-ergodox</name>
+            <description>English (US, ErgoDox)</description>
+          </configItem>
+        </variant>
 
     and
 
