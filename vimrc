@@ -25,7 +25,7 @@ set hlsearch
 set ignorecase
 set smartcase
 
-" Enable fazzy file finding
+" Enable fuzzy file finding
 set path+=**
 " Display all matching files when we tab complete
 set wildmenu
@@ -33,3 +33,6 @@ set wildmenu
 " Move selected text
 vnoremap <C-j> :m '>+1<CR>gv=gv
 vnoremap <C-k> :m '<-2<CR>gv=gv
+
+" Use X clipboard
+set clipboard+=unnamedplus
