@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: #[forbid(lint_check)]
-# key: forbid
-# type: snippet
-# --
-#[forbid(${1:lint_check})]$0

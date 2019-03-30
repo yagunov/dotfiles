@@ -1,7 +1,0 @@
-# -*- mode: snippet; require-final-newline: nil -*-
-# name: default
-# key: default
-# --
-default :
-     $0
-     break;

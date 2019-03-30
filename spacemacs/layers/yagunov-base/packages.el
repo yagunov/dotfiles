@@ -1,109 +1,91 @@
-;;; packages.el --- yagunov-base Layer packages file for Spacemacs
+;;; packages.el --- My configuration for Spacemacs
 ;;
-;; Copyright (c) 2015, 2016, 2017 Andrey Yagunov
+;; Copyright (c) 2019 Andrey Yagunov
 ;;
 ;; Author: Andrey Yagunov <yagunov86@gmail.com>
-;; URL: <TODO>
+;; URL: https://github.com/yagunov/dotfiles
 ;;
 ;; This file is not part of GNU Emacs.
 ;;
-;;; License: GPLv3
+;;; License: WTFPL
 
-(setq yagunov-base-packages
-      '(
-        ;; (accelerate :location (recipe :fetcher github :repo "yagunov/accelerate.el"))
+;;; Commentary:
 
-        ;; NB: Use evil-exchange instead (gx)
-        ;; anchored-transpose
-        ;; second-sel
+;; See the Spacemacs documentation and FAQs for instructions on how to implement
+;; a new layer:
+;;
+;;   SPC h SPC layers RET
+;;
+;;
+;; Briefly, each package to be installed or configured by this layer should be
+;; added to `yagunov-base-packages'. Then, for each package PACKAGE:
+;;
+;; - If PACKAGE is not referenced by any other Spacemacs layer, define a
+;;   function `yagunov-base/init-PACKAGE' to load and initialize the package.
 
-        ;; google-translate
+;; - Otherwise, PACKAGE is already referenced by another Spacemacs layer, so
+;;   define the functions `yagunov-base/pre-init-PACKAGE' and/or
+;;   `yagunov-base/post-init-PACKAGE' to customize the package as it is loaded.
 
-        ;;ergoemacs-mode
+;;; Code:
 
-        ;; highlight-symbol
+(defconst yagunov-base-packages
+  '(persistent-scratch
+    switch-window)
+  "The list of Lisp packages required by the yagunov-base layer.
 
-        ;; magit-gitflow
+Each entry is either:
 
-        ;; cc-mode
+1. A symbol, which is interpreted as a package to be installed, or
 
-        ;; (ox-reveal :location (recipe :fetcher github :repo "yjwen/org-reveal"))
+2. A list of the form (PACKAGE KEYS...), where PACKAGE is the
+    name of the package to be installed or loaded, and KEYS are
+    any number of keyword-value-pairs.
 
-        persistent-scratch
-        pomidor
-        switch-window
-        ))
+    The following keys are accepted:
+
+    - :excluded (t or nil): Prevent the package from being loaded
+      if value is non-nil
+
+    - :location: Specify a custom installation location.
+      The following values are legal:
+
+      - The symbol `elpa' (default) means PACKAGE will be
+        installed using the Emacs package manager.
+
+      - The symbol `local' directs Spacemacs to load the file at
+        `./local/PACKAGE/PACKAGE.el'
+
+      - A list beginning with the symbol `recipe' is a melpa
+        recipe.  See: https://github.com/milkypostman/melpa#recipe-format")
+
 
 (defun yagunov-base/init-persistent-scratch ()
   (use-package persistent-scratch
     :config
     (persistent-scratch-setup-default)))
 
-(defun yagunov-base/init-pomidor ()
-  (use-package pomidor
-    :config (spacemacs/set-leader-keys
-              "o p" 'pomidor)))
-
 (defun yagunov-base/init-switch-window ()
   (use-package switch-window
-    :ensure t
     :init
     (progn
       (setq switch-window-shortcut-style 'qwerty
             switch-window-minibuffer-shortcut nil
             switch-window-qwerty-shortcuts
-            '("a" "s" "d" "f" "j" "k" "l" ":" "w" "e" "i" "o" "g" "h" "r" "q" "u" "v" "n")))))
+            '("a" "s" "d" "f" "j" "k" "l" ":" "w" "e" "i" "o" "g" "h" "r" "q" "u" "v" "n"))
 
+      ;; Redefine core ace-window function
+      (with-eval-after-load 'ace-window
+        (fset 'aw-select-orign (symbol-function 'aw-select))
+        (defun aw-select (prompt &optional action)
+          "Return a selected other window (with switch-window when possible)."
+          (let* ((index (switch-window--prompt prompt))
+                 (window (cl-loop for c from 1
+                                  for win in (switch-window--list)
+                                  until (= c index)
+                                  finally return win)))
+            (if action
+                (funcall action window)
+              window)))))))
 
-;; TODO: Find better place for this!
-;; (add-hook 'emacs-lisp-mode-hook '(lambda () (interactive) (semantic-mode -1)))
-
-
-;; (defun yagunov-base/init-accelerate ()
-;;   (use-package accelerate
-;;     :config
-;;     (progn
-;;       (accelerate previous-line 5)
-;;       (accelerate next-line 5)
-;;       (accelerate backward-char 3)
-;;       (accelerate forward-char 3)
-;;       (accelerate dired-previous-line 4)
-;;       (accelerate dired-next-line 4))))
-
-;; (defun yagunov-base/init-anchored-transpose ()
-;;   (use-package anchored-transpose
-;;     :config (define-key evil-visual-state-map (kbd "C-t") 'yagunov/smart-transpose)))
-
-;; (defun yagunov-base/init-second-sel ()
-;;   (use-package second-sel
-;;     :config
-;;     (spacemacs/set-leader-keys
-;;       "SPC" 'yagunov/set-mark-command
-;;       "y"   'secondary-dwim)))
-
-
-;; (defun yagunov-base/init-ergoemacs-mode ()
-;;   (use-package ergoemacs-mode
-;;     :config (progn
-;;               (global-set-key (kbd "C-a") 'ergoemacs-beginning-of-line-or-what)
-;;               (global-set-key (kbd "C-e") 'ergoemacs-end-of-line-or-what))))
-
-;; TODO: Learn how to use 'M-m s h'
-;; (defun yagunov-base/init-highlight-symbol ()
-;;   (use-package highlight-symbol
-;;     :bind (("C-c m"   . highlight-symbol-at-point)
-;;            ("C-c M"   . highlight-symbol-remove-all)
-;;            ("C-c M-m" . highlight-symbol-remove-all)
-;;            ("C-c C-r" . highlight-symbol-query-replace)
-;;            )
-;;     :config
-;;     (progn
-;;       (setq highlight-symbol-colors
-;;             '("orange" "brown" "dark cyan" "MediumPurple1" "dark green"
-;;               "DarkOrange" "HotPink1" "RoyalBlue1" "OliveDrab")))))
-
-
-
-;; (defun yagunov-base/init-ox-reveal ()
-;;   (load-library "ox-reveal"))
-
+;;; packages.el ends here

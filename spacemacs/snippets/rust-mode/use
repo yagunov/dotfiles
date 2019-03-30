@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: use name;
-# key: use
-# type: snippet
-# --
-use name;

@@ -1,5 +1,0 @@
-# -*- mode: snippet; require-final-newline: nil -*-
-# name: refs #issue @0h0m: Message
-# key: refs
-# --
-refs #${1:6095} @${2:0}h${3:0}m: $0

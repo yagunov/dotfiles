@@ -1,118 +1,77 @@
-;;; funcs.el --- My personal Layer functions File for Spacemacs
+;;; packages.el --- My configuration for Spacemacs (functions)
 ;;
-;; Copyright (c) 2015, 2016, 2017 Andrey Yagunov
+;; Copyright (c) 2019 Andrey Yagunov
 ;;
 ;; Author: Andrey Yagunov <yagunov86@gmail.com>
-;; URL: <TODO>
+;; URL: https://github.com/yagunov/dotfiles
 ;;
 ;; This file is not part of GNU Emacs.
 ;;
-;;; License: GPLv3
+;;; License: WTFPL
 
-(require 'thingatpt)
-(require 'newcomment)
-(require 'subword)
-(require 'linum)
-(require 'ediff)
+;;; Commentary:
 
-;; from http://whattheemacsd.com/key-bindings.el-01.html
-(defun yagunov/goto-line ()
-  "Show line numbers temporarily, while prompting for the line number input"
+;;; Code:
+
+
+(defun yagunov/writer-buffer-or-region ()
+  "Prompt to write buffer or region (when active) content to a file."
   (interactive)
-  (let ((activated linum-mode))
-    (unwind-protect
-        (progn
-          (unless activated
-            (linum-mode 1))
-          (goto-line (read-number "Goto line: ")))
-      (unless activated
-        (linum-mode -1)))))
+  (if (region-active-p)
+      (call-interactively 'write-region)
+    (call-interactively 'write-file)))
 
-
-(defun yagunov/dwim-diff ()
-  "Do what I mean diff."
+(defun yagunov/exchange-buffer ()
+  "Display an overlay in each window showing a unique key, then
+ask user which buffer to swap with the current one"
   (interactive)
-  (cond ((and mark-active (overlay-buffer mouse-secondary-overlay))
-         (let ((secondary-beginning (overlay-start mouse-secondary-overlay))
-               (secondary-end (overlay-end mouse-secondary-overlay)))
-           (delete-overlay mouse-secondary-overlay)
-           (ediff-regions-internal
-            (get-buffer (current-buffer)) secondary-beginning secondary-end
-            (get-buffer (current-buffer)) (region-beginning) (region-end)
-            nil 'ediff-regions-wordwise 'word-mode nil)))
-        ((buffer-modified-p) (diff-buffer-with-file))
-        (t (vc-diff))))
+  ;; TODO: Exclude current window from selection options.
+  (save-selected-window
+    (call-interactively 'switch-window-then-swap-buffer)))
 
-
-(defun yagunov/beginning-of-line ()
-  "Smarter `beginning-of-line' alternative."
+(defun yagunov/switch-window-then-find-file ()
+  "Helm backed replacement of `switch-window-then-find-file'."
   (interactive)
-  (if (eq last-command this-command)
-      (beginning-of-line)
-    (let ((prev-point (point)))
-      (when (ignore-errors
-              (unless (comment-search-backward (line-beginning-position) t)
-                (beginning-of-line-text)))
-        (beginning-of-line))
-      (when (= prev-point (point))
-        (beginning-of-line)))))
+  (switch-window--then-other-window
+   "Find file in window: "
+   #'spacemacs/helm-find-files))
 
-(defun yagunov/end-of-line ()
-  "Smarter `end-of-line' alternative."
+(defun yagunov/balance-windows ()
+  "Balance window layout based on column width then buffer height."
   (interactive)
-  (if (eq last-command this-command)
-      (end-of-line)
-    (let ((prev-point (point)))
-      (when (comment-search-forward (line-end-position) t)
-        ;; TODO: Add support for `comment-start' and `comment-end'.
-        (goto-char (match-beginning 0))
-        (if (looking-back "^\s+")
-            (end-of-line)
-          (skip-syntax-backward " " (line-beginning-position))))
-      (when (= prev-point (point))
-        (end-of-line)))))
+  (destructuring-bind (master-win popup-win win-map)
+      (popwin:create-popup-window window-min-height :bottom nil)
+    (delete-window popup-win))
+  (balance-windows))
 
+(defun yagunov/window-split-quadruple-columns (&optional purge)
+  "Set the layout to quadruple columns (layout for large monitors).
 
-(defun yagunov/mark-whole-word ()
-  "Mark whole word."
-  (interactive)
-  (when (not (looking-at "\\<"))
-    (subword-backward))
-  (set-mark (point))
-  (subword-forward))
+Uses the function defined in `spacemacs-window-split-delete-function' as a means to
+remove windows.
 
-(defun yagunov/set-mark-command (arg)
-  "Smart implementation of `set-mark-command'.
-Run `set-mark-command' on just one call without prefix argument.
-If prefix argument is given then deactivate secondary selection,
-if mark is active and point inside of region then convert region
-to secondary selection, if called twice run `yagunov/mark-whole-word'."
+When called with a prefix argument, it uses `delete-other-windows' as a means
+to remove windows, regardless of the value in `spacemacs-window-split-delete-function'."
   (interactive "P")
-  (cond (arg
-         (delete-overlay mouse-secondary-overlay))
-        ((and (eq last-command this-command)
-              mark-active
-              (= (region-beginning)
-                 (region-end)))
-         (yagunov/mark-whole-word))
-        ((and mark-active
-              (>= (point) (region-beginning))
-              (<= (point) (region-end)))
-         (primary-to-secondary (region-beginning)
-                               (region-end))
-         (setq deactivate-mark t))
-        (t
-         (set-mark-command nil))))
+  (if purge
+      (let ((ignore-window-parameters t))
+        (delete-other-windows))
+    (funcall spacemacs-window-split-delete-function))
 
-(defun yagunov/smart-transpose ()
-  "Transpose region and secondary selection in they active or characters otherwise."
-  (interactive)
-  (if (and mark-active (overlay-buffer mouse-secondary-overlay))
-      (call-interactively 'anchored-transpose)
-    (call-interactively 'transpose-chars)))
+  (if (spacemacs--window-split-splittable-windows)
+      (let* ((previous-files (seq-filter #'buffer-file-name
+                               (delq (current-buffer) (buffer-list))))
+              (second (split-window-right))
+              (third (split-window second nil 'right))
+              (fourth (split-window third nil 'right)))
+        (set-window-buffer second (or (car previous-files) "*scratch*"))
+        (set-window-buffer third (or (cadr previous-files) "*scratch*"))
+        (set-window-buffer fourth (or (caddr previous-files) "*scratch*"))
+        (balance-windows))
+    (message "There are no main windows available to split!")))
 
-
-(defun yagunov//english-text-p ()
+(defun yagunov/english-text-p ()
+  "Verify that language of word at point or within region is English."
   (let ((beg (point)))
     (save-excursion
       (save-restriction
@@ -123,108 +82,38 @@ to secondary selection, if called twice run `yagunov/mark-whole-word'."
         (beginning-of-buffer)
         (looking-at ".*[A-Za-z]+.*")))))
 
-(defun yagunov/google-translate ()
+(defun yagunov/google-translate-dwim ()
+  "Translate thing at point (with automatic English/Russian switch)"
   (interactive)
-  (if (yagunov//english-text-p)
+  (if (yagunov/english-text-p)
       (let ((google-translate-default-source-language "en")
             (google-translate-default-target-language "ru"))
         (call-interactively 'google-translate-at-point))
     (call-interactively 'google-translate-at-point)))
 
-
-(defun yagunov/other-window-back (count &optional all-frames)
-  "Same as `other-window' with negative prfix argument."
-  (interactive "p")
-  (other-window (- count) all-frames))
-
-(defun yagunov/delete-other-windows-vertically-or-all ()
-  "Delete all other windows in current column or if there is non delete all other windows."
-  (interactive)
-  (or (delete-other-windows-vertically)
-      (delete-other-windows)))
-
-;; TODO: Find what causes this bug.
-(defun yagunov/balance-windows-quick-fix ()
-  (interactive)
-  (destructuring-bind (master-win popup-win win-map)
-      (popwin:create-popup-window window-min-height :bottom nil)
-    (delete-window popup-win))
-  (balance-windows))
-
-;; (defun yagunov//remap-unimpaired (map)
-;;   (let (open-map close-map)
-;;     (map-keymap
-;;      #'(lambda (event binding)
-;;          (cond ((eq event ?[) (setq open-map (copy-keymap binding)))
-;;                ((eq event ?]) (setq close-map (copy-keymap binding)))))
-;;      map)
-;;     (define-key map (kbd "(") open-map)
-;;     (define-key map (kbd ")") close-map)
-;;     (define-key map (kbd "[") nil)
-;;     (define-key map (kbd "]") nil)))
-
-(defun yagunov/writer-buffer-or-region ()
-  (interactive)
-  (if (region-active-p)
-      (call-interactively 'write-region)
-    (call-interactively 'write-file)))
-
-
-;; ;; Support my custom keyboard layout:
-;; (defvar yagunov//buffer-smartparen-state nil
-;;   "Stores initial state of smartparen-mode in the buffer")
-;; (make-variable-buffer-local 'yagunov//buffer-smartparen-state)
-
-;; (defun yagunov/toggle-input-method ()
-;;   (interactive)
-;;   ;; store initial state of smartparen-mode
-;;   (unless yagunov//buffer-smartparen-state
-;;     (setq yagunov//buffer-smartparen-state
-;;           (cond (smartparens-strict-mode 'smartparens-strict-mode)
-;;                 (smartparens-mode 'smartparens-mode))))
-;;   (toggle-input-method)
-;;   (cond ((equal evil-input-method "russian-computer")
-;;          (when yagunov//buffer-smartparen-state
-;;            (smartparens-mode 0))
-;;          (define-key evil-insert-state-map (kbd "(") (lambda () (interactive) (insert "х")))
-;;          (define-key evil-insert-state-map (kbd ")") (lambda () (interactive) (insert "ъ")))
-;;          (define-key evil-insert-state-map (kbd "Х") (lambda () (interactive) (insert "(")))
-;;          (define-key evil-insert-state-map (kbd "Ъ") (lambda () (interactive) (insert ")")))
-;;          (define-key evil-insert-state-map (kbd "х") (lambda () (interactive) (insert "Х")))
-;;          (define-key evil-insert-state-map (kbd "ъ") (lambda () (interactive) (insert "Ъ")))
-;;          (define-key evil-insert-state-map (kbd "Ж") (lambda () (interactive) (insert "ж")))
-;;          (define-key evil-insert-state-map (kbd "ж") (lambda () (interactive) (insert "Ж"))))
-;;         ((null evil-input-method)
-;;          (unless (null yagunov//buffer-smartparen-state)
-;;            (funcall yagunov//buffer-smartparen-state t))
-;;          (message "Switching back to english")
-;;          (define-key evil-insert-state-map (kbd "(") 'self-insert-command)
-;;          (define-key evil-insert-state-map (kbd ")") 'self-insert-command)
-;;          (define-key evil-insert-state-map (kbd "[") 'self-insert-command)
-;;          (define-key evil-insert-state-map (kbd "]") 'self-insert-command)
-;;          (define-key evil-insert-state-map (kbd "{") 'self-insert-command)
-;;          (define-key evil-insert-state-map (kbd "}") 'self-insert-command)
-;;          (define-key evil-insert-state-map (kbd ":") 'self-insert-command)
-;;          (define-key evil-insert-state-map (kbd ";") 'self-insert-command))))
-
-
 (defun yagunov/eval-print-last-sexp ()
+  "Evaluate last SEXP in buffer and insert the result."
   (interactive)
   (end-of-line)
   (eval-print-last-sexp))
 
-(defun yagunov/kill-buffer ()
-  "Display an overlay in each window showing a unique key, then
-ask user which buffer to kill"
-  (interactive)
-  (save-selected-window
-    (switch-window--jump-to-window
-     (switch-window--prompt "Kill buffer:"))
-    (kill-this-buffer)))
+(defun yagunov/narrow-to-paragraph (&optional arg)
+  "Narrow buffer to current paragraph(s) of text.
 
-(defun yagunov/swap-buffer ()
-  "Display an overlay in each window showing a unique key, then
-ask user which buffer to swap with the current one"
-  (interactive)
-  (save-selected-window
-    (call-interactively 'switch-window-then-swap-buffer)))
+A numeric ARG parameter specifies number of forward or backward
+pages to include. "
+  (interactive "P")
+  (setq arg (if arg (prefix-numeric-value arg) 0))
+  ;; NB: 0 (no arg), 1 and -1 should have the same effect.
+  (let ((backward (if (< arg -1) arg -1))
+        (forward (max 1 (abs arg))))
+    (save-excursion
+      (widen)
+      (forward-paragraph backward)
+      (narrow-to-region (point)
+                        (progn
+                          (forward-paragraph forward)
+                          (point))))))
+
+
+;;; funcs.el ends here

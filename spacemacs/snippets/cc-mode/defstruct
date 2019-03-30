@@ -1,7 +1,0 @@
-# -*- mode: snippet; require-final-newline: nil -*-
-# name: defstruct
-# key: defstruct
-# --
-typedef struct ${1:name} {
-     $0
-} $1_t;
