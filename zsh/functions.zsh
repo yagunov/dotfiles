@@ -21,6 +21,32 @@ function e () {
     fi
 }
 
+function edit-match () {
+    place=`rg --color=always --line-number $@ | fzf`
+    if (( $+commands[emacsclient] )); then
+        cmd=`echo "$place" | sed -rn 's/^(.*):([[:digit:]]*):.*/emacsclient --alternate-editor=vim --no-wait +\2 \1/p'`
+    else
+        cmd=`echo "$place" | sed -rn 's/^(.*):([[:digit:]]*):.*/vim \1 +\2/p'`
+    fi
+    eval "$cmd"
+}
+
+function edit-file () {
+    local pattern="*$1*"; [[ $# > 0 ]] && shift;
+    local file=`find . -iname "$pattern" $@ | fzf -1`
+    if (( $+commands[emacsclient] )); then
+        emacsclient --alternate-editor=vim --no-wait "$file"
+    else
+        cmd=`echo "$place" | sed -rn 's/^(.*):([[:digit:]]*):.*/vim \1 +\2/p'`
+        vim "$file"
+    fi
+}
+
+function vim-match () {
+    place=`rg --color=always --line-number $@ | fzf`
+    eval "$(echo "$place" | sed -rn 's/^(.*):([[:digit:]]*):.*/vim \1 +\2/p')"
+}
+
 # Tag is a wrapper around ag/rg: https://github.com/aykamko/tag
 if (( $+commands[tag] )); then
     export TAG_SEARCH_PROG=`(( $+commands[tag] )) && echo rg || echo ag`
@@ -44,6 +70,15 @@ function h () {
     fi
 }
 
+function man-fzf () {
+    if [[ $# == 0 ]]; then
+        local topic=`command man -k . | fzf | cut -d ' ' -f 1`
+        [ -n "$topic" ] && man "$topic"
+    else
+        man $@
+    fi
+}
+
 # Watch system log:
 function wlog () {
     local log_file="/var/log/syslog$([[ `uname` == "Darwin" ]] && echo .log)"
@@ -56,6 +91,70 @@ function wlog () {
     else
         $tail_cmd
     fi
+}
+
+function slog () {
+    local log_file="/var/log/syslog$([[ `uname` == "Darwin" ]] && echo .log)"
+
+    if [[ $# == 0 ]]; then
+        less "$log_file"
+    else
+        cat "$log_file" | grep $@
+    fi
+}
+
+function tm () {
+    [[ -n "$TMUX" ]] && change="switch-client" || change="attach-session"
+    if [ $1 ]; then
+        tmux $change -t "$1" 2>/dev/null || {
+            case "$1" in
+                top)
+                    base16_hopscotch
+                    ;;
+                mid)
+                    base16_material-darker
+                    ;;
+                bot)
+                    base16_material-palenight
+                    ;;
+                scratch)
+                    base16_material
+                    ;;
+            esac
+            tmux -2u new-session -d -s "$1" && tmux $change -t "$1"; return
+        }
+    fi
+    session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
+}
+
+function gh () {
+    git log --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" "$@" |  fzf | cut -d ' ' -f 1 -z | xsel
+    xsel; echo
+}
+
+# pwgen wrapper
+function pwgen () {
+    if (( $# == 0 )); then
+        # Generate strong password and copy it into clipboard
+        command pwgen -C 20 -B -s 1 | xsel
+        xsel
+    else
+        command pwgen $@
+    fi
+}
+
+# wait for process start
+function wstart () {
+    while ! pidof $1 &> /dev/null; do
+        sleep 1
+    done
+}
+
+# wait for process termination
+function wterm () {
+    while pidof $1 &> /dev/null; do
+        sleep 1
+    done
 }
 
 #
@@ -91,19 +190,6 @@ function find-executable () {
     local pattern="*$1*"; [[ $# > 0 ]] && shift;
     find . -iname "$pattern" -type f -perm /a=x $@
 }
-
-# # select file with fuzzy matching and apply specified action to it
-# function do-with () {
-#     local action="$1"; shift
-#     eval "$action `find-by-name $@ | sk`"
-# }
-
-# alias dw="find-and-do"
-# alias fe="find-and-do e"
-
-# function fuzzy-edit () {
-#     sk --ansi -c 'rg --color=always --line-number "${1}"'
-# }
 
 
 function tree () {
@@ -141,6 +227,39 @@ function cmake-clean() {
         find . -name "cmake_install.cmake" | xargs rm -f
     fi
 }
+
+function pj-build() (
+    BUILD_TYPE="${1:-release}"
+    PROJ_ROOT="$(git root 2> /dev/null || pwd)"
+
+    # Detect project root
+    cd "${PROJ_ROOT}"
+
+    # Detect project type
+    if [ -e CMakeLists.txt ]; then
+        PROJ_TYPE="CMake"
+        cmake-$BUILD_TYPE && make -j`getconf _NPROCESSORS_ONLN`
+    elif [ -e Makefile ]; then
+        PROJ_TYPE="Make"
+        make -j`getconf _NPROCESSORS_ONLN`
+    elif [ -e Cargo.toml ]; then
+        PROJ_TYPE="Cargo"
+        if [[ "$BUILD_TYPE" == "release" ]]; then
+            cargo build --release
+        else
+            cargo build
+        fi
+    else
+        echo "No project found"
+        exit 1
+    fi
+
+    if [[ $? == 0 ]]; then
+        notify-send --icon=process-completed -u normal "$PROJ_TYPE [$BUILD_TYPE]: Build successful" "$PROJ_ROOT"
+    else
+        notify-send --icon=system-error -u critical "$PROJ_TYPE [$BUILD_TYPE]: Build failed ($?)" "$PROJ_ROOT"
+    fi
+)
 
 
 function ds() {

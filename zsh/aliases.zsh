@@ -1,13 +1,12 @@
-# File listing:
-
-# Directory listing:
+# File and directory listing:
 if (( $+commands[exa] )); then
     alias l='exa --group-directories-first'
-    alias ll='exa --group-directories-first -l'
-    alias lla='exa --group-directories-first -al'
+    alias ll='l --time-style=long-iso --git -lh '
+    alias la='ll -a'
+    alias lla='ll -a'
     alias all=lla
-    alias t="exa --group-directories-first -l -T -L 2 -I '*~'"
-    alias tt="exa --group-directories-first -l -T -I '*~'"
+    alias t="ll -T -L 2 -I '*~'"
+    alias tt="ll -T -I '*~'"
 else
     alias l='ls -sh'
     alias lla='ls -lha'
@@ -18,9 +17,14 @@ fi
 alias td="tree -L 2 -I '*~' -d"
 alias ttd="tree -I '*~' -d"
 
+if (( $+commands[bat] )); then
+    alias cat=bat
+fi
+
 # Disk space:
 alias df='df -h'
 alias du='du -h'
+alias lsblk='lsblk -T -o NAME,TYPE,SIZE,SCHED,MOUNTPOINT,FSTYPE,UUID'
 
 # Working with directories:
 alias md='mkdir -p'
@@ -38,6 +42,7 @@ alias ssh='nocorrect ssh'
 alias touch='nocorrect touch'
 alias ln='nocorrect ln'
 alias pc='nocorrect rsync -rP'  # copy with progress bar
+alias fm='vifm .'
 
 # Administration:
 alias sudo='nocorrect sudo'
@@ -58,10 +63,16 @@ else
 fi
 alias gg=grep
 alias mtail="multitail -f"
+
+# TODO: Switch to fd/ff/fselect
 alias f=find-by-name
 alias fe=find-by-extention
 alias ff=find-file
-alias fd=find-directory
+alias fdd=find-directory
+alias fsel='noglob fselect'     # cargo install fselect
+
+alias em=edit-match
+alias vm=vim-match
 
 # Web:
 alias dl="wget -c"
@@ -73,18 +84,21 @@ alias yta="youtube-dl -ticx"     # audio only
 alias serv-dir="python -m SimpleHTTPServer"
 alias sr='surfraw'
 
-# Strong password generation:
-alias pwgen="pwgen -C 20 -B -s 1"
-
 # Development:
 alias make="make -j`getconf _NPROCESSORS_ONLN`"
-alias hex="hexdump -C"
-alias hh="hexdump -C -n 128"
 alias diff="diff -Nau"
 alias git='nocorrect git'
 alias gst='git status -sb'
 alias p=run-python
 alias fv=hachoir-urwid          # binary format viewer
+(( $+commands[fzf] )) && alias man=man-fzf
+if (( $+commands[hexyl] )); then
+    alias hex="hexyl"
+    alias hh="hexyl -n 128"
+else
+    alias hex="hexdump -C"
+    alias hh="hexdump -C -n 128"
+fi
 
 # Databases:
 alias mysqlshow='nocorrect mysqlshow'
@@ -97,6 +111,9 @@ if [[ `uname` == "Darwin" ]]; then
     alias cal='ncal'
 fi
 
+# Entertainment:
+alias mpv='mpv --audio-file-auto=fuzzy --no-audio-display'
+
 # Linux specific:
 if [[ `uname` == "Linux" ]]; then
     function o () {
@@ -107,6 +124,6 @@ if [[ `uname` == "Linux" ]]; then
     alias m='dmesg -Hxw'
     alias mm='dmesg -Hx'
     alias cal='ncal -M'
-    [ -e $HOME/.pyenv/versions/mycli ] && alias mycli="$HOME/.pyenv/versions/mycli/bin/mycli"
-    [ -e $HOME/.pyenv/versions/pgcli ] && alias pgcli="$HOME/.pyenv/versions/pgcli/bin/pgcli"
+    [ -e $HOME/.pyenv/versions/dbcli ] && alias mycli="$HOME/.pyenv/versions/dbcli/bin/mycli"
+    [ -e $HOME/.pyenv/versions/dbcli ] && alias pgcli="$HOME/.pyenv/versions/dbcli/bin/pgcli"
 fi
