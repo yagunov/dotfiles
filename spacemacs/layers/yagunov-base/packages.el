@@ -31,7 +31,8 @@
 
 (defconst yagunov-base-packages
   '(persistent-scratch
-    switch-window)
+    switch-window
+    (capnp-mode :location local))
   "The list of Lisp packages required by the yagunov-base layer.
 
 Each entry is either:
@@ -63,7 +64,9 @@ Each entry is either:
 (defun yagunov-base/init-persistent-scratch ()
   (use-package persistent-scratch
     :config
-    (persistent-scratch-setup-default)))
+    (progn
+      (setq persistent-scratch-save-file (concat spacemacs-cache-directory "persistent-scratch"))
+      (persistent-scratch-setup-default))))
 
 (defun yagunov-base/init-switch-window ()
   (use-package switch-window
@@ -87,5 +90,10 @@ Each entry is either:
             (if action
                 (funcall action window)
               window)))))))
+
+(defun yagunov-base/init-capnp-mode ()
+  (use-package capnp-mode
+    :config
+    (add-to-list 'auto-mode-alist '("\\.capnp\\'" . capnp-mode))))
 
 ;;; packages.el ends here

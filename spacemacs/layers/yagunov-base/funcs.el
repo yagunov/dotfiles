@@ -13,6 +13,8 @@
 
 ;;; Code:
 
+(require 'pulse)
+
 
 (defun yagunov/writer-buffer-or-region ()
   "Prompt to write buffer or region (when active) content to a file."
@@ -60,10 +62,10 @@ to remove windows, regardless of the value in `spacemacs-window-split-delete-fun
 
   (if (spacemacs--window-split-splittable-windows)
       (let* ((previous-files (seq-filter #'buffer-file-name
-                               (delq (current-buffer) (buffer-list))))
-              (second (split-window-right))
-              (third (split-window second nil 'right))
-              (fourth (split-window third nil 'right)))
+                                         (delq (current-buffer) (buffer-list))))
+             (second (split-window-right))
+             (third (split-window second nil 'right))
+             (fourth (split-window third nil 'right)))
         (set-window-buffer second (or (car previous-files) "*scratch*"))
         (set-window-buffer third (or (cadr previous-files) "*scratch*"))
         (set-window-buffer fourth (or (caddr previous-files) "*scratch*"))
@@ -114,6 +116,13 @@ pages to include. "
                         (progn
                           (forward-paragraph forward)
                           (point))))))
+
+(defun yagunov/pulse-current-line ()
+  "Briefly highlight current line with pulse."
+  (interactive)
+  (let ((pulse-delay 0.05)
+        (pulse-iterations 20))
+    (pulse-momentary-highlight-one-line (point) 'yagunov/pulse-current-line-face)))
 
 
 ;;; funcs.el ends here

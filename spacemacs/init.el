@@ -29,45 +29,62 @@ This function should only modify configuration layer settings."
    ;; If non-nil layers with lazy install support are lazy installed.
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
-   dotspacemacs-configuration-layer-path (list (concat dotspacemacs-directory "layers/"))
+   dotspacemacs-configuration-layer-path `(,(concat dotspacemacs-directory "layers/"))
 
-   ;; List of configuration layers to load.
+   ;; List of configuration layers to load (`SPC f e R' to reload).
    dotspacemacs-configuration-layers
    '(
-     ;; ----------------------------------------------------------------
-     ;; Example of useful layers you may want to use right away.
-     ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
-     ;; `M-m f e R' (Emacs style) to install them.
-     ;; ----------------------------------------------------------------
+     ;; Personal layers
      yagunov-base
 
+     ;; UI:
      themes-megapack
      colors
 
+     ;; Editor:
      helm
-     ;; auto-completion
      better-defaults
      multiple-cursors
      (evil-snipe
-      :variables evil-snipe-enable-alternate-f-and-t-behaviors t)
+      :variables
+      evil-snipe-enable-alternate-f-and-t-behaviors t)
      spell-checking
      treemacs
+     ibuffer
 
+     ;; Development tools:
+     (auto-completion
+      :variables
+      auto-completion-enable-sort-by-usage t
+      auto-completion-idle-delay nil
+      auto-completion-enable-help-tooltip 'manual
+      auto-completion-private-snippets-directory (concat dotspacemacs-directory "snippets")
+      auto-completion-enable-snippets-in-popup t)
      (version-control
       :variables
       version-control-global-margin t
       version-control-diff-tool 'diff-hl
       version-control-diff-side 'left)
      git
-
-     (emacs-lisp
-      :variables emacs-lisp-hide-namespace-prefix t)
-     c-c++
      cmake
+     ;; TODO: gtags
+     ;; TODO: lsp
+     ;; TODO: semantic
+
+     ;; Programming languages:
+     emacs-lisp
+     c-c++
      rust
-     python
+     (python
+      :variables python-fill-column 120)
+     ;; javascript
+     php
      sql
+     shell-scripts
      vimscript
+     yaml
+
+     ;; Text/data formats
      org
      markdown
      csv
@@ -80,7 +97,7 @@ This function should only modify configuration layer settings."
    ;; To use a local version of a package, use the `:location' property:
    ;; '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '()
+   dotspacemacs-additional-packages '(mood-one-theme)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -195,7 +212,7 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-startup-buffer-responsive t
 
    ;; Default major mode of the scratch buffer (default `text-mode')
-   dotspacemacs-scratch-mode 'text-mode
+   dotspacemacs-scratch-mode 'org-mode
 
    ;; Initial message in the scratch buffer, such as "Welcome to Spacemacs!"
    ;; (default nil)
@@ -278,7 +295,7 @@ It should only modify the values of Spacemacs settings."
    ;; Size (in MB) above which spacemacs will prompt to open the large file
    ;; literally to avoid performance issues. Opening a file literally means that
    ;; no major mode or minor modes are active. (default is 1)
-   dotspacemacs-large-file-size 1
+   dotspacemacs-large-file-size 10
 
    ;; Location where to auto-save files. Possible values are `original' to
    ;; auto-save the file in-place, `cache' to auto-save the file to another
@@ -488,72 +505,78 @@ before packages are loaded."
 This is an auto-generated function, do not modify its content directly, use
 Emacs customize menu instead.
 This function is called at the very end of Spacemacs initialization."
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector
-   ["#282a36" "#ff5555" "#50fa7b" "#f1fa8c" "#61bfff" "#ff79c6" "#8be9fd" "#f8f8f2"])
- '(evil-want-Y-yank-to-eol nil)
- '(fci-rule-color "#6272a4")
- '(hl-todo-keyword-faces
-   '(("HOLD" . "#d0bf8f")
-     ("TODO" . "#cc9393")
-     ("NEXT" . "#dca3a3")
-     ("THEM" . "#dc8cc3")
-     ("PROG" . "#7cb8bb")
-     ("OKAY" . "#7cb8bb")
-     ("DONT" . "#5f7f5f")
-     ("FAIL" . "#8c5353")
-     ("DONE" . "#afd8af")
-     ("NOTE" . "#d0bf8f")
-     ("KLUDGE" . "#d0bf8f")
-     ("HACK" . "#d0bf8f")
-     ("TEMP" . "#d0bf8f")
-     ("FIXME" . "#cc9393")
-     ("XXX" . "#cc9393")
-     ("XXXX" . "#cc9393")
-     ("???" . "#cc9393")
-     ("NB" . "#d0bf8f")
-     ("FIX" . "#cc9393")))
- '(jdee-db-active-breakpoint-face-colors (cons "#1E2029" "#bd93f9"))
- '(jdee-db-requested-breakpoint-face-colors (cons "#1E2029" "#50fa7b"))
- '(jdee-db-spec-breakpoint-face-colors (cons "#1E2029" "#565761"))
- '(safe-local-variable-values
-   '((eval progn
-           (c-set-offset 'arglist-intro '+)
-           (c-set-offset 'arglist-close '0)
-           (c-set-offset 'inextern-lang 0))))
- '(vc-annotate-background "#282a36")
- '(vc-annotate-color-map
-   (list
-    (cons 20 "#50fa7b")
-    (cons 40 "#85fa80")
-    (cons 60 "#bbf986")
-    (cons 80 "#f1fa8c")
-    (cons 100 "#f5e381")
-    (cons 120 "#face76")
-    (cons 140 "#ffb86c")
-    (cons 160 "#ffa38a")
-    (cons 180 "#ff8ea8")
-    (cons 200 "#ff79c6")
-    (cons 220 "#ff6da0")
-    (cons 240 "#ff617a")
-    (cons 260 "#ff5555")
-    (cons 280 "#d45558")
-    (cons 300 "#aa565a")
-    (cons 320 "#80565d")
-    (cons 340 "#6272a4")
-    (cons 360 "#6272a4")))
- '(vc-annotate-very-old-color nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(diff-hl-change ((t (:background "#15568E" :foreground "#15568E"))))
- '(diff-hl-delete ((t (:background "#8E1B15" :foreground "#8E1B15"))))
- '(diff-hl-insert ((t (:background "#4C8E15" :foreground "#4C8E15"))))
- '(switch-window-label ((t (:inherit font-lock-builtin-face :height 15.0)))))
-)
+  (custom-set-variables
+   ;; custom-set-variables was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(ansi-color-names-vector
+     ["#282a36" "#ff5555" "#50fa7b" "#f1fa8c" "#61bfff" "#ff79c6" "#8be9fd" "#f8f8f2"])
+   '(evil-want-Y-yank-to-eol nil)
+   '(fci-rule-color "#6272a4")
+   '(hl-todo-keyword-faces
+     '(("HOLD" . "#d0bf8f")
+       ("TODO" . "#cc9393")
+       ("NEXT" . "#dca3a3")
+       ("THEM" . "#dc8cc3")
+       ("PROG" . "#7cb8bb")
+       ("OKAY" . "#7cb8bb")
+       ("DONT" . "#5f7f5f")
+       ("FAIL" . "#8c5353")
+       ("DONE" . "#afd8af")
+       ("NOTE" . "#d0bf8f")
+       ("KLUDGE" . "#d0bf8f")
+       ("HACK" . "#d0bf8f")
+       ("TEMP" . "#d0bf8f")
+       ("FIXME" . "#cc9393")
+       ("XXX" . "#cc9393")
+       ("XXXX" . "#cc9393")
+       ("NB" . "#d0bf8f")
+       ("FIX" . "#cc9393")))
+   '(jdee-db-active-breakpoint-face-colors (cons "#1E2029" "#bd93f9"))
+   '(jdee-db-requested-breakpoint-face-colors (cons "#1E2029" "#50fa7b"))
+   '(jdee-db-spec-breakpoint-face-colors (cons "#1E2029" "#565761"))
+   '(package-selected-packages
+     '(monokai-pro-theme mood-one-theme systemtap-mode yasnippet-snippets helm-company helm-c-yasnippet fuzzy company-statistics company-rtags company-c-headers company-anaconda company auto-yasnippet yasnippet ac-ispell auto-complete zenburn-theme zen-and-art-theme yapfify ws-butler writeroom-mode winum white-sand-theme which-key volatile-highlights vimrc-mode vi-tilde-fringe uuidgen use-package unfill underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme treemacs-projectile treemacs-evil toxi-theme toml-mode toc-org tao-theme tangotango-theme tango-plus-theme tango-2-theme symon switch-window sunny-day-theme sublime-themes subatomic256-theme subatomic-theme string-inflection sql-indent spaceline-all-the-icons spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle seti-theme reverse-theme restart-emacs rebecca-theme rainbow-mode rainbow-identifiers rainbow-delimiters railscasts-theme racer pytest pyenv-mode py-isort purple-haze-theme professional-theme popwin planet-theme pippel pipenv pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode persistent-scratch pcre2el password-generator paradox overseer orgit organic-green-theme org-projectile org-present org-pomodoro org-mime org-download org-bullets org-brain open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme nameless mwim mustang-theme move-text monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-svn magit-gitflow madhat2r-theme macrostep lush-theme lorem-ipsum live-py-mode link-hint light-soap-theme kaolin-themes jbeans-theme jazz-theme ir-black-theme inkpot-theme indent-guide importmagic ibuffer-projectile hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-xref helm-themes helm-swoop helm-rtags helm-pydoc helm-purpose helm-projectile helm-org-rifle helm-mode-manager helm-make helm-gitignore helm-git-grep helm-flx helm-descbinds helm-ctest helm-ag hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate google-c-style golden-ratio gnuplot gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md gandalf-theme font-lock+ flyspell-correct-helm flx-ido flatui-theme flatland-theme fill-column-indicator farmhouse-theme fancy-battery eziam-theme eyebrowse expand-region exotica-theme evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-snipe evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu espresso-theme elisp-slime-nav editorconfig dumb-jump dracula-theme dotenv-mode doom-themes doom-modeline django-theme disaster diminish diff-hl define-word darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme dactyl-mode cython-mode cyberpunk-theme csv-mode counsel-projectile column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-identifiers-mode cmake-mode cmake-ide clues-theme clean-aindent-mode clang-format cherry-blossom-theme centered-cursor-mode cargo busybee-theme bubbleberry-theme browse-at-remote birds-of-paradise-plus-theme badwolf-theme auto-highlight-symbol auto-dictionary auto-compile apropospriate-theme anti-zenburn-theme anaconda-mode ample-zen-theme ample-theme alect-themes aggressive-indent afternoon-theme ace-link ace-jump-helm-line))
+   '(paradox-github-token t)
+   '(safe-local-variable-values
+     '((eval setq byte-compile-not-obsolete-vars
+             '(display-buffer-function))
+       (eval progn
+             (c-set-offset 'arglist-intro '+)
+             (c-set-offset 'arglist-close '0)
+             (c-set-offset 'inextern-lang 0))))
+   '(vc-annotate-background "#282a36")
+   '(vc-annotate-color-map
+     (list
+      (cons 20 "#50fa7b")
+      (cons 40 "#85fa80")
+      (cons 60 "#bbf986")
+      (cons 80 "#f1fa8c")
+      (cons 100 "#f5e381")
+      (cons 120 "#face76")
+      (cons 140 "#ffb86c")
+      (cons 160 "#ffa38a")
+      (cons 180 "#ff8ea8")
+      (cons 200 "#ff79c6")
+      (cons 220 "#ff6da0")
+      (cons 240 "#ff617a")
+      (cons 260 "#ff5555")
+      (cons 280 "#d45558")
+      (cons 300 "#aa565a")
+      (cons 320 "#80565d")
+      (cons 340 "#6272a4")
+      (cons 360 "#6272a4")))
+   '(vc-annotate-very-old-color nil))
+  (custom-set-faces
+   ;; custom-set-faces was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
+   '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil))))
+   '(diff-hl-change ((t (:background "#15568E" :foreground "#15568E"))))
+   '(diff-hl-delete ((t (:background "#8E1B15" :foreground "#8E1B15"))))
+   '(diff-hl-insert ((t (:background "#4C8E15" :foreground "#4C8E15"))))
+   '(switch-window-label ((t (:inherit font-lock-builtin-face :height 15.0)))))
+  )

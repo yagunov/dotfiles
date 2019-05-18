@@ -17,18 +17,6 @@
 (defun yagunov/pre-layers-setup ()
   "Early stage user setup."
 
-  ;; Add custom prefixes to nameless-mode
-  (spacemacs|use-package-add-hook nameless
-    :post-config
-    (add-to-list 'nameless-global-aliases '("Y" . "yagunov")))
-
-  ;; Configure default languages for Google translate
-  (spacemacs|use-package-add-hook google-translate
-    :post-config
-    (setq google-translate-enable-ido-completion t
-          google-translate-default-source-language "auto"
-          google-translate-default-target-language "en"))
-
   ;; Git UI configuration
   (spacemacs|use-package-add-hook magit
     :post-config
@@ -37,9 +25,9 @@
           magit-diff-options '("--ignore-space-change")))
 
   ;; Use faster find replacement when possible.
-  (spacemacs|use-package-add-hook projectile
-    :post-config
-    (when (executable-find "fd")
+  (when (executable-find "fd")
+    (spacemacs|use-package-add-hook projectile
+      :post-config
       (setq projectile-generic-command "fd . --type=file --print0"))))
 
 
