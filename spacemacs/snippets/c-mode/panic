@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: panic
+# key: panic
+# --
+riva_panic("${1:message}"$2);$0

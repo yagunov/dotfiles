@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: warning
+# key: warn
+# --
+riva_warn("${1:message}"$2);$0

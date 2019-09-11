@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: println!
+# key: p
+# type: snippet
+# --
+println!("${1:Message}"$2);$0

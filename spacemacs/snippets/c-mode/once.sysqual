@@ -1,0 +1,25 @@
+# -*- mode: snippet -*-
+# name : #ifndef DI_XXX; #define DI_XXX; #endif
+# key: once
+# --
+/**
+* ${2:TODO: Add documentation here.}
+*
+* @copyright (C) `(format-time-string "%Y")` by SysQual
+* @addtogroup ${3:DocTopic}
+* @{
+*/
+
+#ifndef DI_${1:`(upcase (file-name-nondirectory (file-name-sans-extension (or (buffer-file-name) ""))))`_H}
+#define DI_$1
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+$0
+
+#ifdef __cplusplus
+}
+#endif
+#endif /* DI_$1 */
+/** @} */

@@ -1,0 +1,4 @@
+# key: info
+# name: info
+# --
+riva_info("${1:message}"$2);$0

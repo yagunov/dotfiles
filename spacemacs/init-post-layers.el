@@ -49,8 +49,6 @@
         google-translate-default-source-language "auto"
         google-translate-default-target-language "en")
 
-  (setq org-src-window-setup 'split-window-below)
-
   ;; Configure C/C++ modes
   (setq c-default-style '((java  . "java")
                           (awk   . "awk")
@@ -62,6 +60,12 @@
       (sp-local-pair 'c++-mode "'" nil :actions nil)))
   (add-hook 'c-mode-common-hook 'yagunov//c-mode-common-hook)
   (add-hook 'c++-mode-hook 'yagunov//c++-mode-hook)
+
+  ;; Configure Python environment
+  (add-to-list 'auto-mode-alist '("Pipfile\\'" . toml-mode))
+  (setq flycheck-python-flake8-executable (concat user-home-directory ".pyenv/shims/flake8")
+        flycheck-flake8rc ".flake8")
+  (setq py-isort-options (format "--line-width %i" python-fill-column))
 
   ;; Personal setup
   (yagunov//setup-keybindings)
@@ -94,6 +98,12 @@
   ;; Disable escape key sequence (default: "fd").
   (setq-default evil-escape-key-sequence nil)
 
+  ;; Enable default evil-lion keybindings:
+  (evil-global-set-key 'normal (kbd "g l") 'evil-lion-left)
+  (evil-global-set-key 'visual (kbd "g l") 'evil-lion-left)
+  (evil-global-set-key 'normal (kbd "g L") 'evil-lion-right)
+  (evil-global-set-key 'visual (kbd "g L") 'evil-lion-right)
+
   ;; Add some new and readjust some existing Spacemacs bindings
   (spacemacs/set-leader-keys
     "fw" 'yagunov/writer-buffer-or-region
@@ -124,7 +134,6 @@
 
 (defun yagunov//c-mode-common-hook ()
   (setq c-basic-offset 4)
-  (electric-pair-local-mode t)
   ;; Long function arguments indentation like in python-mode.
   (c-set-offset 'arglist-intro '+)
   (c-set-offset 'arglist-close 0)
@@ -136,5 +145,9 @@
   (setq comment-start "/* ")
   (setq comment-end " */"))
 
+;; QUICKFIX:
+(defun spacemacs/smartparens-pair-newline (id action context)
+  (save-excursion
+    (indent-according-to-mode)))
 
 ;;; init-post-layers.el ends here

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: debug
+# key: dbg
+# --
+riva_debug("${1:message}"$2);$0
