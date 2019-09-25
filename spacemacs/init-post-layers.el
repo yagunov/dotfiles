@@ -150,4 +150,20 @@
   (save-excursion
     (indent-according-to-mode)))
 
+;; NOTE: Redefine quick run for rust to enable optimization
+(defun spacemacs/rust-quick-run ()
+  "Quickly run a Rust file using rustc.
+Meant for a quick-prototype flow only - use `spacemacs/open-junk-file' to
+open a junk Rust file, type in some code and quickly run it.
+If you want to use third-party crates, create a new project using `cargo-process-new' and run
+using `cargo-process-run'."
+  (interactive)
+  (let ((input-file-name (buffer-file-name))
+        (output-file-name (concat temporary-file-directory (make-temp-name "rustbin"))))
+    (compile
+     (format "rustc --C opt-level=3 -o %s %s && %s"
+             (shell-quote-argument output-file-name)
+             (shell-quote-argument input-file-name)
+             (shell-quote-argument output-file-name)))))
+
 ;;; init-post-layers.el ends here
