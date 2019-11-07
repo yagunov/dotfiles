@@ -1,0 +1,32 @@
+#+TITLE:  List of ErgoDox firmware versions
+#+AUTHOR: Andrey Yagunov
+#+EMAIL:  yagunov86@gmail.com
+#+DATE:   2019 Oct 05
+#+TAGS:   keyboard, ergodox, firmware, config
+
+* Layouts
+  - v0.1: https://configure.ergodox-ez.com/ergodox-ez/layouts/KrrYX/latest/0
+  - v0.2: https://configure.ergodox-ez.com/ergodox-ez/layouts/MaayN/latest/0
+  - v0.3: https://configure.ergodox-ez.com/ergodox-ez/layouts/zLLYG/latest/0
+  - v0.4: https://configure.ergodox-ez.com/ergodox-ez/layouts/bvv9D/latest/0
+  - v0.5: https://configure.ergodox-ez.com/ergodox-ez/layouts/LvvXM/latest/0
+  - v0.6: https://configure.ergodox-ez.com/ergodox-ez/layouts/0WWvK/latest/0
+  - v0.7: https://configure.ergodox-ez.com/ergodox-ez/layouts/Kr0Zp/latest/0
+  - v0.8: https://configure.ergodox-ez.com/ergodox-ez/layouts/5WBww/latest/0
+  - v0.9: https://configure.ergodox-ez.com/ergodox-ez/layouts/6a4wn/latest/0
+  - v0.10: https://configure.ergodox-ez.com/ergodox-ez/layouts/EeWRb/latest/0
+  - v0.11: https://configure.ergodox-ez.com/ergodox-ez/layouts/yoZGx/latest/0
+  - v0.12: https://configure.ergodox-ez.com/ergodox-ez/layouts/qmnZV/latest/0
+  - v0.13: https://configure.ergodox-ez.com/ergodox-ez/layouts/DzZwb/latest/0
+  - v0.14: https://configure.ergodox-ez.com/ergodox-ez/layouts/YnWXZ/latest/0
+  - v0.15: https://configure.ergodox-ez.com/ergodox-ez/layouts/pjbjG/latest/0
+  - v0.16: https://configure.ergodox-ez.com/ergodox-ez/layouts/wOEMn/latest/0
+  - v0.17: https://configure.ergodox-ez.com/ergodox-ez/layouts/m5zYm/latest/0
+  - v0.18: https://configure.ergodox-ez.com/ergodox-ez/layouts/zL9or/latest/0
+  - v0.19: https://configure.ergodox-ez.com/ergodox-ez/layouts/3v0NY/latest/0
+  - v0.20: https://configure.ergodox-ez.com/ergodox-ez/layouts/MaRyb/latest/0
+  - v0.21: https://configure.ergodox-ez.com/ergodox-ez/layouts/x9Be3/latest/0
+  - v0.22: https://configure.ergodox-ez.com/ergodox-ez/layouts/wODJ3/latest/0
+  - v0.23: https://configure.ergodox-ez.com/ergodox-ez/layouts/gaL3e/latest/0
+  - v0.24: https://configure.ergodox-ez.com/ergodox-ez/layouts/XbQWP/latest/0
+  - v0.25: https://configure.ergodox-ez.com/ergodox-ez/layouts/AzV5B/latest/0
