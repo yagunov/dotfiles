@@ -5,17 +5,19 @@ from json import loads
 from os import popen
 from sys import argv
 
-def ipc_query(req="command", msg=""):
-    ans = popen("i3-msg -t " + req + " " +  msg.encode('utf8')).readlines()[0]
+
+def ipc_query(req: str = "command", msg: str = ""):
+    ans = popen(f"i3-msg -t {req} {msg}").readlines()[0]
     return loads(ans)
+
 
 if __name__ == "__main__":
     # Usage & checking args
     if len(argv) != 2:
-        print "Usage: switch-workspace.py name-of-workspace"
+        print("Usage: i3-ws-switch NAME_OF_WORKSPACE")
         exit(-1)
 
-    new_ws = unicode(argv[1], 'utf8')
+    new_ws = argv[1]
 
     # Retrieving active display
     display = None
