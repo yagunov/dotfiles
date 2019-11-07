@@ -1,7 +1,8 @@
 # File and directory listing:
 if (( $+commands[exa] )); then
     alias l='exa --group-directories-first'
-    alias ll='l --time-style=long-iso --git -lh '
+    alias ls='exa --group-directories-first'
+    alias ll='l --time-style=long-iso --git -lh'
     alias la='ll -a'
     alias lla='ll -a'
     alias all=lla
@@ -52,24 +53,21 @@ alias today='date +"%Y-%m-%d"'
 alias now='date +"%Y-%m-%dT%H-%M-%S"'
 
 # Search:
-if (( $+commands[tag] )); then
-    alias g=tag
-elif (( $+commands[rg] )); then
+if (( $+commands[rg] )); then
     alias g=rg
 elif (( $+commands[ag] )); then
     alias g=ag
 else
-    alias g=grep
+    alias g="grep -r"
 fi
-alias gg=grep
+alias gg="grep -r"
 alias mtail="multitail -f"
 
-# TODO: Switch to fd/ff/fselect
-alias f=find-by-name
-alias fe=find-by-extention
-alias ff=find-file
-alias fdd=find-directory
-alias fsel='noglob fselect'     # cargo install fselect
+# cargo install fd-find fselect
+alias ff='command fd --threads=4 --type=file'
+alias fe='command fd --threads=4 --type=file --extension'
+alias fd='command fd --threads=4 --type=directory'
+alias fsel='noglob fselect'
 
 alias em=edit-match
 alias vm=vim-match
@@ -89,7 +87,9 @@ alias make="make -j`getconf _NPROCESSORS_ONLN`"
 alias diff="diff -Nau"
 alias git='nocorrect git'
 alias gst='git status -sb'
-alias p=run-python
+alias gl='command git log --decorate --stat'
+alias gll='command git log --graph --decorate --pretty=oneline --abbrev-commit --all'
+alias p=python-repl
 alias fv=hachoir-urwid          # binary format viewer
 (( $+commands[fzf] )) && alias man=man-fzf
 if (( $+commands[hexyl] )); then
@@ -112,7 +112,7 @@ if [[ `uname` == "Darwin" ]]; then
 fi
 
 # Entertainment:
-alias mpv='mpv --audio-file-auto=fuzzy --no-audio-display'
+alias mpv='mpv --audio-channels=stereo --audio-file-auto=fuzzy --no-audio-display'
 
 # Linux specific:
 if [[ `uname` == "Linux" ]]; then
@@ -120,9 +120,9 @@ if [[ `uname` == "Linux" ]]; then
         xdg-open $@ &> /dev/null &
         disown
     }
-    alias dmesg='dmesg -T'
-    alias m='dmesg -Hxw'
-    alias mm='dmesg -Hx'
+    alias dmesg='command dmesg --time-format=reltime -x'
+    alias m='command dmesg -Hxw'
+    alias mm='command dmesg -Hx'
     alias cal='ncal -M'
     [ -e $HOME/.pyenv/versions/dbcli ] && alias mycli="$HOME/.pyenv/versions/dbcli/bin/mycli"
     [ -e $HOME/.pyenv/versions/dbcli ] && alias pgcli="$HOME/.pyenv/versions/dbcli/bin/pgcli"

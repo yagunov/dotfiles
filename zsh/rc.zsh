@@ -28,7 +28,7 @@ fi
 
 # Activate oh-my-zsh:
 if [ -e $ZSH/oh-my-zsh.sh ]; then
-    plugins=(git git-flow-avh node python pip pyenv django vagrant tmux
+    plugins=(git-flow-avh node python pip pyenv django vagrant tmux
              golang colored-man-pages web-search z rust cargo)
     if [[ `uname` == "Darwin" ]]; then
        plugins+=(brew)
@@ -72,6 +72,8 @@ else
     export ALTEDITOR=vim
 fi
 
+export PAGER="bat -p"
+
 source $ZSH_CFG/bindings.zsh
 source $ZSH_CFG/completion.zsh
 source $ZSH_CFG/functions.zsh
@@ -80,13 +82,12 @@ source $ZSH_CFG/aliases.zsh
 # Fuzzy finder
 if [ -e $HOME/.fzf.zsh ]; then
     source $HOME/.fzf.zsh
-    export FZF_DEFAULT_COMMAND='command fd --type file'
+    export FZF_DEFAULT_COMMAND='command fd --type f || git ls-tree -r --name-only HEAD || rg --files || find .'
     export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-    export FZF_DEFAULT_OPTS="--ansi --height 50% --reverse --border --multi"
+    export FZF_DEFAULT_OPTS="--ansi --height 50% --reverse --border --multi --inline-info --no-mouse"
     bindkey -s "^o" 'vim "$(fzf)"\n'  # C-o
     bindkey -s "^[o" 'vim "$(fzf)"\n' # M-o
 
-    # TODO: Replace with https://github.com/changyuheng/fz later
     unalias z 2> /dev/null
     function z () {
         [ $# -gt 0 ] && _z "$*" && return

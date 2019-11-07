@@ -47,21 +47,6 @@ function vim-match () {
     eval "$(echo "$place" | sed -rn 's/^(.*):([[:digit:]]*):.*/vim \1 +\2/p')"
 }
 
-# Tag is a wrapper around ag/rg: https://github.com/aykamko/tag
-if (( $+commands[tag] )); then
-    export TAG_SEARCH_PROG=`(( $+commands[tag] )) && echo rg || echo ag`
-    if [ $+SSH_CONNECTION -eq 0 ]; then
-        export TAG_CMD_FMT_STRING="emacsclient --alternate-editor=vim --no-wait +{{.LineNumber}} {{.Filename}}"
-    else
-        export TAG_CMD_FMT_STRING="vim {{.Filename}} +{{.LineNumber}}"
-    fi
-
-    function tag() {
-        command tag "$@"
-        source ${TAG_ALIAS_FILE:-/tmp/tag_aliases} 2>/dev/null
-    }
-fi
-
 function h () {
     if [[ $# == 0 ]]; then
         history | tail -10
@@ -128,18 +113,41 @@ function tm () {
 }
 
 function gh () {
-    git log --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" "$@" |  fzf | cut -d ' ' -f 1 -z | xsel
-    xsel; echo
+    local commit=`git log --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" "$@" |  fzf | cut -d ' ' -f 1`
+    if [ -n "$commit" ]; then
+        echo -n "$commit" | xsel -i
+        echo "$commit"
+    fi
+}
+
+# Git Checkout from History
+function gch () {
+    local commit=`git log --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" "$@" |  fzf | cut -d ' ' -f 1`
+    if [ -n "$commit" ]; then
+        echo -n "$commit" | xsel -i
+        git checkout "$commit"
+    fi
+}
+
+function gcb () {
+    local branch=`git branch --color=always -av | fzf | cut -d ' ' -f 3`
+    if [ -n "$branch" ]; then
+        echo -n "$branch" | xsel -i
+        git checkout "$branch"
+    fi
 }
 
 # pwgen wrapper
 function pwgen () {
     if (( $# == 0 )); then
         # Generate strong password and copy it into clipboard
-        command pwgen -C 20 -B -s 1 | xsel
-        xsel
+        local password=`command pwgen -C 20 -B -s 1`
+        if [ -n "$password" ]; then
+            echo -n "$password" | xsel -i
+            echo "$password"
+        fi
     else
-        command pwgen $@
+        command pwgen -s $@
     fi
 }
 
@@ -161,37 +169,6 @@ function wterm () {
 # Search:
 #
 
-# find files/direcories by name
-function find-by-name () {
-    local pattern="*$1*"; [[ $# > 0 ]] && shift;
-    find . -iname "$pattern" $@
-}
-
-# find by extension
-function find-by-extention () {
-    local pattern="*.$1"; [[ $# > 0 ]] && shift;
-    find . -iname "$pattern" -type f $@
-}
-
-# find only files
-function find-file () {
-    local pattern="*$1*"; [[ $# > 0 ]] && shift;
-    find . -iname "$pattern" -type f $@
-}
-
-# find only directories
-function find-directory () {
-    local pattern="*$1*"; [[ $# > 0 ]] && shift;
-    find . -iname "$pattern" -type d $@
-}
-
-# find executable
-function find-executable () {
-    local pattern="*$1*"; [[ $# > 0 ]] && shift;
-    find . -iname "$pattern" -type f -perm /a=x $@
-}
-
-
 function tree () {
     if [ -t 1 ]; then
         # stdout is a terminal: use colors
@@ -200,6 +177,10 @@ function tree () {
         # stdout is a pipe or a file: don't use colors
         command tree --dirsfirst -n $@
     fi
+}
+
+function du-top () {
+    du -h --max-depth=1 "$@" | sort -hr
 }
 
 #
@@ -265,13 +246,13 @@ function pj-build() (
 function ds() {
     if [ $# -ne 0 ]; then
         # compare files/directories
-        diff -Nau "$1" "$2" | diffstat
+        diff -Nau "$1" "$2" | diffstat -C
     elif [ -t 0 ]; then
         # no input
-        git diff | diffstat
+        git diff | diffstat -C
     else
         # input is PIPE
-        diffstat
+        diffstat -C
     fi
 }
 
@@ -299,7 +280,8 @@ function syncdirs () {
 # Python development:
 #
 
-function run-python() {
+function python-repl () {
+    # TODO: Does not work properly with pyenv due to shims
     local VERSION=$1
     if [ -n "$VIRTUAL_ENV" ]; then
         # we are inside virtual environment
@@ -324,13 +306,3 @@ function run-python() {
         fi
     fi
 }
-
-function p2() (
-    pyenv shell 2.7.11
-    run-python
-)
-
-function p3() (
-    pyenv shell 3.5.1
-    run-python
-)
