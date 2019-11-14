@@ -46,13 +46,13 @@ function tm --description "Simple Tmux manager"
     # Apply some session specific settings before creating new session
     switch $session
         case top
-            b16 hopscotch
+            b16 -V hopscotch
         case mid
-            b16 material-darker
+            b16 -V solarflare
         case bot
-            b16 material-palenight
+            b16 -V material-palenight
         case scratch
-            b16 material
+            b16 -V atlas
     end
 
     # Create new session and attach it

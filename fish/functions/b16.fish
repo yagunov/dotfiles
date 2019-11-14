@@ -1,6 +1,6 @@
 function b16 --description "Base16 theme selector"
     # Parse command line arguments
-    argparse --name=b16 "h/help" "U/update" "l/list" "r/random" "n/next" "p/previous" -- $argv
+    argparse --name=b16 "h/help" "U/update" "l/list" "r/random" "n/next" "p/previous" "V/verbatim" -- $argv
     or return
     if set -q _flag_help
         echo "Usage: b16 [OPTIONS] [PATTERN] ..."
@@ -12,6 +12,7 @@ function b16 --description "Base16 theme selector"
         echo -- "  -r | --random    Select random theme"
         echo -- "  -n | --next      Activate next theme (in alphanumeric order, patterns ignored)"
         echo -- "  -p | --previous  Activate previous theme (in alphanumeric order, patterns ignored)"
+        echo -- "  -V | --verbatim  Set theme buy unique name without interactive selection menu"
         echo
         return
     end
@@ -87,6 +88,9 @@ function b16 --description "Base16 theme selector"
             # Start from the end of the theme list
             set selected_theme $themes[-1]
         end
+
+    else if set -q _flag_verbatim
+        set selected_theme $argv[1]
 
     else
         # Let user interactively select theme
