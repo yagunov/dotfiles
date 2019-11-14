@@ -1,10 +1,11 @@
 function b16 --description "Base16 theme selector"
     # Parse command line arguments
-    argparse --name=b16 "r/random" "h/help" "l/list" "n/next" "p/previous" "U/update" -- $argv
+    argparse --name=b16 "h/help" "U/update" "l/list" "r/random" "n/next" "p/previous" -- $argv
     or return
-    if test -n "$_flag_help"
-        echo "Usage: b16 [-r|--random] [-h|--help] [-n|--next] [-p|--previous] [PATTERN] ..."
+    if set -q _flag_help
+        echo "Usage: b16 [OPTIONS] [PATTERN] ..."
         echo
+        echo -- "Options:"
         echo -- "  -h | --help      Show this help message"
         echo -- "  -U | --update    Update local copy of `base16-shell` repository"
         echo -- "  -l | --list      Show list of available themes"
@@ -89,7 +90,7 @@ function b16 --description "Base16 theme selector"
 
     else
         # Let user interactively select theme
-        set -l fzf_options '-1'
+        set -l fzf_options '--no-multi' '-1'
         if count $argv > /dev/null
             set -a fzf_options "--query" (string join ' ' (printf "'%s\n" $argv))" "
         end
