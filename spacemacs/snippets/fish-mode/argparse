@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: argparse
+# key: argparse
+# --
+argparse --name=${1:command_name} "h/help" $0-- $argv
+or return
+if set -q _flag_help
+    echo "Usage: $1 [OPTIONS]"
+    echo
+    echo -- "Options:"
+    echo -- "  -h | --help      Show this help message"
+    echo
+    return
+end

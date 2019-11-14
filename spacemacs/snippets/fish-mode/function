@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: function
+# key: fn
+# --
+
+function ${1:name} --description "${2:TODO: Add description}"
+    $0
+end
