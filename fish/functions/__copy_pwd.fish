@@ -1,3 +1,3 @@
 function __copy_pwd --description "Copy current working directory to clipboard"
-    pwd | xsel -i
+    echo -n (pwd) | xsel -i
 end
