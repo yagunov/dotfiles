@@ -1,5 +1,6 @@
 # -*- mode: snippet -*-
 # name: /dev/null
+# condition: (not (looking-back "/dev/null"))
 # key: null
 # --
 > /dev/null

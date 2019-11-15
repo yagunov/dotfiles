@@ -40,7 +40,7 @@ function mpv --wraps mpv --description "MPV wrapper with automatic loading of ex
 
     # Add new subtitles paths
     count $sub_paths > /dev/null
-    and set -a options --sub-file-paths=(string join ':' $sub_paths)
+    and set -a options --sub-file-paths=(string join : $sub_paths)
     # Add new audio file paths
     count $audio_paths > /dev/null
     and set -a options --audio-file-paths=(string join : $audio_paths)
