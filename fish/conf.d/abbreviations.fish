@@ -12,6 +12,7 @@ if status is-interactive; and not set -Uq fish_abbreviations_initialized
 
     # Files: view, copy, modify
     abbr -a -U -- cp 'cp -ivr'
+    abbr -a -U -- xcp 'xcp -r'
     abbr -a -U -- mv 'mv -iv'
     abbr -a -U -- rd 'rm -rv'
     abbr -a -U -- rf 'rm -vfr'
