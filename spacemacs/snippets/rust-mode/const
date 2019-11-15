@@ -3,4 +3,4 @@
 # key: const
 # type: snippet
 # --
-const ${1:NAME}: ${2:Type} = ${3:expr};$0
+const ${1:NAME}: ${2:Type} = ${3:expr};

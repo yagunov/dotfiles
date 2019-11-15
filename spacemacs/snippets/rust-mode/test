@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: #[test]
-# key: test
-# type: snippet
-# --
-#[test]$0
