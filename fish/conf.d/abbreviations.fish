@@ -13,6 +13,7 @@ if status is-interactive; and not set -Uq fish_abbreviations_initialized
     # Files: view, copy, modify
     abbr -a -U -- cp 'cp -ivr'
     abbr -a -U -- xcp 'xcp -r'
+    abbr -a -U -- scp 'scp -r3'
     abbr -a -U -- mv 'mv -iv'
     abbr -a -U -- rd 'rm -rv'
     abbr -a -U -- rf 'rm -vfr'
@@ -23,15 +24,23 @@ if status is-interactive; and not set -Uq fish_abbreviations_initialized
     abbr -a -U -- tl tail
     abbr -a -U -- tf 'tail -f'
 
+    # Files: search
+    abbr -a -U -- fai 'fa -IH'  # -IH means --no-ignore --hidden
+    abbr -a -U -- fdi 'fd -IH'
+    abbr -a -U -- fei 'fe -IH'
+    abbr -a -U -- ffi 'ff -IH'
+    abbr -a -U -- fli 'fl -IH'
+    abbr -a -U -- fxi 'fx -IH'
+    abbr -a -U -- g 'rg -i'
+    abbr -a -U -- gi 'rg -iv'
+    abbr -a -U -- gg 'rg -i --no-ignore --hidden'
+
     # Development
     abbr -a -U -- cg cargo
     abbr -a -U -- d diff
     abbr -a -U -- mk 'make -j12'
     abbr -a -U -- vd vimdiff
-
-    # Searching
-    abbr -a -U -- g 'rg -i'
-    abbr -a -U -- gi 'rg -iv'
+    abbr -a -U -- man fman
 
     # Git
     abbr -a -U -- ga 'git add'
