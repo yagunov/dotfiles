@@ -69,7 +69,16 @@
 
   ;; Personal setup
   (yagunov//setup-keybindings)
-  (yagunov//setup-faces))
+  (yagunov//setup-faces)
+
+  ;; Open helm below current window.
+  (setq helm-split-window-default-side 'below)
+  (setq helm-display-function #'helm-default-display-buffer)
+
+  ;; TODO: Open HELM in separate floating frame.
+  ;; (setq after-make-frame-functions (remove 'persp-init-new-frame after-make-frame-functions))
+  ;; (setq helm-display-function #'helm-display-buffer-in-own-frame)
+  )
 
 
 (defun yagunov//setup-keybindings ()
@@ -82,8 +91,9 @@
   (when (equal system-name "silent-base")
     (global-set-key (kbd "M-:") 'comment-dwim)
     (global-set-key (kbd "C-:") 'eval-expression)
-    (define-key evil-insert-state-map (kbd "Ж") (lambda () (interactive) (insert "ж")))
-    (define-key evil-insert-state-map (kbd "ж") (lambda () (interactive) (insert "Ж"))))
+    ;; (define-key evil-insert-state-map (kbd "Ж") (lambda () (interactive) (insert "ж")))
+    ;; (define-key evil-insert-state-map (kbd "ж") (lambda () (interactive) (insert "Ж")))
+    )
 
   ;; Prevent from accidental typing of multiple spaces
   (global-set-key (kbd "SPC") 'cycle-spacing)
