@@ -30,3 +30,4 @@
   - v0.23: https://configure.ergodox-ez.com/ergodox-ez/layouts/gaL3e/latest/0
   - v0.24: https://configure.ergodox-ez.com/ergodox-ez/layouts/XbQWP/latest/0
   - v0.25: https://configure.ergodox-ez.com/ergodox-ez/layouts/AzV5B/latest/0
+  - v0.26: https://configure.ergodox-ez.com/ergodox-ez/layouts/QzKXz/latest/0
