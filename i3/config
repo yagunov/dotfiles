@@ -61,6 +61,9 @@ workspace $WS_DEV output $DSP2
 workspace $WS_MEDIA output $DSP2
 workspace $WS_UTILS output $DSP2
 
+# set $ws_switch exec --no-startup-id i3-wk-switch
+set $ws_switch exec --no-startup-id ~/.dotfiles/bin/i3-ws-switch
+
 # ===============================================================================
 # Keybindings:
 
@@ -80,7 +83,7 @@ bindsym $super+k focus down
 bindsym $super+l focus right
 
 # Select specific window
-bindsym $super+h exec --no-startup-id "wmfocus -f 'SFNS Display':120 --bgcolor '#d84341' --offset 10,10"
+bindsym $super+h exec --no-startup-id "wmfocus -f 'Hack Nerd Font':120 --bgcolor '#d84341' --offset 10,10"
 
 # Move focused window
 bindsym $super+Shift+i move up
@@ -88,11 +91,20 @@ bindsym $super+Shift+j move left
 bindsym $super+Shift+k move down
 bindsym $super+Shift+l move right
 
+# Swap focused window
+bindsym $super+Control+i move up; focus down
+bindsym $super+Control+j move left; focus right
+bindsym $super+Control+k move down; focus up
+bindsym $super+Control+l move right; focus left
+
 # Resize window
 bindsym $altmod+l resize shrink width 10 px or 10 ppt
 bindsym $altmod+i resize grow height 10 px or 10 ppt
 bindsym $altmod+k resize shrink height 10 px or 10 ppt
 bindsym $altmod+j resize grow width 10 px or 10 ppt
+
+# Window border
+bindsym $super+b border toggle 3
 
 # enter fullscreen mode for the focused container
 bindsym $super+f fullscreen toggle
@@ -101,22 +113,22 @@ bindsym $altmod+f floating toggle
 
 # switch between workspaces
 bindsym $super+q workspace $WS_TERM
-bindsym $super+w exec --no-startup-id ~/.dotfiles/bin/i3-ws-switch $WS_WEB
+bindsym $super+w $ws_switch $WS_WEB
 bindsym $super+e workspace $WS_DEV
-bindsym $super+a exec --no-startup-id ~/.dotfiles/bin/i3-ws-switch $WS_UTILS
+bindsym $super+a $ws_switch $WS_UTILS
 bindsym $super+s workspace $WS_REMOTE
-bindsym $super+d exec --no-startup-id ~/.dotfiles/bin/i3-ws-switch $WS_DOCS
+bindsym $super+d $ws_switch $WS_DOCS
 bindsym $super+z workspace $WS_IM
-bindsym $super+1 exec --no-startup-id ~/.dotfiles/bin/i3-ws-switch $WS1
-bindsym $super+2 exec --no-startup-id ~/.dotfiles/bin/i3-ws-switch $WS2
-bindsym $super+3 exec --no-startup-id ~/.dotfiles/bin/i3-ws-switch $WS3
-bindsym $super+4 exec --no-startup-id ~/.dotfiles/bin/i3-ws-switch $WS4
-bindsym $super+5 exec --no-startup-id ~/.dotfiles/bin/i3-ws-switch $WS5
-bindsym $super+6 exec --no-startup-id ~/.dotfiles/bin/i3-ws-switch $WS6
+bindsym $super+1 $ws_switch $WS1
+bindsym $super+2 $ws_switch $WS2
+bindsym $super+3 $ws_switch $WS3
+bindsym $super+4 $ws_switch $WS4
+bindsym $super+5 $ws_switch $WS5
+bindsym $super+6 $ws_switch $WS6
 bindsym $super+7 workspace $WS_MEDIA
-bindsym $super+8 exec --no-startup-id ~/.dotfiles/bin/i3-ws-switch $WS_FUN
+bindsym $super+8 $ws_switch $WS_FUN
 bindsym $super+9 workspace $WS_DLOAD
-bindsym $super+0 exec --no-startup-id ~/.dotfiles/bin/i3-ws-switch $WS_PRIVATE
+bindsym $super+0 $ws_switch $WS_PRIVATE
 
 # move container between workspaces
 bindsym $hyper+q move container to workspace $WS_TERM
@@ -177,9 +189,9 @@ bindsym $super+x mode i3
 bindsym $altmod+Control+Shift+l exec --no-startup-id ~/.dotfiles/bin/i3-screen-lock
 
 # rofi:
-bindsym $super+space exec --no-startup-id "rofi -show combi -display-combi 'run: ' -combi-modi 'window,ssh,drun'"
+bindsym $super+space exec --no-startup-id "rofi -show combi -display-combi run -combi-modi 'window,ssh,drun' -show-icons"
 bindsym $hyper+space exec --no-startup-id "rofi-theme-selector"
-bindsym $altmod+space exec --no-startup-id "surfraw -browser=chromium-browser $(surfraw -elvi | awk -F'-' '{print $1}' | sed '/:/d' | awk '{$1=$1};1' | rofi -dmenu -mesg '>>> Super+L = Autocomplete' -i -p 'web: ')"
+bindsym $altmod+space exec --no-startup-id "surfraw -browser=chromium-browser $(surfraw -elvi | awk -F'-' '{print $1}' | sed '/:/d' | awk '{$1=$1};1' | rofi -dmenu -mesg '>>> Super+L = Autocomplete' -i -p web)"
 
 
 # ===============================================================================
@@ -196,6 +208,10 @@ for_window [class="Emacs-snapshot" title="Helm"] floating enable
 # Firefox:
 assign [class="Firefox" instance="Navigator"] $WS_WEB
 for_window [class="Firefox-private" instance="Navigator"] move container to workspace $WS_PRIVATE
+
+# Chrome:
+assign [class="Firefox" instance="Navigator"] $WS_WEB
+for_window [title="Task Manager - Chromium"] floating enable # Shift-ESC to call
 
 # Messages:
 assign [class="discord"] $WS_IM
@@ -216,7 +232,6 @@ for_window [class="Blender"] border pixel 2
 for_window [class="Blender" title="Blender Preferences"] floating enable, move position center
 
 # Misc. floating windows:
-for_window [class="Nautilus"] floating enable, border pixel 3
 for_window [class="Pavucontrol"] floating enable
 for_window [class="Pavumeter"] floating enable
 for_window [class="Gpick"] floating enable
@@ -225,15 +240,32 @@ for_window [class="Nvidia-settings"] floating enable
 for_window [title="Event Tester"] floating enable # xev
 for_window [class="Fcitx-config-gtk3"] floating enable
 for_window [class="Teensy"] floating enable
-for_window [class="Gnome-chess"] floating enable
 for_window [class="Sol"] floating enable
-for_window [class="Gnome-tweaks"] floating enable, border pixel 3
-for_window [class="Gnome-control-center"] floating enable, border pixel 3
 for_window [class="qjackctl"] floating enable
 for_window [class="FCC"] floating enable
 for_window [class="Sxiv"] floating enable
+for_window [class=".shutter-wrapped"] floating enable
+
 for_window [class="Blueman-manager"] floating enable
+for_window [class="Nm-connection-editor"] floating enable
+
+# Floating windows without title bar
+for_window [class="Nautilus"] floating enable, border pixel 3
 for_window [class="Evince"] border pixel 3
+for_window [class="Gnome-tweaks"] floating enable, border pixel 3
+for_window [class=".gnome-tweaks-wrapped"] floating enable, border pixel 3
+for_window [class="Gnome-chess"] floating enable, border pixel 3
+for_window [class="Gnome-control-center"] floating enable, border pixel 3
+for_window [class="Gnome-system-monitor"] floating enable, border pixel 3
+for_window [class="Gnome-calendar"] floating enable, border pixel 3
+for_window [class="Gnome-clocks"] floating enable, border pixel 3
+for_window [class="Gnome-logs"] floating enable, border pixel 3
+for_window [class="Simple-scan"] floating enable, border pixel 3
+for_window [class="Xsane"] floating enable, border pixel 3
+for_window [class="Org.gnome.Weather"] floating enable, border pixel 3
+for_window [class="Seahorse"] floating enable, border pixel 3
+for_window [class="Gitg"] floating enable, border pixel 3
+for_window [class="Baobab"] floating enable, border pixel 3 # Disk Usage Analyzer
 
 
 # ===============================================================================
@@ -245,15 +277,16 @@ font pango:Hack Nerd Font 8
 
 # Window Colors
 #                       border  background text    indicator
-client.focused          $base01 #AA0000    $base07 $base0F
+client.focused          #AA0000 #AA0000    $base07 $base0F
 client.focused_inactive $base02 $base02    $base03 $base0F
 client.unfocused        $base02 $base02    $base03 $base0F
-client.urgent           $base02 #FF0000    $base00 $base0F
+client.urgent           #FF0000 #FF0000    $base00 $base0F
 
 # display workspace buttons plus a statusline generated by i3status
 bar {
     font pango:FuraCode Nerd Font 10
-    status_command i3blocks
+    # status_command i3blocks
+    status_command i3status-rs ~/.dotfiles/i3/status.toml
     tray_output $DSP1
     colors {
       separator $base03
@@ -270,8 +303,8 @@ bar {
 # ===============================================================================
 # Autostart:
 exec --no-startup-id xrdb -load ~/.Xresources
-exec --no-startup-id xrandr --output $DSP1 --left-of $DSP2 --rotate right && xrandr --output $DSP2 --pos 1440x300
-# exec --no-startup-id nvidia-settings --load-config-only
+exec --no-startup-id xrandr --output $DSP1 --pos 0x0 --rotate right --output $DSP2 --pos 1440x320 --primary
+exec --no-startup-id nvidia-settings --load-config-only
 exec --no-startup-id xset dpms 0 0 0
 exec --no-startup-id compton
 exec --no-startup-id nm-applet 
@@ -281,19 +314,23 @@ exec --no-startup-id unclutter -idle 2
 # exec --no-startup-id setxkbmap -layout 'us(us-dev)' -option compose:menu
 # exec --no-startup-id xcape -e 'Control_L=space;Super_L=Escape'
 
-exec --no-startup-id setxkbmap -model pc105 -variant 'us-ergodox' -layout 'us' -option compose:mult
+# Configure keyboard
+#exec --no-startup-id setxkbmap -model pc105 -variant 'us-ergodox' -layout 'us' -option compose:mult
 exec --no-startup-id numlockx on
-exec --no-startup-id fcitx
 exec --no-startup-id xset r rate 200 50
+exec --no-startup-id xmodmap -e 'keycode 47 = colon semicolon Cyrillic_zhe'
+exec --no-startup-id fcitx
 
-# exec --no-startup-id dunst
+exec --no-startup-id dunst
 exec --no-startup-id nitrogen --restore
-# exec --no-startup-id pasystray
-# exec --no-startup-id parcellite
+exec --no-startup-id parcellite
 exec --no-startup-id shutter --min_at_startup
-exec --no-startup-id easystroke
+#exec --no-startup-id easystroke
+exec --no-startup-id gnome-keyring-daemon --start -d --components=pkcs11,secrets,ssh
+
+exec --no-startup-id Discord
 
 # Scratch terminal
-for_window [class="Tilix"] move scratchpad, sticky enable, border pixel 5
-bindsym $super+g [class="Tilix"] scratchpad show
-exec --no-startup-id tilix
+for_window [class="scratch-term"] move scratchpad, sticky enable, border pixel 5
+bindsym $super+g [class="scratch-term"] scratchpad show
+exec --no-startup-id sakura --class "scratch-term" --font "Cascadia Code 9" -x 'fish -c "tm scratch"'
