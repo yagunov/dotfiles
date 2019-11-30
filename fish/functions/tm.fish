@@ -24,7 +24,7 @@ function tm --description "Simple Tmux manager"
     # Kill session
     if set -q _flag_kill
         count $argv > /dev/null
-        or set argv (command tmux list-sessions -F "#{session_name}" | command fzf --multi)
+        or set argv (command tmux list-sessions -F "#{session_name}" | command fzf --multi -0 -1)
         for session in $argv
             command tmux kill-session -t $session
         end
@@ -33,7 +33,8 @@ function tm --description "Simple Tmux manager"
 
     # Get session name
     set -l session $argv[1]
-    test -z "$session" && set session (command tmux list-sessions -F "#{session_name}" | command fzf --no-multi -1)
+    test -z "$session" && set session (command tmux list-sessions -F "#{session_name}" \
+                                        | command fzf --no-multi -0 -1)
     test -z "$session" && return
 
     # Choose session change command
@@ -52,7 +53,7 @@ function tm --description "Simple Tmux manager"
         case bot
             b16 -V material-palenight
         case scratch
-            b16 -V atlas
+            b16 -V rebecca
     end
 
     # Create new session and attach it

@@ -23,6 +23,8 @@ if status is-interactive; and not set -Uq fish_abbreviations_initialized
     abbr -a -U -- hd head
     abbr -a -U -- tl tail
     abbr -a -U -- tf 'tail -f'
+    abbr -a -U -- dd4k 'dd bs=4k if='
+    abbr -a -U -- dd4m 'dd bs=4M if='
 
     # Files: search
     abbr -a -U -- fai 'fa -IH'  # -IH means --no-ignore --hidden
@@ -31,6 +33,18 @@ if status is-interactive; and not set -Uq fish_abbreviations_initialized
     abbr -a -U -- ffi 'ff -IH'
     abbr -a -U -- fli 'fl -IH'
     abbr -a -U -- fxi 'fx -IH'
+    abbr -a -U -- fa1 'fa --max-depth=1'
+    abbr -a -U -- fd1 'fd --max-depth=1'
+    abbr -a -U -- fe1 'fe --max-depth=1'
+    abbr -a -U -- ff1 'ff --max-depth=1'
+    abbr -a -U -- fl1 'fl --max-depth=1'
+    abbr -a -U -- fx1 'fx --max-depth=1'
+    abbr -a -U -- fa1i 'fa -IH --max-depth=1'
+    abbr -a -U -- fd1i 'fd -IH --max-depth=1'
+    abbr -a -U -- fe1i 'fe -IH --max-depth=1'
+    abbr -a -U -- ff1i 'ff -IH --max-depth=1'
+    abbr -a -U -- fl1i 'fl -IH --max-depth=1'
+    abbr -a -U -- fx1i 'fx -IH --max-depth=1'
     abbr -a -U -- g 'rg -i'
     abbr -a -U -- gi 'rg -iv'
     abbr -a -U -- gg 'rg -i --no-ignore --hidden'
@@ -39,8 +53,12 @@ if status is-interactive; and not set -Uq fish_abbreviations_initialized
     abbr -a -U -- cg cargo
     abbr -a -U -- d diff
     abbr -a -U -- mk 'make -j12'
-    abbr -a -U -- vd vimdiff
+    abbr -a -U -- nj ninja
+    abbr -a -U -- vim nvim
+    abbr -a -U -- vd 'nvim -d'
+    abbr -a -U -- sv 'sudo nvim'
     abbr -a -U -- man fman
+    abbr -a -U -- hf hyperfine
 
     # Git
     abbr -a -U -- ga 'git add'
@@ -60,12 +78,16 @@ if status is-interactive; and not set -Uq fish_abbreviations_initialized
     abbr -a -U -- dkp 'docker pull'
     abbr -a -U -- dkr 'docker run -it --rm'
     abbr -a -U -- dks 'docker search'
+    abbr -a -U -- dki 'docker inspect'
+    abbr -a -U -- dkip "docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}'"
+    abbr -a -U -- dkc docker-compose
 
     # Web
     abbr -a -U -- dl 'wget -c'
     abbr -a -U -- wcat 'wget -q -O -'
     abbr -a -U -- yt 'youtube-dl -tic'
     abbr -a -U -- yta 'youtube-dl -ticx'
+    abbr -a -U -- ports 'ss -tulepn'
 
     # Logs
     abbr -a -U -- dm 'dmesg --time-format=reltime -x'
@@ -80,6 +102,14 @@ if status is-interactive; and not set -Uq fish_abbreviations_initialized
     abbr -a -U -- sd sudo
     abbr -a -U -- sc 'sudo systemctl'
     abbr -a -U -- scu 'systemctl --user'
+    abbr -a -U -- jc 'journalctl -ef -u'
+
+    # System: NixOS
+    abbr -a -U -- ns 'nix search'
+    abbr -a -U -- ni 'sudo nix-env -iA'
+    abbr -a -U -- nr 'sudo nixos-rebuild'
+    abbr -a -U -- no 'nixos-option'
+    abbr -a -U -- ngc 'sudo nix-collect-garbage --delete-older-than 10d'
 
     # Miscellaneous
     abbr -a -U -- b32 base32

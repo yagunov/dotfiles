@@ -1,4 +1,4 @@
-function v --description "Edit in vim (file/directory/grep)"
+function v --description "Edit in neovim (file/directory/grep)"
     argparse --name=v "h/help" "f/file" "p/pattern" -- $argv
     or return
     if set -q _flag_help || set -q _flag_file _flag_pattern
@@ -23,15 +23,15 @@ function v --description "Edit in vim (file/directory/grep)"
 
         if test -n "$file_mode"
             # Use case 1: 'v file_name ...' - open files or directories
-            vim (test (count $argv) -le 3 && echo -- -o) $argv
+            nvim (test (count $argv) -le 3 && echo -- -o) $argv
         else
             # Use case 2: 'v not a file name' -> grep by pattern and select file to edit with fzf
             set -l place (command rg -i --color=always --line-number "$argv" | command fzf --no-multi -1 | string split :)
             or return
-            vim $place[1] +$place[2]
+            nvim $place[1] +$place[2]
         end
     else
         # Use case 3: 'v' -> 'v .'
-        vim .
+        nvim .
     end
 end

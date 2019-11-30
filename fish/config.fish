@@ -1,14 +1,22 @@
-source ~/.asdf/asdf.fish
-
-# set -U Z_CMD "_z"
-# set -U Z9_CMD "_zo"
-# set -U __done_exclude '^(git (?!push|pull)|tm(ux)?|vim|nvim|e\s|v\s|emacs|mpv|mplayer|vlc)'
-
 if status is-interactive
-    set -gx EDITOR emacsclient --no-wait --alternate-editor vim
+    # Initial environment setup
+    if not functions -q fisher
+        # Set universal variables befor plugins installation
+        set -U __done_exclude '^(git (?!push|pull)|tm(ux)?|vim|nvim|e\s|v\s|emacs|mpv|mplayer|vlc|man)'
+        set -U Z_CMD "_z"
+        set -U ZO_CMD "_zo"
+
+        # Install fisher
+        set -q XDG_CONFIG_HOME; or set XDG_CONFIG_HOME ~/.config
+        curl https://git.io/fisher --create-dirs -sLo $XDG_CONFIG_HOME/fish/functions/fisher.fish
+        fish -c fisher
+    end
+
+    set -gx EDITOR emacsclient --no-wait --alternate-editor nvim
+    set -gx BAT_PAGER less -RFi
     set -gx PAGER bat --theme 1337 -p
 
-    # fzf configuration
+    # FZF configuration
     set -gx FZF_DEFAULT_COMMAND 'command fd --threads 4 --type file'
     set -gx FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
     set -gx FZF_DEFAULT_OPTS '--ansi --height 50% --reverse --border --multi --inline-info --no-mouse'

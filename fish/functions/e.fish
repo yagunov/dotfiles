@@ -22,6 +22,8 @@ function e --description "Edit in emacs (file/directory/grep/stdin)"
                 set file_mode on
             end
 
+            # TODO: pattern: /path/to/file:XX[:XX]
+
             if test -n "$file_mode"
                 # Use case 1: 'e file_name ...' - open files or directories
                 emacsclient --no-wait $argv
