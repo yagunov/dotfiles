@@ -63,7 +63,9 @@ if status is-interactive; and not set -Uq fish_abbreviations_initialized
     # Git
     abbr -a -U -- ga 'git add'
     abbr -a -U -- gb 'git branch -av'
+    abbr -a -U -- gt 'git tag -ln'
     abbr -a -U -- gc 'git commit -m'
+    abbr -a -U -- gco 'git checkout'
     abbr -a -U -- gcl 'git clone'
     abbr -a -U -- gd 'git diff'
     abbr -a -U -- gh 'git head'
@@ -92,6 +94,9 @@ if status is-interactive; and not set -Uq fish_abbreviations_initialized
     # Logs
     abbr -a -U -- dm 'dmesg --time-format=reltime -x'
     abbr -a -U -- dmw 'dmesg --time-format=reltime -xw'
+    abbr -a -U -- bootlog 'journalctl -b'
+    abbr -a -U -- jc 'journalctl -e'
+    abbr -a -U -- jcf 'journalctl -f'
 
     # Time
     abbr -a -U -- now 'date +%Y-%m-%dT%H-%M-%S'
@@ -101,8 +106,9 @@ if status is-interactive; and not set -Uq fish_abbreviations_initialized
     # System
     abbr -a -U -- sd sudo
     abbr -a -U -- sc 'sudo systemctl'
+    abbr -a -U -- scs 'systemctl status'
     abbr -a -U -- scu 'systemctl --user'
-    abbr -a -U -- jc 'journalctl -ef -u'
+    abbr -a -U -- scsu 'systemctl --user status'
 
     # System: NixOS
     abbr -a -U -- ns 'nix search'
@@ -114,6 +120,9 @@ if status is-interactive; and not set -Uq fish_abbreviations_initialized
     # Miscellaneous
     abbr -a -U -- b32 base32
     abbr -a -U -- b64 base64
+    abbr -a -U -- md5 md5sum
+    abbr -a -U -- sha sha256sum
+    abbr -a -U -- pf 'printf "%s\n"'
     abbr -a -U -- sort 'sort -h'
     abbr -a -U -- rsort 'sort -hr'
     abbr -a -U -- pick 'pastel pick'
