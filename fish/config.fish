@@ -25,7 +25,8 @@ if status is-interactive
     starship init fish | source
 end
 
-# TODO https://github.com/oh-my-fish/plugin-expand or https://gitlab.com/Lotz/fish_globabbr
+# TODO https://github.com/oh-my-fish/plugin-expand (does not work outside of
+#   OMF) or https://gitlab.com/Lotz/fish_globabbr
 # TODO https://github.com/oh-my-fish/plugin-gi
 # TODO Maybe https://github.com/oh-my-fish/marlin instead of z
 # TODO await (command that waits for termination of a process (by pid or name))

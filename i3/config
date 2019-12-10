@@ -26,8 +26,8 @@ set $base0E #c0b7f9
 set $base0F #fcc09e
 
 # Displays:
-set $DSP1 "DP-2.8"
-set $DSP2 "DP-0"
+set $DSP1 "DP-0.8"
+set $DSP2 "DP-2"
 
 # Main workspaces
 set $WS_TERM   "q: "

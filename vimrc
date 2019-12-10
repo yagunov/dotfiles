@@ -11,7 +11,7 @@ syntax on
 " Use 256 colors
 set t_Co=256
 let base16colorspace=256
-colorscheme colorsbox-material
+" colorscheme colorsbox-material
 
 " Use jk to switch from insert to normal mode
 inoremap jk <Esc>

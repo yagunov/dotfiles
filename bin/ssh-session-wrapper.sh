@@ -19,7 +19,7 @@ q        Quit
         read choice
         case x"$choice" in
             x1)
-                tmux -2 new-session
+                tmux -2u new-session
                 exit 0
                 ;;
             x2)
@@ -35,7 +35,7 @@ q        Quit
                 exit 0
                 ;;
             x)
-                tmux -2 new-session -s "${DEFAULT_SESSION}" || tmux -2 attach -t "${DEFAULT_SESSION}"
+                tmux -2u new-session -s "${DEFAULT_SESSION}" || tmux -2u attach -t "${DEFAULT_SESSION}"
                 exit 0
                 ;;
             *)
