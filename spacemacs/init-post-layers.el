@@ -1,6 +1,6 @@
 ;;; init-post-layers.el --- User configuration loaded after Spacemacs loads all layers.
 ;;
-;; Copyright (c) 2019 Andrey Yagunov
+;; Copyright (c) 2019, 2020 Andrey Yagunov
 ;;
 ;; Author: Andrey Yagunov <yagunov86@gmail.com>
 ;; URL: https://github.com/yagunov/dotfiles
@@ -66,6 +66,10 @@
   (setq flycheck-python-flake8-executable (concat user-home-directory ".pyenv/shims/flake8")
         flycheck-flake8rc ".flake8")
   (setq py-isort-options (format "--line-width %i" python-fill-column))
+
+  ;; ASN.1 configuration
+  (add-to-list 'auto-mode-alist '("\\.asn\\'" . asn1-mode))
+  (add-hook 'asn1-mode-hook 'yagunov//asn1-mode-hook)
 
   ;; Personal setup
   (yagunov//setup-keybindings)
@@ -154,6 +158,9 @@
   (c-set-offset 'inline-open '0)
   (setq comment-start "/* ")
   (setq comment-end " */"))
+
+(defun yagunov//asn1-mode-hook ()
+  (setq-local tab-width 4))
 
 ;; QUICKFIX:
 (defun spacemacs/smartparens-pair-newline (id action context)
