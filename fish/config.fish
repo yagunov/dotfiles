@@ -9,12 +9,12 @@ if status is-interactive
         # Install fisher
         set -q XDG_CONFIG_HOME; or set XDG_CONFIG_HOME ~/.config
         curl https://git.io/fisher --create-dirs -sLo $XDG_CONFIG_HOME/fish/functions/fisher.fish
-        fish -c fisher
+        fish -c fisher update
     end
 
-    set -gx EDITOR emacsclient --no-wait --alternate-editor nvim
+    set -gx EDITOR emacsclient --alternate-editor nvim
     set -gx BAT_PAGER less -RFi
-    set -gx PAGER bat --theme 1337 -p
+    set -gx PAGER bat --theme 1337 --plain
 
     # FZF configuration
     set -gx FZF_DEFAULT_COMMAND 'command fd --threads 4 --type file'

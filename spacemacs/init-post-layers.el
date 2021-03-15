@@ -1,6 +1,6 @@
 ;;; init-post-layers.el --- User configuration loaded after Spacemacs loads all layers.
 ;;
-;; Copyright (c) 2019, 2020 Andrey Yagunov
+;; Copyright (c) 2019, 2020, 2021 Andrey Yagunov
 ;;
 ;; Author: Andrey Yagunov <yagunov86@gmail.com>
 ;; URL: https://github.com/yagunov/dotfiles
@@ -26,6 +26,9 @@
 
   ;; Some editing preferences:
   (setq-default tab-width 4)
+
+  ;; 80 is too old school for me :-)
+  (setq-default fill-column 110)
 
   ;; Set language environment and coding system
   (set-language-environment "Russian")
@@ -60,6 +63,7 @@
       (sp-local-pair 'c++-mode "'" nil :actions nil)))
   (add-hook 'c-mode-common-hook 'yagunov//c-mode-common-hook)
   (add-hook 'c++-mode-hook 'yagunov//c++-mode-hook)
+  (add-to-list 'auto-mode-alist '("\\.clang-format\\'" . yaml-mode))
 
   ;; Configure Python environment
   (add-to-list 'auto-mode-alist '("Pipfile\\'" . toml-mode))
@@ -75,6 +79,8 @@
   (yagunov//setup-keybindings)
   (yagunov//setup-faces)
 
+  (spacemacs/toggle-camel-case-motion-globally-on)
+
   ;; Open helm below current window.
   (setq helm-split-window-default-side 'below)
   (setq helm-display-function #'helm-default-display-buffer)
@@ -82,7 +88,10 @@
   ;; TODO: Open HELM in separate floating frame.
   ;; (setq after-make-frame-functions (remove 'persp-init-new-frame after-make-frame-functions))
   ;; (setq helm-display-function #'helm-display-buffer-in-own-frame)
-  )
+
+  ;; Enable auto-formatting of CMake files on save
+  (load-file "~/.dotfiles/spacemacs/cmake-format.el")
+  (add-hook 'cmake-mode-hook #'yagunov//cmake-mode-hook))
 
 
 (defun yagunov//setup-keybindings ()
@@ -92,7 +101,7 @@
   (define-key ctl-x-map (kbd "C-c") nil)
 
   ;; Adjust default keybindings to my custom ErgoDox layout
-  (when (equal system-name "silent-base")
+  (unless (equal system-name "luminous.local")
     (global-set-key (kbd "M-:") 'comment-dwim)
     (global-set-key (kbd "C-:") 'eval-expression)
     ;; (define-key evil-insert-state-map (kbd "Ж") (lambda () (interactive) (insert "ж")))
@@ -140,7 +149,13 @@
    '(diff-hl-change ((t (:background "#15568E" :foreground "#15568E"))))
    '(diff-hl-delete ((t (:background "#8E1B15" :foreground "#8E1B15"))))
    '(diff-hl-insert ((t (:background "#4C8E15" :foreground "#4C8E15"))))
-   '(switch-window-label ((t (:inherit font-lock-builtin-face :height 15.0))))))
+
+   '(org-block ((t (:background "#14232D"))))
+   '(org-block-begin-line ((t (:background "#041D26" :foreground "#65737E"))))
+
+   '(switch-window-label ((t (:inherit font-lock-builtin-face :height 15.0)))))
+
+)
 
 (defadvice recenter (after yagunov/recenter-pulse-line activate)
   "Briefly highlight new centered position."
@@ -152,12 +167,13 @@
   (c-set-offset 'arglist-intro '+)
   (c-set-offset 'arglist-close 0)
   ;; Do not indent lines inside 'extern "C"' constructs.
-  (c-set-offset 'inextern-lang 0))
+  (c-set-offset 'inextern-lang 0)
+  ;; Use single line comments
+  (setq comment-start "// ")
+  (setq comment-end ""))
 
 (defun yagunov//c++-mode-hook ()
-  (c-set-offset 'inline-open '0)
-  (setq comment-start "/* ")
-  (setq comment-end " */"))
+  (c-set-offset 'inline-open '0))
 
 (defun yagunov//asn1-mode-hook ()
   (setq-local tab-width 4))
@@ -167,7 +183,7 @@
   (save-excursion
     (indent-according-to-mode)))
 
-;; NOTE: Redefine quick run for rust to enable optimization
+;; NOTE: Redefine quick run for Rust to enable optimization
 (defun spacemacs/rust-quick-run ()
   "Quickly run a Rust file using rustc.
 Meant for a quick-prototype flow only - use `spacemacs/open-junk-file' to
@@ -182,5 +198,8 @@ using `cargo-process-run'."
              (shell-quote-argument output-file-name)
              (shell-quote-argument input-file-name)
              (shell-quote-argument output-file-name)))))
+
+(defun yagunov//cmake-mode-hook ()
+  (cmake-format-mode 1))
 
 ;;; init-post-layers.el ends here

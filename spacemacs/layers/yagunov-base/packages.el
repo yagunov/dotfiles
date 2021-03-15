@@ -1,6 +1,6 @@
 ;;; packages.el --- My configuration for Spacemacs
 ;;
-;; Copyright (c) 2019 Andrey Yagunov
+;; Copyright (c) 2019, 2021 Andrey Yagunov
 ;;
 ;; Author: Andrey Yagunov <yagunov86@gmail.com>
 ;; URL: https://github.com/yagunov/dotfiles
@@ -30,9 +30,11 @@
 ;;; Code:
 
 (defconst yagunov-base-packages
-  '(persistent-scratch
-    switch-window
-    (capnp-mode :location local))
+  '(switch-window
+    direnv
+    meson-mode
+    (capnp-mode :location local)
+    asn1-mode)
   "The list of Lisp packages required by the yagunov-base layer.
 
 Each entry is either:
@@ -61,13 +63,6 @@ Each entry is either:
         recipe.  See: https://github.com/milkypostman/melpa#recipe-format")
 
 
-(defun yagunov-base/init-persistent-scratch ()
-  (use-package persistent-scratch
-    :config
-    (progn
-      (setq persistent-scratch-save-file (concat spacemacs-cache-directory "persistent-scratch"))
-      (persistent-scratch-setup-default))))
-
 (defun yagunov-base/init-switch-window ()
   (use-package switch-window
     :init
@@ -91,9 +86,20 @@ Each entry is either:
                 (funcall action window)
               window)))))))
 
+(defun yagunov-base/init-direnv ()
+  (use-package direnv
+    :config
+    (direnv-mode)))
+
+(defun yagunov-base/init-meson-mode ()
+  (use-package meson-mode))
+
 (defun yagunov-base/init-capnp-mode ()
   (use-package capnp-mode
     :config
     (add-to-list 'auto-mode-alist '("\\.capnp\\'" . capnp-mode))))
+
+(defun yagunov-base/init-asn1-mode ()
+  (use-package asn1-mode))
 
 ;;; packages.el ends here

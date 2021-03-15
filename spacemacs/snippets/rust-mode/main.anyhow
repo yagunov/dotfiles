@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: main (with anyhow)
+# key: main
+# type: snippet
+# --
+use anyhow;
+
+fn main() -> anyhow::Result<()> {
+    $0
+    Ok(())
+}

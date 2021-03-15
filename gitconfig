@@ -1,0 +1,79 @@
+[user]
+    name = Andrey Yagunov
+    email = yagunov86@gmail.com
+
+[color]
+    ui = auto
+
+[url "https://github.com/"]
+    insteadOf = gh:
+[url "git@github.com:"]
+    pushInsteadOf = gh:
+
+[url "git@git.bss.ural.mts.ru:asyaguno"]
+    insteadOf = mts:
+    pushInsteadOf = mts:
+
+[alias]
+    s = status --short
+    st = status 
+    co = checkout
+    di = diff
+    wd = diff --word-diff-regex='\\w+'
+    dc = diff --cached
+    df = difftool --dir-diff
+    mt = mergetool -t meld
+    head = log -1 --stat
+    lol = log --graph --decorate --pretty=oneline --abbrev-commit --all
+    logs = log --stat
+    br = branch -av
+    t = tag -ln
+    undo = reset --soft 'HEAD^'
+    # find files
+    find = !git ls-files | rg -S
+    # remove files which have been deleted
+    remove = !git ls-files -z --deleted | xargs -0 git rm
+    # show users statistics
+    who = shortlog --summary --numbered
+    # show conflicts
+    conflicts = !git ls-files --unmerged | cut -f2 | sort -u | xargs grep -El '<<<<<<<|=======|>>>>>>>'
+    # show unmergd files
+    unmerged = !git ls-files --unmerged | cut -f2 | sort -u
+
+[log]
+    decorate = full
+
+[core]
+    editor = emacsclient --alternate-editor=vim
+    pager = delta --theme='Nord'
+
+[interactive]
+    diffFilter = delta --color-only
+
+[push]
+    default = simple
+
+[pull]
+    rebase = true
+
+[diff]
+    tool = meld
+[difftool "meld"]
+    cmd = meld $LOCAL $REMOTE
+
+[merge]
+    tool = meld
+[mergetool "meld"]
+    prompt = false
+    keepBackup = true
+    cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output="$MERGED"
+
+[rebase]
+    autostash = true
+
+[github]
+    user = yagunov
+    oauth-token = 9a72af280e804717c530854e0018055cadc57fd3
+
+[cola]
+	spellcheck = false

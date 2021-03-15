@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: tokio main
+# key: main
+# --
+use anyhow;
+
+#[tokio::main]
+async fn main() -> anyhow::Result<()> {
+    $0
+    Ok(())
+}

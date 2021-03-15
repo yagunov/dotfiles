@@ -3,8 +3,8 @@
 # key: main
 # --
 int
-main(${1:int argc, char *argv[]})
+main(${1:int argc, const char* const argv[]})
 {
     $0
     return 0;
-} /* end of main */
+}

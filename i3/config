@@ -26,8 +26,8 @@ set $base0E #c0b7f9
 set $base0F #fcc09e
 
 # Displays:
-set $DSP1 "DP-0.8"
-set $DSP2 "DP-2"
+set $DSP1 "DisplayPort-3" # side screen
+set $DSP2 "DisplayPort-1" # main screen
 
 # Main workspaces
 set $WS_TERM   "q: "
@@ -37,6 +37,7 @@ set $WS_UTILS  "a: "
 set $WS_REMOTE "s: "
 set $WS_DOCS   "d: "
 set $WS_IM     "z: "
+set $WS_VDI    "v: MTS"
 # Workspaces for miscellaneous tasks
 set $WS1  "1: "
 set $WS2  "2: "
@@ -72,7 +73,7 @@ floating_modifier $super
 
 # Run external commands
 for_window [instance="fterm"] floating enable
-bindsym $altmod+Return exec --no-startup-id alacritty --class fterm -d 160 80
+bindsym $altmod+Return exec --no-startup-id alacritty --class fterm
 bindsym $super+Return exec --no-startup-id alacritty
 bindsym XF86Explorer exec --no-startup-id nautilus --no-desktop
 
@@ -84,6 +85,7 @@ bindsym $super+l focus right
 
 # Select specific window
 bindsym $super+h exec --no-startup-id "wmfocus -f 'Hack Nerd Font':120 --bgcolor '#d84341' --offset 10,10"
+# bindsym $super+h exec --no-startup-id "wmfocus -f 'Hack Nerd Font':120 --bgcolor '#d84341'"
 
 # Move focused window
 bindsym $super+Shift+i move up
@@ -119,6 +121,7 @@ bindsym $super+a $ws_switch $WS_UTILS
 bindsym $super+s workspace $WS_REMOTE
 bindsym $super+d $ws_switch $WS_DOCS
 bindsym $super+z workspace $WS_IM
+bindsym $super+v workspace $WS_VDI
 bindsym $super+1 $ws_switch $WS1
 bindsym $super+2 $ws_switch $WS2
 bindsym $super+3 $ws_switch $WS3
@@ -138,6 +141,7 @@ bindsym $hyper+a move container to workspace $WS_UTILS
 bindsym $hyper+s move container to workspace $WS_REMOTE
 bindsym $hyper+d move container to workspace $WS_DOCS
 bindsym $hyper+z move container to workspace $WS_IM
+bindsym $hyper+v move container to workspace $WS_VDI
 bindsym $hyper+1 move container to workspace $WS1
 bindsym $hyper+2 move container to workspace $WS2
 bindsym $hyper+3 move container to workspace $WS3
@@ -207,11 +211,15 @@ for_window [class="Emacs-snapshot" title="Helm"] floating enable
 
 # Firefox:
 assign [class="Firefox" instance="Navigator"] $WS_WEB
-for_window [class="Firefox-private" instance="Navigator"] move container to workspace $WS_PRIVATE
+for_window [class="Firefox" title="Mozilla Firefox (Private Browsing)"] move container to workspace $WS_PRIVATE
+for_window [class="Firefox" instance="Places"] floating enable
+for_window [class="Firefox" title="Issue Selector - Jira — Mozilla Firefox"] floating enable, move position center
 
 # Chrome:
-assign [class="Firefox" instance="Navigator"] $WS_WEB
+assign [class="Chromium-browser" instance="^chromium-browser$"] $WS_WEB
+assign [class="Chromium-browser" instance="^chromium-browser .*incognito"] $WS_PRIVATE
 for_window [title="Task Manager - Chromium"] floating enable # Shift-ESC to call
+for_window [class="Chromium-browser" window_role="pop-up"] floating enable, move position center
 
 # Messages:
 assign [class="discord"] $WS_IM
@@ -227,6 +235,10 @@ for_window [class="mpv"] floating enable
 for_window [class="vlc"] move to workspace $WS_MEDIA
 for_window [class="vlc"] floating enable
 
+# VDI
+for_window [class="Wfica"] move to workspace $WS_VDI
+for_window [class="Wfica"] floating enable
+
 # Blender
 for_window [class="Blender"] border pixel 2
 for_window [class="Blender" title="Blender Preferences"] floating enable, move position center
@@ -239,6 +251,7 @@ for_window [class="Skype" title="Options"] floating enable
 for_window [class="Nvidia-settings"] floating enable
 for_window [title="Event Tester"] floating enable # xev
 for_window [class="Fcitx-config-gtk3"] floating enable
+for_window [class="fcitx5-config-qt"] floating enable
 for_window [class="Teensy"] floating enable
 for_window [class="Sol"] floating enable
 for_window [class="qjackctl"] floating enable
@@ -252,6 +265,7 @@ for_window [class="Nm-connection-editor"] floating enable
 # Floating windows without title bar
 for_window [class="Nautilus"] floating enable, border pixel 3
 for_window [class="Evince"] border pixel 3
+for_window [class="Eog"] floating enable, border pixel 3
 for_window [class="Gnome-tweaks"] floating enable, border pixel 3
 for_window [class=".gnome-tweaks-wrapped"] floating enable, border pixel 3
 for_window [class="Gnome-chess"] floating enable, border pixel 3
@@ -303,8 +317,8 @@ bar {
 # ===============================================================================
 # Autostart:
 exec --no-startup-id xrdb -load ~/.Xresources
-exec --no-startup-id xrandr --output $DSP1 --pos 0x0 --rotate right --output $DSP2 --pos 1440x320 --primary
-exec --no-startup-id nvidia-settings --load-config-only
+#exec --no-startup-id xrandr --output $DSP1 --pos 0x0 --rotate right --output $DSP2 --pos 1440x320 --primary
+#exec --no-startup-id nvidia-settings --load-config-only
 exec --no-startup-id xset dpms 0 0 0
 exec --no-startup-id compton
 exec --no-startup-id nm-applet 
@@ -319,13 +333,12 @@ exec --no-startup-id unclutter -idle 2
 exec --no-startup-id numlockx on
 exec --no-startup-id xset r rate 200 50
 exec --no-startup-id xmodmap -e 'keycode 47 = colon semicolon Cyrillic_zhe'
-exec --no-startup-id fcitx
+exec --no-startup-id fcitx5
 
 exec --no-startup-id dunst
-exec --no-startup-id nitrogen --restore
+#exec --no-startup-id nitrogen --restore
 exec --no-startup-id parcellite
 exec --no-startup-id shutter --min_at_startup
-#exec --no-startup-id easystroke
 exec --no-startup-id gnome-keyring-daemon --start -d --components=pkcs11,secrets,ssh
 
 exec --no-startup-id Discord
@@ -333,4 +346,6 @@ exec --no-startup-id Discord
 # Scratch terminal
 for_window [class="scratch-term"] move scratchpad, sticky enable, border pixel 5
 bindsym $super+g [class="scratch-term"] scratchpad show
-exec --no-startup-id sakura --class "scratch-term" --font "Cascadia Code 9" -x 'fish -c "tm scratch"'
+exec --no-startup-id sakura --class "scratch-term" --font "JetBrains Mono 10" -x 'fish -c "tm scratch"'
+# exec --no-startup-id kitty --class scratch-term --config ~/.config/kitty/scratch.conf
+# exec --no-startup-id alacritty --config-file ~/.config/alacritty/scratch.yml

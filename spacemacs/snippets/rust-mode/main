@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: main (with boxed result)
+# key: main
+# type: snippet
+# --
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    $0
+    Ok(())
+}

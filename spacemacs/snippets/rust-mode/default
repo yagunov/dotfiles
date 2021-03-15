@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: impl Default for Type
+# key: default
+# --
+
+impl Default for ${1:Type} {
+    fn default() -> Self {
+        $0
+    }
+}

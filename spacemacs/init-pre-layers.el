@@ -1,6 +1,6 @@
 ;;; init-pre-layers.el --- User configuration loaded before Spacemacs loads any layers.
 ;;
-;; Copyright (c) 2019 Andrey Yagunov
+;; Copyright (c) 2019, 2020 Andrey Yagunov
 ;;
 ;; Author: Andrey Yagunov <yagunov86@gmail.com>
 ;; URL: https://github.com/yagunov/dotfiles

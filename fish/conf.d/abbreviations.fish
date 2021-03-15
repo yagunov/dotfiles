@@ -6,7 +6,7 @@ if status is-interactive; and not set -Uq fish_abbreviations_initialized
     abbr -a -U -- all lla
     abbr -a -U -- tta 'tt --all'
     abbr -a -U -- ta 't --all'
-    abbr -a -U -- du 'du -sh'
+    abbr -a -U -- du 'dua -f binary'
     abbr -a -U -- fm 'vifm .'
     abbr -a -U -- df 'df -h --total'
 
@@ -51,13 +51,13 @@ if status is-interactive; and not set -Uq fish_abbreviations_initialized
 
     # Development
     abbr -a -U -- cg cargo
+    abbr -a -U -- cgs cargo search
     abbr -a -U -- d diff
     abbr -a -U -- mk 'make -j12'
     abbr -a -U -- nj ninja
     abbr -a -U -- vim nvim
     abbr -a -U -- vd 'nvim -d'
     abbr -a -U -- sv 'sudo nvim'
-    abbr -a -U -- man fman
     abbr -a -U -- hf hyperfine
 
     # Git
@@ -102,6 +102,7 @@ if status is-interactive; and not set -Uq fish_abbreviations_initialized
     abbr -a -U -- now 'date +%Y-%m-%dT%H-%M-%S'
     abbr -a -U -- today 'date +%Y-%m-%d'
     abbr -a -U -- ut unix_time
+    abbr -a -U -- ti time
 
     # System
     abbr -a -U -- sd sudo
@@ -111,11 +112,12 @@ if status is-interactive; and not set -Uq fish_abbreviations_initialized
     abbr -a -U -- scsu 'systemctl --user status'
 
     # System: NixOS
-    abbr -a -U -- ns 'nix search'
-    abbr -a -U -- ni 'sudo nix-env -iA'
-    abbr -a -U -- nr 'sudo nixos-rebuild'
+    abbr -a -U -- ns 'nix search nixpkgs'
+    abbr -a -U -- ni 'nix-env -iA'
+    abbr -a -U -- nr 'nix-env -e'
     abbr -a -U -- no 'nixos-option'
     abbr -a -U -- ngc 'sudo nix-collect-garbage --delete-older-than 10d'
+    abbr -a -U -- upgrade 'sudo nixos-rebuild switch --upgrade'
 
     # Miscellaneous
     abbr -a -U -- b32 base32

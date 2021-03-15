@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: impl Iterator for Type
+# key: impli
+# --
+impl Iterator for ${1:Type} {
+    type Item = ${2:Item};
+
+    fn next(&mut self) -> Option<Self::Item> {
+        ${3:todo!()}
+    }
+}
