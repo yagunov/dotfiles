@@ -5,15 +5,6 @@
 [color]
     ui = auto
 
-[url "https://github.com/"]
-    insteadOf = gh:
-[url "git@github.com:"]
-    pushInsteadOf = gh:
-
-[url "git@git.bss.ural.mts.ru:asyaguno"]
-    insteadOf = mts:
-    pushInsteadOf = mts:
-
 [alias]
     s = status --short
     st = status 
