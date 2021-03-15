@@ -50,9 +50,6 @@
     XDG_CACHE_HOME = "$XDG_RUNTIME_DIR/cache";
     # Use gnome-keyring for SSH key management
     SSH_AUTH_SOCK = "$XDG_RUNTIME_DIR/keyring/ssh";
-    # Matplotlib needs GI_TYPELIB_PATH environment variable
-    GI_TYPELIB_PATH = lib.makeSearchPath "lib/girepository-1.0"
-      (with pkgs; [ gtk3 atk pango.out gdk-pixbuf ]);
     # Select browser for opening surfraw search results
     SURFRAW_browser = "${pkgs.firefox}/bin/firefox";
   };

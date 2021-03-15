@@ -62,18 +62,30 @@
 
   # Additional packages to install
   environment.systemPackages =
-    let home-manager = (import <home-manager> { }).home-manager;
+    let
+      home-manager = (import <home-manager> { }).home-manager;
+      myPythonEnv = pkgs.python39Full.withPackages (
+        pypkgs: with pypkgs; [
+          ipython
+          pandas scipy
+          matplotlib pygobject3
+        ]
+      );
     in with pkgs; [
       # Nix related stuff
       home-manager
       nixpkgs-fmt # Nix code formatter
       nixfmt # another Nix code formatter that can be used in pipes
+      direnv
+      lorri
+      niv
 
       # Tools: system info
       inxi
       i2c-tools # decode-dimms
       usbutils # lsusb
       pciutils # lspci
+      bind # dig, nslookup
 
       # Tools: monitoring and benchmarks (See: https://habr.com/ru/post/476414/)
       sysstat
@@ -175,8 +187,6 @@
       aspellDicts.en-computers
       aspellDicts.en-science
       aspellDicts.ru
-      direnv
-      lorri
       clang-tools
 
       # Development: virtualization and containers
@@ -209,6 +219,7 @@
       cargo-inspect
       cargo-edit
       cargo-flamegraph
+      evcxr # REPL
 
       # Development: go
       go
@@ -219,8 +230,7 @@
       pipenv
       poetry
       black # Python code formatter
-      python39Full
-      python39Packages.ipython
-      # TODO: python39Packages.matplotlib.override { enableGtk3 = true; }
+      myPythonEnv
+      gobjectIntrospection gtk3
     ];
 }
