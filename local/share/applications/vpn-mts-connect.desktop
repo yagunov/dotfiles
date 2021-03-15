@@ -1,0 +1,7 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+Name=Connect to MTS IT VPN network
+Exec=nmcli connection up MTS
+StartupNotify=false
