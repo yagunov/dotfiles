@@ -1,5 +1,5 @@
 if status is-interactive
-    # Initial environment setup
+    # Initial environment setup (first run)
     if not functions -q fisher
         # Set universal variables befor plugins installation
         set -U __done_exclude '^(git (?!push|pull)|tm(ux)?|vim|nvim|e\s|v\s|emacs|mpv|mplayer|vlc|man)'
@@ -10,6 +10,9 @@ if status is-interactive
         set -q XDG_CONFIG_HOME; or set XDG_CONFIG_HOME ~/.config
         curl https://git.io/fisher --create-dirs -sLo $XDG_CONFIG_HOME/fish/functions/fisher.fish
         fish -c fisher update
+
+        # Disable welcome message
+        set -U fish_greeting
     end
 
     set -gx EDITOR emacsclient --alternate-editor nvim
