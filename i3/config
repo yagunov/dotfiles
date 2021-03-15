@@ -258,6 +258,8 @@ for_window [class="qjackctl"] floating enable
 for_window [class="FCC"] floating enable
 for_window [class="Sxiv"] floating enable
 for_window [class=".shutter-wrapped"] floating enable
+for_window [class="Lxappearance"] floating enable
+for_window [class="Matplotlib"] floating enable
 
 for_window [class="Blueman-manager"] floating enable
 for_window [class="Nm-connection-editor"] floating enable
@@ -280,6 +282,7 @@ for_window [class="Org.gnome.Weather"] floating enable, border pixel 3
 for_window [class="Seahorse"] floating enable, border pixel 3
 for_window [class="Gitg"] floating enable, border pixel 3
 for_window [class="Baobab"] floating enable, border pixel 3 # Disk Usage Analyzer
+for_window [class="Gnome-disks"] floating enable, border pixel 3
 
 
 # ===============================================================================
