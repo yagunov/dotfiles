@@ -13,6 +13,9 @@ if status is-interactive
 
         # Disable welcome message
         set -U fish_greeting
+
+        # Use less ugly color scheme for ls/exa
+        set -Ux LS_COLORS (vivid generate jellybeans)
     end
 
     set -gx EDITOR emacsclient --alternate-editor nvim

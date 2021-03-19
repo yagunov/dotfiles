@@ -64,9 +64,9 @@ if status is-interactive; and not set -Uq fish_abbreviations_initialized
     abbr -a -U -- ga 'git add'
     abbr -a -U -- gb 'git branch -av'
     abbr -a -U -- gt 'git tag -ln'
-    abbr -a -U -- gc 'git commit -m'
+    abbr -a -U -- gcm 'git commit -m'
     abbr -a -U -- gco 'git checkout'
-    abbr -a -U -- gcl 'git clone'
+    abbr -a -U -- gc 'git clone'
     abbr -a -U -- gd 'git diff'
     abbr -a -U -- gh 'git head'
     abbr -a -U -- gl 'git log --stat'
@@ -112,12 +112,15 @@ if status is-interactive; and not set -Uq fish_abbreviations_initialized
     abbr -a -U -- scsu 'systemctl --user status'
 
     # System: NixOS
+    abbr -a -U -- hm 'home-manager'
+    abbr -a -U -- hms 'home-manager switch'
+    abbr -a -U -- hme 'home-manager edit'
+    abbr -a -U -- hmg 'home-manager generations'
     abbr -a -U -- ns 'nix search nixpkgs'
-    abbr -a -U -- ni 'nix-env -iA'
-    abbr -a -U -- nr 'nix-env -e'
     abbr -a -U -- no 'nixos-option'
     abbr -a -U -- ngc 'sudo nix-collect-garbage --delete-older-than 10d'
     abbr -a -U -- upgrade 'sudo nixos-rebuild switch --upgrade'
+    abbr -a -U -- ssw 'sudo nixos-rebuild switch'
 
     # Miscellaneous
     abbr -a -U -- b32 base32

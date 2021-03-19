@@ -49,11 +49,11 @@ function tm --description "Simple Tmux manager"
         case top
             b16 -V hopscotch
         case mid
-            b16 -V solarflare
+            b16 -V helios
         case bot
             b16 -V material-palenight
         case scratch
-            b16 -V rebecca
+            b16 -V porple
     end
 
     # Create new session and attach it
