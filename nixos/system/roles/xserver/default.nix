@@ -86,28 +86,17 @@
   # Additional packages to install
   environment.systemPackages = with pkgs; [
     # Desktop environment
-    alacritty # main terminal
     compton # composition manager
-    dmenu
-    dunst # notifications
-    fcitx-configtool
     gnome3.networkmanagerapplet
     i3lock # default i3 screen locker
-    i3status
     i3status-rust # status bar generator (replacement for i3status)
-    kitty # scratchpad terminal (alacritty has a problem with monitor switching)
-    libnotify
-    libsForQt5.fcitx-qt5
     lxappearance
     nitrogen # wallpaper manager
-    numlockx # NumLock control
     parcellite # clipboard manager
     pasystray # PulseAudio systray
     rofi # Application launcher
     rofi-pass
-    sakura # main terminal
-    shutter # screanshot taker
-    unclutter-xfixes # hide mouse cursore when idle
+    flameshot # screanshot taker
     wmfocus # select window from keyboard
     xorg.xev
     xorg.xkill
@@ -116,11 +105,21 @@
     pavucontrol # GUI volume control
     ponymix # CLI volume control
     xsel
+    pastel
+    colorpicker
+    # Desktop environment: notifications
+    dunst
+    libnotify
+    # Desktop environment: keyboard and mouse control
+    fcitx-configtool
+    libsForQt5.fcitx-qt5
+    numlockx # NumLock control
+    unclutter-xfixes # hide mouse cursore when idle
 
-    # Themes
-    nordic
-    nordic-polar
-    paper-icon-theme
+    # Terminals
+    alacritty # main terminal
+    sakura # scratchpad terminal (alacritty has a problem with monitor switching)
+    kitty # alternative scratchpad terminal
 
     # Web browsers
     chromium

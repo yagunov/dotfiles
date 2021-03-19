@@ -1,19 +1,35 @@
 { pkgs, ... }:
 
-let
-  rust-analyzer-unwrapped = pkgs.callPackage <nixos/pkgs/development/tools/rust/rust-analyzer/generic.nix> rec {
-    rev = "2021-02-08";
-    version = "unstable-${rev}";
-    sha256 = "sha256-Idaaw6d0lvBUyZxpHKQ94aMtgM0zb0P8QRh+3pctX4k=";
-    cargoSha256 = "sha256-J6Hia83biutScZt/BMO4/qXYi35/Ec9MeaHeDG8Lqmc=";
-    doCheck = false;
-  };
-in
 {
+  home.packages = with pkgs; [
+    rust-analyzer
+    inotify-tools
+
+    # Work related
+    citrix_workspace_21_01_0
+    remmina
+  ];
+
   services.lorri.enable = true;
 
-  home.packages = [
-    rust-analyzer-unwrapped
-    pkgs.citrix_workspace_21_01_0
-  ];
+  gtk = {
+    enable = true;
+    # UI theme
+    theme.name = "Nordic";
+    theme.package = pkgs.nordic;
+    # Icon theme
+    iconTheme.name = "kora-pgrey";
+    iconTheme.package = pkgs.kora-icon-theme;
+    # Font
+    font.name = "Ubuntu 10";
+    font.package = pkgs.ubuntu_font_family;
+  };
+
+  qt = {
+    enable = true;
+    # Use same theme as GTK applications
+    platformTheme = "gtk";
+    style.package = pkgs.nordic;
+    style.name = "Nordic";
+  };
 }

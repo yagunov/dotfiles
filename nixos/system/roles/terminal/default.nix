@@ -143,7 +143,6 @@
       vifm
       tokei
       fpp # Facebook PathPicker
-      pastel # TODO: requires xcolor or gpick (both are missing)
       ncat # nmap
       whois
       gcal # calendar
