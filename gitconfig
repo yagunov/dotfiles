@@ -62,9 +62,5 @@
 [rebase]
     autostash = true
 
-[github]
-    user = yagunov
-    oauth-token = 9a72af280e804717c530854e0018055cadc57fd3
-
 [cola]
 	spellcheck = false
